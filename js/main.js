@@ -91,6 +91,9 @@ console.clear()
   }
 
   function animateEl(animContainerL, animContainerR) {
+    console.log(generateEls);
+
+    if(!generateEls) return;
 
     let testFillL = animContainerL.querySelectorAll('.fill > g > path ')
     let testFillR = animContainerR.querySelectorAll('.fill > g > path ')
@@ -143,7 +146,3 @@ console.clear()
   function random(min, max) {
     return Math.random() * (max - min) + min;
   }
-
-  window.addEventListener('resize',function(e) {
-    console.log(window.innerWidth);
-  })
