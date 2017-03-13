@@ -2,9 +2,9 @@
   "name": "rorshock",
   "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "main": "js/main.js",
   "scripts": {
-    "start": "browser-sync start --server --files '*.css, *.html, *.js'"
+    "start": "browser-sync start --server --files '*.css, *.html, *.js, js/*.js, styles/*.css'"
   },
   "author": "",
   "license": "ISC",

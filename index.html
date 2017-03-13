@@ -7,200 +7,21 @@
     <script src="js/bodymovin.js"></script>
     <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/TweenMax-latest-beta.js?v=1"></script>
     <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ModifiersPlugin-latest-beta.js?v=1"></script>
-    <style>
-
-      html, body {
-        font: 16px/26px 'Open Sans', Helvetica, Helvetica Neue, Arial;
-        background-color: black;
-        color: #2b4d66;
-        overflow: hidden;
-        margin: 0;
-      }
-      .centerH {
-        width: 100%;
-        height: .5px;
-        background-color: grey;
-        position: absolute;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-                transform: translateY(-50%);
-        z-index: -1;
-      }
-      .centerW {
-        height: 100%;
-        width: .5px;
-        background-color: grey;
-        position: absolute;
-        left: 50%;
-        top: 0;
-        -webkit-transform: translateX(-50%);
-            -ms-transform: translateX(-50%);
-                transform: translateX(-50%);
-        z-index: -1;
-      }
-
-      .botas_loop_3,.botas_loop_2{
-        display:none
-      }
-      .animContainerL,
-      .animContainerR {
-        position:absolute;
-        width:400px;
-        height:400px;
-        opacity: 1;
-        pointer-events: all;
-        /*border: 1px solid rgba(255,255,255,.1)*/
-      }
-
-      /*.line {
-      }
-      .line > g > path{
-        stroke: red;
-      }
-      #lineOne > g > path{
-        stroke: blue;
-      }*/
-
-      .container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-    </style>
+    <link rel="stylesheet" href="/styles/styles.css">
   </head>
   <body>
 
-    <!-- <div class="centerH"></div>
-    <div class="centerW"></div> -->
-    <div class="container"></div>
+    <nav id="main">
+      <ul>
+        <!-- <li class="logo"><a href="#">LOST.</a></li> -->
+        <li><a href="#" data-comp='comp1Data'>comp1</a></li>
+        <li><a href="#" data-comp='comp2Data'>comp2</a></li>
+        <li><a href="#" data-comp='comp3Data'>comp3</a></li>
+      </ul>
+    </nav>
 
-    <script>
-    console.clear()
+    <div class="compContainer"></div>
 
-      var colors = ['#f00', '#0f0', '#00f'];
-
-      var i = 40;
-      while (i--) {
-        createEl();
-      }
-
-      function createEl() {
-
-        let container = document.body.querySelector('.container');
-        let animContainerL = document.createElement('div');
-        let animContainerR = document.createElement('div');
-        animContainerL.classList.add('animContainerL');
-        animContainerR.classList.add('animContainerR');
-        container.appendChild(animContainerL);
-        container.appendChild(animContainerR);
-        let animations = ['arrow', 'data', 'noSmoking','travel','trash', 'phone', ]
-        let RandomAnim = animations[Math.floor(random(0, animations.length))];
-
-        let animL;
-        let animDataL = {
-            container: animContainerL,
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
-            rendererSettings: {
-                progressiveLoad: true
-            },
-            path: `animData/${RandomAnim}.json`
-            // path: 'animData/arrow.json'
-        };
-
-        let animR;
-        // let animDataR = animDataL;
-        // animDataR.container = animContainerR
-        let animDataR = {
-            container: animContainerR,
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
-            rendererSettings: {
-                progressiveLoad: true
-            },
-            path: `animData/${RandomAnim}.json`
-            // path: 'animData/data.json'
-        };
-
-        animL = bodymovin.loadAnimation(animDataL);
-        animR = bodymovin.loadAnimation(animDataR);
-        animL.addEventListener('complete',function(e) { animL.goToAndStop(0, false); })
-        animR.addEventListener('complete',function(e) { animR.goToAndStop(0, false); })
-        animContainerL.addEventListener('mouseover',function(e) { animL.play(); animR.play(); })
-        animContainerR.addEventListener('mouseover',function(e) { animR.play(); animL.play(); })
-
-        TweenMax.set([animContainerL, animContainerR], {x:window.innerWidth/2, y:window.innerHeight});
-        setTimeout(function(){
-          console.log(animL.isLoaded);
-          animateEl(animContainerL, animContainerR); }, 500
-        );
-      }
-
-      function animateEl(animContainerL, animContainerR) {
-
-        let testFillL = animContainerL.querySelectorAll('.fill > g > path ')
-        let testFillR = animContainerR.querySelectorAll('.fill > g > path ')
-
-        var tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
-            startY = window.innerHeight + animContainerL.offsetHeight/2 ,
-            // startY = window.innerHeight + animContainerL.offsetHeight/2,
-            startX = window.innerWidth / 2 - animContainerL.offsetWidth/2,
-            endY = random(0 - animContainerL.offsetHeight / 4, window.innerHeight - window.innerHeight/2),
-            endX = random(0, window.innerWidth / 2 - animContainerL.offsetWidth/2),
-            rotation = random(0, 360),
-            delay = random(1, 6),
-            scale = random(.1, .8),
-            // scale = Math.floor(random(.4, 1)),
-            randomColor1 = colors[Math.floor(random(0,3))],
-            randomColor2 = colors[Math.floor(random(0,3))],
-            randomColor3 = colors[Math.floor(random(0,3))],
-            velocity = 30; //pixels per second on descent
-
-        // TweenMax.set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor}})
-
-        tl.fromTo([animContainerL, animContainerR], 1, {
-          y: startY,
-          x: startX,
-          rotation:0,
-          scale: 0,
-        }, {
-          y:endY,
-          x:endX,
-          rotation:rotation,
-          scale: scale,
-          delay: delay,
-          ease: Sine.easeOut,
-          modifiers: {
-            x: function(value, animContainer) {
-              return (animContainer === animContainerR) ? window.innerWidth - value - animContainerR.offsetWidth : value;
-            },
-            scaleX: function(value, animContainer) {
-              return (animContainer === animContainerR) ? -value : value;
-            },
-            rotation: function(value, animContainer) {
-              return (animContainer === animContainerR) ? -value : value;
-            }
-          }
-        }, 'start')
-        .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
-        .set([ testFillL, testFillR ], {attr:{ fill:randomColor1}}, 'start')
-        .to([animContainerL, animContainerR], (startY - endY) / velocity, {y:startY, ease:Linear.easeNone});
-      }
-
-
-      function random(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-      window.addEventListener('resize',function(e) {
-        console.log(window.innerWidth);
-      })
-
-    </script>
+    <script src="js/main.js"></script>
   </body>
 </html>
