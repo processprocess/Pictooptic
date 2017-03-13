@@ -36,3 +36,19 @@ console.clear()
   function random(min, max) {
     return Math.random() * (max - min) + min;
   }
+
+  let stats = document.querySelector('.stats')
+
+  let interval = 1,
+      ticker = TweenLite.ticker,
+      lastUpdate = ticker.time,
+      lastFrame = ticker.frame;
+  ticker.addEventListener("tick", function() {
+      let time = ticker.time;
+      if (time - lastUpdate >= interval) {
+        stats.textContent = `fps: ${ Math.floor((ticker.frame - lastFrame) / (time - lastUpdate)) }`
+          // console.log("fps: ", (ticker.frame - lastFrame) / (time - lastUpdate));
+          lastUpdate = time;
+          lastFrame = ticker.frame;
+      }
+  });
