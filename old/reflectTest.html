@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>gsap</title>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/TweenMax-latest-beta.js?v=1"></script>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ModifiersPlugin-latest-beta.js?v=1"></script>
+    <style>
+
+    html, body {
+      font: 16px/26px 'Open Sans', Helvetica, Helvetica Neue, Arial;
+      background-color: black;
+      color: #2b4d66;
+      overflow: hidden;
+      margin: 0;
+    }
+    .centerH {
+      width: 100%;
+      height: .5px;
+      background-color: grey;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+      z-index: -1;
+    }
+    .centerW {
+      height: 100%;
+      width: .5px;
+      background-color: grey;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    .element {
+      position: absolute;
+      width: 10px;
+      height: 50px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+      background-color: red;
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="centerH"></div>
+    <div class="centerW"></div>
+    <div class="posX"></div>
+    <div class="posX2"></div>
+
+
+    <div class="element"></div>
+
+    <script>
+    console.clear()
+
+    let element = document.querySelector('.element');
+
+    // class TestElement {
+    //   let element = document.querySelector('.element');
+    //   constructor() {
+    //     this.element = element;
+    //     this.x = x,
+    //     this.y = y,
+    //   }
+    // }
+
+    let statsBox = document.querySelector('.posX2');
+
+    function updateFunction() {
+      statsBox.innerHTML = element.getBoundingClientRect().top + element.offsetHeight/2;
+      // let topPos = element.getBoundingClientRect().top;
+      if (element.getBoundingClientRect().top > window.innerHeight) {
+        TweenMax.to(element, .75, {
+          top: 300,
+          // scale: 2
+        })
+      } else {
+        element.style.top = `${(element.getBoundingClientRect().top + element.offsetHeight/2) + 5}px`
+      }
+    }
+
+
+    TweenMax.ticker.addEventListener("tick", updateFunction);
+
+    </script>
+  </body>
+</html>

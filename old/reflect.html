@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>gsap</title>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/TweenMax-latest-beta.js?v=1"></script>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ModifiersPlugin-latest-beta.js?v=1"></script>
+    <style>
+
+    html, body {
+      font: 16px/26px 'Open Sans', Helvetica, Helvetica Neue, Arial;
+      background-color: black;
+      color: #2b4d66;
+      overflow: hidden;
+      margin: 0;
+    }
+    .centerH {
+      width: 100%;
+      height: .5px;
+      background-color: grey;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+      z-index: -1;
+    }
+    .centerW {
+      height: 100%;
+      width: .5px;
+      background-color: grey;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    .missile {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .elementLeft,
+    .elementRight {
+      position: absolute;
+      width: 20px;
+      height: 5px;
+      /*transform: scale(5);*/
+      /*opacity: 1;*/
+      /*background-color: #f00;*/
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <div class="centerH"></div>
+    <div class="centerW"></div>
+
+    <div class="buttons">
+      <button id="btnPlay">play</button>
+      <button id="btnPause">pause</button>
+    </div>
+
+    <script>
+    console.clear()
+
+    document.querySelector('#btnPlay').addEventListener('click',function(e) { missiles.forEach(missle => missle.animation2Left.play()) })
+    document.querySelector('#btnPause').addEventListener('click',function(e) { missiles.forEach(missle => missle.animation2Left.pause()) })
+
+    let elements = 400;
+    let missiles = [];
+    let colors = ['#f00', '#0f0', '#00f'];
+
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+
+    var body = document.body;
+
+    init()
+
+    function init() {
+      var i = elements;
+      while (i--) {
+        createMissile(i);
+      }
+    }
+
+    function createMissile(i) {
+
+      var elementLeft = document.createElement('div')
+      elementLeft.classList.add('elementLeft')
+      body.appendChild(elementLeft);
+
+      var elementRight = document.createElement('div')
+      elementRight.classList.add('elementRight')
+      body.appendChild(elementRight);
+
+      var x = 0;
+      var y = window.innerHeight;
+      let delay = random(0, 2)
+      let thisWidth = 100;
+      let backgroundColor = null;
+      // let scale = 1;
+
+      class TestMissle {
+
+        constructor() {
+          this.elementLeft = elementLeft,
+          this.elementRight = elementRight,
+          this.x = x,
+          this.y = y,
+          // this.rotation = 0,
+          this.backgroundColor = 0,
+          this.scale = 1,
+          this.setProperties = TweenMax.set([elementLeft, elementRight], { x: x, y: y, rotation: 0, backgroundColor: backgroundColor, scale: this.scale});
+          this.animationDecendLeft = TweenMax.to(elementLeft, 1, {
+            y: 0,
+            x: 0,
+            rotation: 0,
+            backgroundColor: null,
+            scale: 1,
+            modifiers: {
+              y: function() { return missile.y; },
+              x: function() { return missile.x; },
+              rotation: function() { return missile.rotation; },
+              backgroundColor: function() { return missile.backgroundColor; },
+              scale: function() { return missile.scale; }
+            },
+            delay: delay,
+            repeat: -1,
+          });
+          this.animationDecendRight = TweenMax.to(elementRight, 1, {
+            y: 0,
+            x: 0,
+            backgroundColor: null,
+            rotation: 0,
+            scale: 1,
+            modifiers: {
+              y: function() { return missile.y; },
+              x: function() { return window.innerWidth - missile.x - missile.elementRight.offsetWidth; },
+              rotation: function() { return missile.rotation * -1; },
+              backgroundColor: function() { return missile.backgroundColor; },
+              scale: function() { return missile.scale; },
+            },
+            delay: delay,
+            repeat: -1,
+            onUpdate: function() {
+              // console.log('done');
+              TweenMax.set(missile,{clearProps:"all"});
+              updateMissile(missile);
+            },
+            onComplete: function(){
+              }
+          });
+
+        } //constructor ends
+
+      } // missile class ends
+
+      let missile = new TestMissle();
+      missiles.push(missile)
+
+    } // generate missile ends
+
+    function updateMissile(missile) {
+      // console.log(missile.rotation);
+      if (missile.y > window.innerHeight) {
+        missile.x = window.innerWidth/2 - missile.elementLeft.offsetWidth;
+        missile.scale = 3;
+        TweenMax.to(missile, .75, {
+          x: random(window.innerWidth / 6, window.innerWidth/2 - missile.elementLeft.offsetWidth/3),
+          y: random(10, window.innerHeight),
+          scale: 10,
+          // clearProps: "a",
+          rotation: random(0, 360),
+          ease: Sine.easeOut,
+          onComplete: function(){
+        	    TweenMax.set(missile,{clearProps:"all"});
+            }
+        })
+        // backgroundColor: colors[Math.floor(random(0,3))],
+
+        // console.log(missile.elementLeft.style.scale);
+        // missile.elementLeft.style.transform = 'scale(4)';
+        // missile.elementRight.style.transform = 'scale(1)';
+
+        TweenMax.set(missile, { backgroundColor: colors[Math.floor(random(0,3))] })
+        // TweenMax.set(missile, { scale: '0' })
+
+      } else {
+        missile.y += 1
+      }
+
+    }
+
+
+
+    // color from array of colors
+    // scale
+
+
+    function random(min, max) {
+      // if (max == null) { max = min; min = 0; }
+      return Math.random() * (max - min) + min;
+    }
+
+    </script>
+  </body>
+</html>

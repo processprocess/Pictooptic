@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <style>
+    body, html {
+      background-color: black;
+      margin: 0px;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .botas_loop_3,.botas_loop_2{
+      display:none
+    }
+    #bodymovin {
+      position:absolute;
+      width:400px;
+      height:400px;
+      display:block;
+      overflow: hidden;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      /*transform: translate3d(0,0,0);*/
+      opacity: 1;
+      border: 1px solid rgba(255,255,255,.3)
+    }
+
+    .line {
+      /*opacity: .4;*/
+    }
+
+    .line > g > path{
+      stroke: red;
+      /*opacity: .4;*/
+    }
+
+    #lineOne > g > path{
+      stroke: blue;
+      /*opacity: .4;*/
+    }
+
+  </style>
+
+   <script src="bodymovin.js"></script>
+
+</head>
+<body>
+<div id="bodymovin"></div>
+
+<script>
+
+  console.clear();
+
+  let anim;
+  let animData = {
+      container: document.getElementById('bodymovin'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      rendererSettings: {
+          progressiveLoad: false
+      },
+      path: 'data1.json'
+  };
+  anim = bodymovin.loadAnimation(animData);
+
+  anim.addEventListener('complete',function(e) {
+    anim.goToAndStop(0, false)
+    console.log(anim);
+    console.log(e);
+  })
+
+  document.getElementById('bodymovin').addEventListener('mouseover',function(e) { anim.play() })
+
+</script>
+
+</body>
+</html>

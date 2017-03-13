@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>reflect-codepen</title>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/TweenMax-latest-beta.js?v=1"></script>
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ModifiersPlugin-latest-beta.js?v=1"></script>
+    <style>
+
+    html, body {
+      font: 16px/26px 'Open Sans', Helvetica, Helvetica Neue, Arial;
+      background-color: black;
+      color: #2b4d66;
+      overflow: hidden;
+      margin: 0;
+    }
+    .centerH {
+      width: 100%;
+      height: .5px;
+      background-color: grey;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+      z-index: -1;
+    }
+    .centerW {
+      height: 100%;
+      width: .5px;
+      background-color: grey;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    .element {
+      position: absolute;
+      width: 40px;
+      height: 20px;
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <script>
+    let colors = ['#f00', '#0f0', '#00f'];
+
+    let vw = window.innerWidth;
+    let vh = window.innerHeight;
+
+    let i = 4;
+    while (i--) {
+      createEl();
+    }
+
+    function createEl() {
+
+      let element = document.createElement('div')
+      element.classList.add('element')
+      document.body.appendChild(element);
+
+      let x = window.innerWidth/2;
+      let y = window.innerHeight;
+
+      class ElementInstance {
+        constructor() {
+          this.element = element,
+          this.x = x,
+          this.y = y,
+          this.setProperties = TweenMax.set(element, { x: x, y: y});
+          this.animationDecendLeft = TweenMax.to(element, 1, {
+            y: y,
+            x: x,
+            backgroundColor: null,
+            scale: null,
+            repeat: -1,
+            modifiers: {
+              y: function() { return elementInstance.y; },
+              backgroundColor: function() { return elementInstance.backgroundColor; },
+              scale: function() { return elementInstance.scale; },
+            },
+            onUpdate: function() {
+              updateElementInstance(elementInstance);
+            }
+          });
+        }
+      }
+      let elementInstance = new ElementInstance();
+    }
+
+    function updateElementInstance(elementInstance) {
+      if (elementInstance.y > window.innerHeight) {
+        elementInstance.x = window.innerWidth/2 - elementInstance.element.offsetWidth;
+        TweenMax.to(elementInstance, .75, {
+          x: window.innerWidth / 2 - elementInstance.element.offsetWidth,
+          y: random(10, window.innerHeight),
+          backgroundColor: colors[Math.floor(random(0,3))],
+          scale: Math.floor(random(1, 5)),
+          ease: Sine.easeOut
+        })
+      }
+      else {
+        elementInstance.y += 10
+      }
+    }
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    </script>
+  </body>
+</html>
