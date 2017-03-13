@@ -1,12 +1,11 @@
 function comp2() {
 
-  let colors = ['#fff', '#f00', '#0f0', '#00f', '#000'];
+  let colors = ['#C37C82', '#DCDCDE', '#D2D1CF', '#797367', '#9FBDD7'];
 
-  TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeInOut, onComplete:functionName})
-
-  function functionName() {
-    console.log('done');
-  }
+  TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeInOut})
+  navButtons.forEach(navButton =>
+    TweenMax.to(navButton.querySelector('a'), 1, {color: colors[1], ease: Sine.easeInOut})
+  )
 
   let i = 40;
 

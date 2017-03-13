@@ -1,8 +1,11 @@
 function comp1() {
 
-  let colors = ['#000' ,'#f00', '#0f0', '#00f'];
+  let colors = ['#E87162', '#F2EEEA', '#5F5E5D', '#B4B2AE', '#E24A37'];
 
   TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeInOut})
+  navButtons.forEach(navButton =>
+    TweenMax.to(navButton.querySelector('a'), 1, {color: colors[1], ease: Sine.easeInOut})
+  )
 
   let i = 40;
 
