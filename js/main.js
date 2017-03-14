@@ -1,12 +1,11 @@
 console.clear()
 
-  let currentComp = 'comp5';
+  let currentComp = 'comp1';
   let scaleModifier = 1;
   let adjustedWindowHeight = window.innerHeight - 200;
   let adjustedWindowWidth = window.innerWidth - 200;
 
   window.onload = () => {
-    console.log(scaleModifier);
     setScaleModifier(window.innerWidth)
     eval(currentComp)()
   }
@@ -57,7 +56,6 @@ console.clear()
     } else if( windowWidth <= 600 ) {
       scaleModifier = .6;
     }
-    console.log(scaleModifier);
   }
 
   function resetComp() {

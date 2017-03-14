@@ -76,20 +76,17 @@ function comp2() {
     let tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
 
         scale = random(.1, .7) * scaleModifier,
-        elementScaledSize = animContainerL.offsetWidth * scale,
+        // elementScaledSize = animContainerL.offsetWidth * scale,
 
-        startY = adjustedWindowHeight / 2 - elementScaledSize/2,
-        startX = window.innerWidth / 2 - animContainerL.offsetWidth / 2,
+        startY = window.innerHeight,
+        startX = window.innerWidth / 2,
 
-        endY = random(-200 + elementScaledSize, adjustedWindowHeight - elementScaledSize),
-        // endX = 500,
-        endX = adjustedWindowWidth / 2 -100,
-        // endX = random(adjustedWindowWidth / 2, adjustedWindowWidth / 2),
-        // endX = random(0, window.innerWidth / 2 ),
+        endY = random(0, window.innerHeight),
+        endX = window.innerWidth / 2,
 
         rotation = random(0, 360),
         delay = 0,
-        // delay = random(0, 1.5),
+
         randomColor1 = colors[Math.floor(random(0,colors.length))]
 
     tl.fromTo([animContainerL, animContainerR], 1, {
@@ -106,7 +103,7 @@ function comp2() {
       ease: Sine.easeOut,
       modifiers: {
         x: function(value, animContainer) {
-          return (animContainer === animContainerR) ? window.innerWidth - value - animContainerR.offsetWidth : value;
+          return (animContainer === animContainerR) ? window.innerWidth - value : value;
         },
         scaleX: function(value, animContainer) {
           return (animContainer === animContainerR) ? -value : value;

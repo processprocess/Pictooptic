@@ -79,18 +79,18 @@ function comp1() {
 
         scale = (random(.1, .7) * scaleModifier) ,
         elementScaledSize = animContainerL.offsetWidth * scale,
-        startY = adjustedWindowWidth + elementScaledSize / 2,
-        startX = window.innerWidth / 2 - animContainerL.offsetWidth / 2,
 
-        endY = random(-200 + elementScaledSize/2, adjustedWindowWidth/2),
-        endX = random(0, window.innerWidth / 2 - elementScaledSize / 2 ),
+        startY = window.innerHeight,
+        startX = window.innerWidth / 2,
+
+        endY = random(0, window.innerHeight/2),
+        endX = random(0, window.innerWidth / 2 + elementScaledSize / 2 ),
+        // endX = random(0, window.innerWidth / 2),
 
         rotation = random(0, 360),
         delay = random(.5, 6),
         randomColor1 = colors[Math.floor(random(0,colors.length))],
         velocity = 30;
-
-        // console.log(endY / window.innerHeight);
 
     tl.fromTo([animContainerL, animContainerR], 1, {
       y: startY,
@@ -106,8 +106,7 @@ function comp1() {
       ease: Sine.easeOut,
       modifiers: {
         x: function(value, animContainer) {
-          // console.log( animContainerL.offsetWidth * scale );
-          return (animContainer === animContainerR) ? window.innerWidth - value - animContainerR.offsetWidth : value;
+          return (animContainer === animContainerR) ? window.innerWidth - value : value;
         },
         scaleX: function(value, animContainer) {
           return (animContainer === animContainerR) ? -value : value;
@@ -120,7 +119,6 @@ function comp1() {
     .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
     .set([ fillL, fillR ], {attr:{ fill:randomColor1}}, 'start')
     .to([animContainerL, animContainerR], (startY - endY) / velocity, {y:startY, ease:Linear.easeNone});
-    // .to([animContainerL, animContainerR], (startY - endY) / velocity, {y:startY, ease:Linear.easeNone});
 
   }
 
