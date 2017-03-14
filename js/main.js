@@ -1,6 +1,6 @@
 console.clear()
 
-  let currentComp = 'comp1';
+  let currentComp = 'comp3';
   let scaleModifier = 1;
   let adjustedWindowHeight = window.innerHeight - 200;
   let adjustedWindowWidth = window.innerWidth - 200;
@@ -20,19 +20,17 @@ console.clear()
     currentComp = nextComp;
     let currentAnims = document.querySelectorAll('.compContainer > div');
 
-    TweenMax.to(currentAnims, 1, {opacity:0, ease:Sine.easeInOut, onComplete:completeEvents})
-
-    function completeEvents() {
-      handleRemove()
-      // handleNextComp()
-    }
+    TweenMax.to(currentAnims, 1, {opacity:0, ease:Sine.easeInOut, onComplete:handleRemove})
 
     function handleRemove() {
-      currentAnims.forEach(currentAnim => { currentAnim.remove() })
+      currentAnims = document.querySelectorAll('.compContainer > div');
+      currentAnims.forEach(currentAnim => {
+        currentAnim.remove();
+      })
       setTimeout( function() {
+        TweenMax.killAll();
         handleNextComp();
       }, 50 );
-
     }
 
     function handleNextComp() {

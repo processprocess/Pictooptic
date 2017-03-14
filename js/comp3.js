@@ -83,59 +83,72 @@ function comp3() {
 
   function animateEl(animContainerL, animContainerR) {
 
-        let fillL = animContainerL.querySelectorAll('.fill > g > path ')
-        let fillR = animContainerR.querySelectorAll('.fill > g > path ')
+    let fillL = animContainerL.querySelectorAll('.fill > g > path ')
+    let fillR = animContainerR.querySelectorAll('.fill > g > path ')
 
-        let tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
+    let tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
 
-            startY = window.innerHeight,
-            startX = window.innerWidth / 2,
-            endY = random(0, window.innerHeight),
-            endX = window.innerWidth / 2,
-            rotation = random(0, 360),
-            delay = 0,
+        startY = window.innerHeight,
+        startX = window.innerWidth / 2,
+        endY = random(0, window.innerHeight),
+        endX = window.innerWidth / 2,
+        rotation = random(0, 360),
+        delay = 0,
 
-            scalePure = (endY / window.innerHeight),
-            // scalePure = (.7) * Math.abs((.7) * (endY / window.innerHeight) * 2 + .15),
-            scale = (.7 * scaleModifier) * Math.abs((.7 * scaleModifier) * (endY / window.innerHeight) * 2 + .15),
-            // randomColor1 = `hsl( ${scale * 720}, 23%, 70%)`
-            // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, 70%)`
-            // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, ${scale * 100}%)`
-            // randomColor1 = `hsl( 200, ${scalePure * 200}%, ${scalePure * 100}%)`
-            randomColor1 = `hsl( ${counterNum}, 100%, ${scalePure * 100}%)`
-            randomColor1 = `hsl( ${counterNum}, 100%, ${scalePure * 100}%)`
+        scalePure = (endY / window.innerHeight),
+        // scalePure = (.7) * Math.abs((.7) * (endY / window.innerHeight) * 2 + .15),
+        scale = (.7 * scaleModifier) * Math.abs((.7 * scaleModifier) * (endY / window.innerHeight) * 2 + .15),
+        // randomColor1 = `hsl( ${scale * 720}, 23%, 70%)`
+        // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, 70%)`
+        // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, ${scale * 100}%)`
+        // randomColor1 = `hsl( 200, ${scalePure * 200}%, ${scalePure * 100}%)`
+        randomColor1 = `hsl( ${counterNum}, 100%, ${scalePure * 100}%)`
+        randomColor1 = `hsl( ${counterNum}, 100%, ${scalePure * 100}%)`
 
-            console.log(scalePure);
-
-        tl.fromTo([animContainerL, animContainerR], 1, {
-          y: startY,
-          x: startX,
-          rotation:0,
-          scale: 1,
-        }, {
-          y: endY,
-          x: endX,
-          rotation: rotation,
-          scale: scale,
-          delay: delay,
-          ease: Sine.easeOut,
-          modifiers: {
-            x: function(value, animContainer) {
-              return (animContainer === animContainerR) ? window.innerWidth - value : value;
-            },
-            scaleX: function(value, animContainer) {
-              return (animContainer === animContainerR) ? -value : value;
-            },
-            rotation: function(value, animContainer) {
-              counterNum+=.015
-              return (animContainer === animContainerR) ? -value : value;
-            }
-          }
-        }, 'start')
-        .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
-        .set([ fillL, fillR ], {attr:{ fill:randomColor1}}, 'start')
-        .to([animContainerL, animContainerR], .25, {scale:0, ease:Sine.easeIn, delay: 3,});
-
+    tl.fromTo([animContainerL, animContainerR], 1, {
+      y: startY,
+      x: startX,
+      rotation:0,
+      scale: 1,
+    }, {
+      y: endY,
+      x: endX,
+      rotation: rotation,
+      scale: scale,
+      delay: delay,
+      ease: Sine.easeOut,
+      modifiers: {
+        x: function(value, animContainer) {
+          return (animContainer === animContainerR) ? window.innerWidth - value : value;
+        },
+        scaleX: function(value, animContainer) {
+          return (animContainer === animContainerR) ? -value : value;
+        },
+        rotation: function(value, animContainer) {
+          counterNum+=.015
+          return (animContainer === animContainerR) ? -value : value;
+        }
+      }
+    }, 'start')
+    .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
+    .set([ fillL, fillR ], {attr:{ fill:randomColor1}}, 'start')
+    .to([animContainerL, animContainerR], .25, {scale:0, ease:Sine.easeIn, delay: 3,});
   }
 
 }
+
+// let currentAnims;
+//
+// setTimeout(function(){
+//   // console.log("test");
+//   currentAnims = document.querySelectorAll('.compContainer > div');
+//   killAnims()
+// }, 500 );
+//
+//
+// function killAnims() {
+//   currentAnims.forEach(currentAnim => {
+//     currentAnim.remove()
+//   })
+//   TweenMax.killAll();
+// }
