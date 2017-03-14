@@ -1,8 +1,13 @@
 console.clear()
 
-  let currentComp = 'comp1';
+  let currentComp = 'comp5';
+  let scaleModifier = 1;
+  let adjustedWindowHeight = window.innerHeight - 200;
+  let adjustedWindowWidth = window.innerWidth - 200;
 
   window.onload = () => {
+    console.log(scaleModifier);
+    setScaleModifier(window.innerWidth)
     eval(currentComp)()
   }
 
@@ -20,17 +25,45 @@ console.clear()
 
     function completeEvents() {
       handleRemove()
-      handleNextComp()
+      // handleNextComp()
     }
 
     function handleRemove() {
       currentAnims.forEach(currentAnim => { currentAnim.remove() })
+      setTimeout( function() {
+        handleNextComp();
+      }, 50 );
+
     }
 
     function handleNextComp() {
       eval(nextComp)()
     }
 
+  }
+
+  window.addEventListener('resize', function(e) {
+    adjustedWindowHeight = window.innerHeight - 200,
+    adjustedWindowWidth = window.innerWidth - 200;
+    setScaleModifier(window.innerWidth);
+    resetComp();
+  })
+
+  function setScaleModifier(windowWidth) {
+    if (windowWidth > 1200) {
+      scaleModifier = 1;
+    } else if( windowWidth <= 1200 && windowWidth >= 600) {
+      scaleModifier = .8;
+    } else if( windowWidth <= 600 ) {
+      scaleModifier = .6;
+    }
+    console.log(scaleModifier);
+  }
+
+  function resetComp() {
+    let currentAnims = document.querySelectorAll('.compContainer > div');
+    currentAnims.forEach(currentAnim => { currentAnim.remove() })
+    eval(currentComp)()
   }
 
   function random(min, max) {

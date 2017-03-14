@@ -1,17 +1,19 @@
 function comp1() {
 
   let colors = ['#E87162', '#F2EEEA', '#5F5E5D', '#B4B2AE', '#E24A37'];
+  // let colors = ['#3B8686', '#CFF09E', '#A8DBA8', '#79BD9A', '#0B486B'];
+  // let colors = ['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58'];
+  // let colors = ['#C37C82', '#DCDCDE', '#D2D1CF', '#797367', '#9FBDD7'];
 
-  TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeInOut})
-  navButtons.forEach(navButton =>
-    TweenMax.to(navButton.querySelector('a'), 1, {color: colors[1], ease: Sine.easeInOut})
-  )
+  TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeOut})
+  navButtons.forEach(navButton => TweenMax.to(navButton.querySelector('a'), 1, {color: colors[1], ease: Sine.easeOut}) )
 
   let i = 40;
 
   while (i--) {
     createEl();
   }
+
 
   function createEl() {
 
@@ -22,7 +24,8 @@ function comp1() {
     animContainerR.classList.add('animContainerR');
     compContainer.appendChild(animContainerL);
     compContainer.appendChild(animContainerR);
-    let animations = ['arrow', 'data', 'noSmoking', 'travel', 'trash', 'phone', ]
+
+    let animations = ['arrow', 'data', 'noSmoking', 'travel', 'phone', ]
     let RandomAnim = animations[Math.floor(random(0, animations.length))];
 
     let animL;
@@ -61,27 +64,33 @@ function comp1() {
 
     animR.addEventListener('DOMLoaded',function(e) {
       animateEl(animContainerL, animContainerR)
-      animR.removeEventListener('config_ready')
+      animR.removeEventListener('DOMLoaded')
     })
   }
 
+
+
   function animateEl(animContainerL, animContainerR) {
 
-    let testFillL = animContainerL.querySelectorAll('.fill > g > path ')
-    let testFillR = animContainerR.querySelectorAll('.fill > g > path ')
+    let fillL = animContainerL.querySelectorAll('.fill > g > path ')
+    let fillR = animContainerR.querySelectorAll('.fill > g > path ')
 
     let tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
-        startY = window.innerHeight + animContainerL.offsetHeight/2 ,
-        startX = window.innerWidth / 2 - animContainerL.offsetWidth/2,
-        endY = random(0 - animContainerL.offsetHeight / 4, window.innerHeight - window.innerHeight/2),
-        endX = random(0, window.innerWidth / 2 - animContainerL.offsetWidth/2),
+
+        scale = (random(.1, .7) * scaleModifier) ,
+        elementScaledSize = animContainerL.offsetWidth * scale,
+        startY = adjustedWindowWidth + elementScaledSize / 2,
+        startX = window.innerWidth / 2 - animContainerL.offsetWidth / 2,
+
+        endY = random(-200 + elementScaledSize/2, adjustedWindowWidth/2),
+        endX = random(0, window.innerWidth / 2 - elementScaledSize / 2 ),
+
         rotation = random(0, 360),
-        delay = random(1, 6),
-        scale = random(.1, .8),
+        delay = random(.5, 6),
         randomColor1 = colors[Math.floor(random(0,colors.length))],
-        randomColor2 = colors[Math.floor(random(0,colors.length))],
-        randomColor3 = colors[Math.floor(random(0,colors.length))],
         velocity = 30;
+
+        // console.log(endY / window.innerHeight);
 
     tl.fromTo([animContainerL, animContainerR], 1, {
       y: startY,
@@ -89,14 +98,15 @@ function comp1() {
       rotation:0,
       scale: 0,
     }, {
-      y:endY,
-      x:endX,
-      rotation:rotation,
+      y: endY,
+      x: endX,
+      rotation: rotation,
       scale: scale,
       delay: delay,
       ease: Sine.easeOut,
       modifiers: {
         x: function(value, animContainer) {
+          // console.log( animContainerL.offsetWidth * scale );
           return (animContainer === animContainerR) ? window.innerWidth - value - animContainerR.offsetWidth : value;
         },
         scaleX: function(value, animContainer) {
@@ -108,8 +118,9 @@ function comp1() {
       }
     }, 'start')
     .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
-    .set([ testFillL, testFillR ], {attr:{ fill:randomColor1}}, 'start')
+    .set([ fillL, fillR ], {attr:{ fill:randomColor1}}, 'start')
     .to([animContainerL, animContainerR], (startY - endY) / velocity, {y:startY, ease:Linear.easeNone});
+    // .to([animContainerL, animContainerR], (startY - endY) / velocity, {y:startY, ease:Linear.easeNone});
 
   }
 

@@ -1,8 +1,16 @@
-function comp2() {
+function comp4() {
 
   // let colors = ['#3B8686', '#CFF09E', '#A8DBA8', '#79BD9A', '#0B486B'];
-  let colors = ['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58'];
-  // let colors = ['#C37C82', '#DCDCDE', '#D2D1CF', '#797367', '#9FBDD7'];
+  // let colors = ['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58'];
+  let colors = [
+                '#111111',
+                'hsl(207, 23%, 70%)',
+                // 'hsl(207, 23%, 70%)',
+                // '#42433F',
+                // '#FC4000',
+                // '#E23C03',
+                // '#FFFFFF',
+              ];
 
   TweenMax.to(document.body, 1, {backgroundColor:colors[0], ease:Sine.easeOut})
   navButtons.forEach(navButton => TweenMax.to(navButton.querySelector('a'), 1, {color: colors[1], ease: Sine.easeOut}) )
@@ -68,6 +76,8 @@ function comp2() {
     })
   }
 
+  let counterNum = 0;
+
   function animateEl(animContainerL, animContainerR) {
 
     let fillL = animContainerL.querySelectorAll('.fill > g > path ')
@@ -75,22 +85,24 @@ function comp2() {
 
     let tl = new TimelineLite({onComplete:animateEl, onCompleteParams:[animContainerL, animContainerR]}),
 
-        scale = random(.1, .7) * scaleModifier,
-        elementScaledSize = animContainerL.offsetWidth * scale,
-
-        startY = adjustedWindowHeight / 2 - elementScaledSize/2,
+        startY = adjustedWindowHeight / 2 - window.innerHeight/7,
         startX = window.innerWidth / 2 - animContainerL.offsetWidth / 2,
-
-        endY = random(-200 + elementScaledSize, adjustedWindowHeight - elementScaledSize),
-        // endX = 500,
+        endY = random(-200 + window.innerHeight/7, adjustedWindowHeight - window.innerHeight/7),
         endX = adjustedWindowWidth / 2 -100,
-        // endX = random(adjustedWindowWidth / 2, adjustedWindowWidth / 2),
-        // endX = random(0, window.innerWidth / 2 ),
-
         rotation = random(0, 360),
         delay = 0,
-        // delay = random(0, 1.5),
-        randomColor1 = colors[Math.floor(random(0,colors.length))]
+
+        // randomColor1 = colors[Math.floor(random(1 ,colors.length))]
+
+
+        scalePure = (.7) * Math.abs((.7) * (endY / window.innerHeight) * 2 + .15),
+        scale = (.7 * scaleModifier) * Math.abs((.7 * scaleModifier) * (endY / window.innerHeight) * 2 + .15),
+        // randomColor1 = `hsl( ${scale * 720}, 23%, 70%)`
+        // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, 70%)`
+        // randomColor1 = `hsl( ${scale * 720}, ${scale * 100}%, ${scale * 100}%)`
+        // randomColor1 = `hsl( 200, ${scalePure * 200}%, ${scalePure * 100}%)`
+        randomColor1 = `hsl( ${counterNum}, 100%, ${scalePure * 100}%)`
+        // console.log(counterNum);
 
     tl.fromTo([animContainerL, animContainerR], 1, {
       y: startY,
@@ -112,14 +124,14 @@ function comp2() {
           return (animContainer === animContainerR) ? -value : value;
         },
         rotation: function(value, animContainer) {
+          counterNum+=.015
           return (animContainer === animContainerR) ? -value : value;
         }
       }
     }, 'start')
     .set([animContainerL.querySelectorAll('path'), animContainerR.querySelectorAll('path')], {attr:{ stroke:randomColor1}}, 'start')
     .set([ fillL, fillR ], {attr:{ fill:randomColor1}}, 'start')
-    .to([animContainerL, animContainerR], .25, {scale:0, ease:Sine.easeIn, delay: 3,});
-
+    .to([animContainerL, animContainerR], .25, {scale:0, ease:Sine.easeIn, delay: 5,});
   }
 
 }
