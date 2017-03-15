@@ -136,19 +136,3 @@ function comp3() {
   }
 
 }
-
-// let currentAnims;
-//
-// setTimeout(function(){
-//   // console.log("test");
-//   currentAnims = document.querySelectorAll('.compContainer > div');
-//   killAnims()
-// }, 500 );
-//
-//
-// function killAnims() {
-//   currentAnims.forEach(currentAnim => {
-//     currentAnim.remove()
-//   })
-//   TweenMax.killAll();
-// }

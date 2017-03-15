@@ -69,6 +69,7 @@ nav a {
   pointer-events: all;
   top: -200px;
   left: -200px;
+  transform: scale(0);
   /*border: 1px solid rgba(255,255,255,.1)*/
 }
 

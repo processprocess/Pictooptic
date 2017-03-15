@@ -1,6 +1,6 @@
 console.clear()
 
-  let currentComp = 'comp3';
+  let currentComp = 'hazard';
   let scaleModifier = 1;
   let adjustedWindowHeight = window.innerHeight - 200;
   let adjustedWindowWidth = window.innerWidth - 200;
@@ -36,7 +36,6 @@ console.clear()
     function handleNextComp() {
       eval(nextComp)()
     }
-
   }
 
   window.addEventListener('resize', function(e) {
@@ -46,6 +45,12 @@ console.clear()
     resetComp();
   })
 
+  function resetComp() {
+    let currentAnims = document.querySelectorAll('.compContainer > div');
+    currentAnims.forEach(currentAnim => { currentAnim.remove() })
+    eval(currentComp)()
+  }
+
   function setScaleModifier(windowWidth) {
     if (windowWidth > 1200) {
       scaleModifier = 1;
@@ -54,12 +59,6 @@ console.clear()
     } else if( windowWidth <= 600 ) {
       scaleModifier = .6;
     }
-  }
-
-  function resetComp() {
-    let currentAnims = document.querySelectorAll('.compContainer > div');
-    currentAnims.forEach(currentAnim => { currentAnim.remove() })
-    eval(currentComp)()
   }
 
   function random(min, max) {
