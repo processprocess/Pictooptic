@@ -1,18 +1,19 @@
 * {
-  transition: background-color .5s, color;
+  /*transition: background-color 1s, color;*/
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: #b04632;
+  background-color: #A7A7A7;
+  color: #EEF0EF;
 }
 
-.colorHolder {
+/*.colorHolder {
   width: 50px;
   height: 50px;
-  /*position: absolute;*/
-  /*background-color: red;*/
   background-color: red;
-}
+}*/
 
 .animContainerL,
 .animContainerR {
@@ -30,7 +31,7 @@ body {
 }
 
 .maskImage {
-  background-color: orange;
+  background-color: #3A3B45;
   width: 200px;
   height: 200px;
 }
@@ -48,17 +49,132 @@ body {
   position: absolute;
 }
 
-img {
-  /*filter: invert(100%);*/
-  /*filter: blur(10px) invert(100%) opacity(0.8);*/
-  /*filter: grayscale(0);*/
-  /*filter: sepia(0);*/
-  /*filter: saturate(1);*/
-  /*filter: hue-rotate(0deg);*/
-  /*filter: invert(0);*/
-  /*filter: opacity(1);*/
-  /*filter: brightness(1);*/
-  /*filter: contrast(1);*/
-  /*filter: blur(0px);*/
-  /*filter: drop-shadow(5px 5px 10px #ccc);*/
+.btn {
+  box-shadow: none;
+  transition: all .15s ease-in-out;
+  background: #e8e8e8;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 33px;
+  margin: 15px;
+  position: absolute;
+  width: 33px;
+  z-index: 51;
+}
+
+button:focus {
+  outline:0;
+}
+
+button:hover {
+    background-color: #C7C7C7;
+}
+
+button, input {
+    line-height: normal;
+}
+
+button {
+    overflow: visible;
+    border: none;
+    padding: 0;
+}
+
+
+body, button, html, input, label, select, textarea {
+    color: #666;
+}
+
+button, html input[type=button], input[type=reset], input[type=submit] {
+    -webkit-appearance: button;
+}
+
+body, button, html, input, label, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+a, button, input, select, textarea {
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+/*button, input, optgroup, select, textarea {
+    font: inherit;
+}
+
+*, :after, :before {
+    box-sizing: inherit;
+}
+
+input[type="button" i], input[type="submit" i], input[type="reset" i], input[type="file" i]::-webkit-file-upload-button, button {
+    align-items: flex-start;
+    text-align: center;
+}
+
+input, textarea, keygen, select, button {
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+}
+
+input, textarea, keygen, select, button, meter, progress {
+    -webkit-writing-mode: horizontal-tb;
+}*/
+
+
+
+/* --------- overlay styles --------- */
+
+span {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.overlay {
+  transition: all .5s ease-in-out;
+  position: fixed;
+  top: 0; bottom: 0;
+  right: 0; left: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: white;
+  z-index: 100;
+}
+
+.fadeIn {
+  opacity: .8;
+  display:block;
+  pointer-events: all;
+}
+
+.overlay input {
+    padding: 20px;
+    font-size: 100px;
+    border: 0;
+    margin: 40px;
+    font-weight: bold;
+}
+
+.overlay input:focus { outline: none; }
+
+.overlay #close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-weight: bold;
+}
+
+.overlay #info {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    font-weight: normal;
+    color: #ccc;
 }

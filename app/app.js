@@ -12,13 +12,12 @@ const nounProject = new NounProject({
 app.get('/api/colors:param', (request, response) => {
 
   let param = request.params.param;
-  let url = `http://www.colourlovers.com/api/palettes?keywords=${param}&numResults=1&format=json`;
+  // let colorUrl = `http://www.colourlovers.com/api/palettes?keywords=${param}&numResults=1&format=json`;
 
   let iconData;
   let returnItem = {};
-  // returnItem.testVar = 'test';
 
-  // superRequest.get(url)
+  // superRequest.get(colorUrl)
   //             .then((colorResponse) => {
   //               return colorResponse.body[0] ;
   //             })
