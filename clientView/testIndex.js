@@ -17,9 +17,8 @@ function generate(value) {
   const text = value;
 
   // e.preventDefault();
-  // const text = (this.querySelector('[name=item]')).value;
 
-  request.get(`/api/colors${text}`)
+  request.get(`/api${text}`)
         //  .then((colorData) => {
         //    console.log(colorData.body.colors);
         //    let colors = colorData.body.colors;
@@ -32,41 +31,35 @@ function generate(value) {
         //    document.body.style.backgroundColor = `#${colorData.body.colors[0]}`;
         //  })
          .then((data) => {
+
           //  let colorData = data.body.returnItem.colorData
           //  console.log(colorData);
+
+           console.log(data.body.returnItem);
+          //  console.log(data.body.returnItem);
+          //  console.log(data.body.returnItem.dictData.results);
+
            let iconData = data.body.returnItem.iconData
-
            iconData.forEach(icon => {
-
              let imageURL = icon.preview_url;
              console.log(icon)
-
              let animContainerL = document.createElement('div');
              let animContainerR = document.createElement('div');
-
              animContainerL.classList.add('animContainerL');
              animContainerR.classList.add('animContainerR');
-
-            //  animContainerL.innerHTML = `<div class="maskImage"> </div>`;
-            //  animContainerR.innerHTML = `<div class="maskImage"> </div>`;
              animContainerL.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
              animContainerR.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
             //  animContainerL.innerHTML = `<img src=${imageURL}>`;
             //  animContainerR.innerHTML = `<img src=${imageURL}>`;
-
              compContainer.appendChild(animContainerL);
              compContainer.appendChild(animContainerR);
-
              animContainerL.addEventListener('mouseover',function(e) { changeLocation(animContainerL, animContainerR); })
              animContainerR.addEventListener('mouseover',function(e) { changeLocation(animContainerL, animContainerR); })
-
              TweenMax.set([animContainerL, animContainerR], { x:window.innerWidth/2, y:window.innerHeight });
-
              animateEl(animContainerL, animContainerR)
-
            })
-         })
 
+         })
 }
 
 
