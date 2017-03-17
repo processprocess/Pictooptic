@@ -1,10 +1,29 @@
 console.clear()
-import request from "superagent";
+import request from 'superagent';
 import "gsap";
-import ModifiersPlugin from "../node_modules/gsap/ModifiersPlugin.js";
+import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
 // import "jquery";
 // import $ from "jquery";
 // import "jqueryimgmask";
+import random from './random.js';
+
+import testString from './testModule.js';
+import { apiKey as key, sayHi, old, dog } from './testModule.js';
+// console.log(testString, key, old, dog);
+// sayHi('phil');
+
+import User, { createURL, avatar } from './objectModule.js';
+const phil = new User('philip', 'phil@gmail.com', 'phil.com');
+const profile = createURL(phil.name);
+const image = avatar(phil.email);
+console.log(phil);
+console.log(profile);
+console.log(image);
+
+
+
+
+
 
 const generateButton = document.querySelector('.generate-button');
 const compContainer = document.querySelector('.compContainer');
@@ -33,7 +52,7 @@ function generate(value) {
         //    document.body.style.backgroundColor = `#${colorData.body.colors[0]}`;
         //  })
          .then((data) => {
-
+           console.log(data);
           //  let colorData = data.body.returnItem.colorData
           //  console.log(colorData);
 
@@ -143,11 +162,6 @@ function animateEl(animContainerL, animContainerR) {
     }
   }, 'start')
 
-}
-
-
-function random(min, max) {
-  return Math.random() * (max - min) + min;
 }
 
 /////////// search window ///////////
