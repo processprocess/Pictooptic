@@ -6,7 +6,7 @@
 
 body {
   background-color: #A7A7A7;
-  color: #EEF0EF;
+  /*color: #EEF0EF;*/
 }
 
 /*.colorHolder {
@@ -49,17 +49,28 @@ body {
   position: absolute;
 }
 
-.btn {
+.navContainer {
+  margin:15px;
+  position: absolute;
+  z-index: 51;
+  /*border: 1px solid grey;*/
+}
+
+.btn,
+.info {
   box-shadow: none;
   transition: all .15s ease-in-out;
   background: #e8e8e8;
   border-radius: 50%;
   cursor: pointer;
   height: 33px;
-  margin: 15px;
-  position: absolute;
+  position: relative;
   width: 33px;
-  z-index: 51;
+}
+
+.info {
+  border-radius: 0%;
+  margin-left:10px;
 }
 
 button:focus {
@@ -137,7 +148,7 @@ span {
     cursor: pointer;
 }
 
-.overlay {
+.searchOverlay {
   transition: all .5s ease-in-out;
   position: fixed;
   top: 0; bottom: 0;
@@ -148,13 +159,7 @@ span {
   z-index: 100;
 }
 
-.fadeIn {
-  opacity: .8;
-  display:block;
-  pointer-events: all;
-}
-
-.overlay input {
+.searchOverlay input {
     padding: 20px;
     font-size: 100px;
     border: 0;
@@ -162,19 +167,54 @@ span {
     font-weight: bold;
 }
 
-.overlay input:focus { outline: none; }
+.searchOverlay input:focus { outline: none; }
 
-.overlay #close {
+.searchOverlay #close {
     position: absolute;
     top: 15px;
     right: 15px;
     font-weight: bold;
 }
 
-.overlay #info {
+.searchOverlay #info {
     position: absolute;
     top: 25px;
     left: 25px;
     font-weight: normal;
     color: #ccc;
 }
+
+.infoOverlay {
+  transition: all .5s ease-in-out;
+  position: fixed;
+  top: 0; bottom: 0;
+  right: 50%; left: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: #3A3B45;
+  z-index: 150;
+}
+
+.infoOverlay #close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-weight: bold;
+  color: #a7a7a7;
+}
+
+.infoOverlay h1 {
+    padding: 20px;
+    font-size: 100px;
+    border: 0;
+    margin: 40px;
+    font-weight: bold;
+    color: #a7a7a7;
+}
+
+.fadeIn {
+  opacity: .9;
+  display:block;
+  pointer-events: all;
+}
+
