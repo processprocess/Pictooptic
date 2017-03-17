@@ -34,26 +34,27 @@ app.get('/api:param', (request, response) => {
   //               })
   //             })
 
-  dict.find(param, function (err, data) {
-    if(err) return console.log(err);
-    returnItem.dictData = data;
-    nounProject.getIconsByTerm(param, function (err, data) {
-      if(err) return console.log(err);
-        returnItem.iconData = data.icons;
-        response.status(200).send({ returnItem });
-    });
-  });
-
   // dict.find(param, function (err, data) {
   //   if(err) return console.log(err);
   //   returnItem.dictData = data;
   //   response.status(200).send({returnItem});
   // });
   //
-  // nounProject.getIconsByTerm(param, function (err, data) {
+  nounProject.getIconsByTerm(param, function (err, data) {
+    if(err) return console.log(err);
+      returnItem.iconData = data.icons;
+      response.status(200).send({returnItem});
+  });
+
+
+  // dict.find(param, function (err, data) {
   //   if(err) return console.log(err);
-  //     returnItem.iconData = data.icons;
-  //     response.status(200).send({returnItem});
+  //   returnItem.dictData = data;
+  //   nounProject.getIconsByTerm(param, function (err, data) {
+  //     if(err) return console.log(err);
+  //       returnItem.iconData = data.icons;
+  //       response.status(200).send({ returnItem });
+  //   });
   // });
 
 });

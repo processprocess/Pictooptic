@@ -2,10 +2,13 @@ console.clear()
 import request from 'superagent';
 import "gsap";
 import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
+import random from './random.js';
+import changeLocation from './changeLocation.js';
 // import "jquery";
 // import $ from "jquery";
 // import "jqueryimgmask";
-import random from './random.js';
+
+
 
 import testString from './testModule.js';
 import { apiKey as key, sayHi, old, dog } from './testModule.js';
@@ -24,14 +27,11 @@ console.log(image);
 
 
 
-
-const generateButton = document.querySelector('.generate-button');
 const compContainer = document.querySelector('.compContainer');
-generateButton.addEventListener('submit', generate);
 
-// generate()
+// newRequest()
 
-function generate(value) {
+function newRequest(value) {
   // const text = 'lab'
   const text = value;
 
@@ -59,8 +59,8 @@ function generate(value) {
           //  console.log(data.body.returnItem);
           //  console.log(data.body.returnItem);
           //  console.log(data.body.returnItem.dictData.results);
-           definitionData = data.body.returnItem.dictData.results;
-           handleDicta(definitionData)
+          //  definitionData = data.body.returnItem.dictData.results;
+          //  handleDicta(definitionData)
 
            let iconData = data.body.returnItem.iconData
 
@@ -94,31 +94,6 @@ function handleDicta(definitionData) {
   // dictObject.lexicalCategory = definitionData.lexicalEntries[0]lexicalCategory;
   // dictObject.phoneticSpelling = definitionData.lexicalEntries[0]phoneticSpelling;
   // dictObject.entry = definitionData.lexicalEntries[0]phoneticSpelling;
-
-}
-
-
-function changeLocation(animContainerL, animContainerR) {
-  // let endY = random(window.innerHeight/8.5, window.innerHeight/1.15);
-  // let endX = random(window.innerWidth/9, window.innerWidth/2);
-  let endY = random(window.innerHeight / 4, window.innerHeight / 1.4);
-  let endX = random(window.innerWidth / 2, window.innerWidth / 4);
-  let rotation = random(0, 360);
-
-  TweenMax.to([animContainerL, animContainerR], 1, {
-    y: endY,
-    x: endX,
-    rotation: rotation,
-    modifiers: {
-      x: function(value, animContainer) {
-        return (animContainer === animContainerR) ? window.innerWidth - animContainerL._gsTransform.x : value;
-      },
-      rotation: function(value, animContainer) {
-        return (animContainer === animContainerR) ? animContainerL._gsTransform.rotation * -1 : value;
-      }
-    },
-    ease:Sine.easeInOut
-  })
 
 }
 
@@ -182,7 +157,6 @@ function handleKeydown(e) {
     handleChange(overlayInput.value)
     closeOverlay();
   } else if (e.keyCode) {
-    console.log(overlayInput.value);
     if (searchOverlay.classList.contains('fadeIn')) return ;
     overlayInput.value = '';
     toggleOverlay()
@@ -203,7 +177,7 @@ function handleChange(changeValue) {
     TweenMax.killAll();
   }
   setTimeout( function() {
-    generate(overlayInput.value)
+    newRequest(overlayInput.value)
   }, 1000 );
 
 }
