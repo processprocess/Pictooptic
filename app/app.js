@@ -1,62 +1,35 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const superRequest = require('superagent');
-
+// const superRequest = require('superagent');
 const NounProject = require('the-noun-project');
 const nounProject = new NounProject({key: process.env.NOUN_KEY, secret: process.env.NOUN_SECRET});
-
 const Dictionary = require("oxford-dictionary-api");
-var dict = new Dictionary(process.env.OXDIC_ID, process.env.OXDIC_KEY);
-
+const dictionary = new Dictionary(process.env.OXDIC_ID, process.env.OXDIC_KEY);
 
 app.get('/api:param', (request, response) => {
 
-  let param = request.params.param;
-  // let colorUrl = `http://www.colourlovers.com/api/palettes?keywords=${param}&numResults=1&format=json`;
+  const param = request.params.param;
+  const returnItem = {};
 
-  let iconData;
-  let returnItem = {};
+  const getDictionaryData = new Promise((resolve, reject) => {
+    dictionary.find(param, function (err, data) {
+      if(err) return console.log(err);
+      returnItem.dictData = data;
+      resolve();
+    });
+  })
 
-  // superRequest.get(colorUrl)
-  //             .then((colorResponse) => {
-  //               return colorResponse.body[0] ;
-  //             })
-  //             .then((colorData) => {
-  //               returnItem.colorData = colorData;
-  //             })
-  //             .then(test => {
-  //               nounProject.getIconsByTerm(param, function (err, data) {
-  //                 if (!err) {
-  //                   returnItem.iconData = data.icons
-  //                   response.status(200).send({returnItem});
-  //                 }
-  //               })
-  //             })
-
-  // dict.find(param, function (err, data) {
-  //   if(err) return console.log(err);
-  //   returnItem.dictData = data;
-  //   response.status(200).send({returnItem});
-  // });
-  //
-  nounProject.getIconsByTerm(param, function (err, data) {
-    if(err) return console.log(err);
+  const getNounData  = new Promise((resolve, reject) => {
+    nounProject.getIconsByTerm(param, function (err, data) {
+      if(err) return console.log(err);
       returnItem.iconData = data.icons;
-      response.status(200).send({returnItem});
-  });
+      resolve();
+    });
+  })
 
-
-  // dict.find(param, function (err, data) {
-  //   if(err) return console.log(err);
-  //   returnItem.dictData = data;
-  //   nounProject.getIconsByTerm(param, function (err, data) {
-  //     if(err) return console.log(err);
-  //       returnItem.iconData = data.icons;
-  //       response.status(200).send({ returnItem });
-  //   });
-  // });
-
+  Promise.all([ getDictionaryData, getNounData ])
+         .then(() => { response.status(200).send({ returnItem }); })
 });
 
 module.exports = app;
