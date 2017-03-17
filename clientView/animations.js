@@ -66,6 +66,6 @@ export function changeLocation(animContainerL, animContainerR) {
 
 }
 
-// export function animateOut(animContainerL, animContainerR) {
-//
-// }
+export function animateOut(currentAnims, resolve) {
+  TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
+}

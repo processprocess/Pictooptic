@@ -1,15 +1,11 @@
 console.clear()
 import request from 'superagent';
-import "gsap";
-import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
+import { animateIn, changeLocation, animateOut } from './animations.js';
 import random from './random.js';
-import { animateIn, changeLocation } from './animations.js';
 
 // import "jquery";
 // import $ from "jquery";
 // import "jqueryimgmask";
-
-
 
 // import testString from './testModule.js';
 // import { apiKey as key, sayHi, old, dog } from './testModule.js';
@@ -36,7 +32,7 @@ function newRequest(value) {
 
   request.get(`/api${text}`)
          .then((data) => {
-           
+
            console.log(data.body.returnItem);
           //  console.log(data.body.returnItem.dictData.results);
 
@@ -79,48 +75,6 @@ function handleDicta(definitionData) {
 
 }
 
-
-// function animateIn(animContainerL, animContainerR) {
-//
-//   let animateIn = new TimelineLite();
-//   // let startY = random(window.innerHeight/8.5, window.innerHeight/1.15);
-//   // let startX = random(window.innerWidth/9, window.innerWidth/2);
-//   let startY = random(window.innerHeight / 4, window.innerHeight / 1.4);
-//   let startX = random(window.innerWidth / 2, window.innerWidth / 4);
-//   let endY = random(0, window.innerHeight);
-//   let endX = window.innerWidth / 2;
-//   let rotation = random(0, 30);
-//   let delay = 0;
-//   let scalePure = (endY / window.innerHeight);
-//   let scale = random(0.1, .45);
-//   // let scale = random(0.1, 0.5) * scaleModifier;
-//
-//   animateIn.fromTo([animContainerL, animContainerR], 1, {
-//     y: startY,
-//     x: startX,
-//     rotation: 0,
-//     scale: 0,
-//   }, {
-//     y: startY,
-//     x: startX,
-//     rotation: rotation,
-//     scale: scale,
-//     ease:Sine.easeInOut,
-//     modifiers: {
-//       x: function(value, animContainer) {
-//         return (animContainer === animContainerR) ? window.innerWidth - value : value;
-//       },
-//       scaleX: function(value, animContainer) {
-//         return (animContainer === animContainerR) ? -value : value;
-//       },
-//       rotation: function(value, animContainer) {
-//         return (animContainer === animContainerR) ? -value : value;
-//       }
-//     }
-//   }, 'start')
-//
-// }
-
 /////////// search window ///////////
 
 // console.log(closeSearch);
@@ -150,96 +104,24 @@ newRequest('test')
 
 function handleChange(changeValue) {
 
-  // animate all elements out, then
-  // remove all elements from page, then
-  // send new request
-
-  // let currentAnimsRaw = document.querySelectorAll('.compContainer > div');
-
-  // let currentAnims = Array.from(document.querySelectorAll('.compContainer > div'))
-
-
-  // function animateOut (item, resolve) {
-  //   TweenMax.to(item, 1, {
-  //     scale:0,
-  //     ease:Sine.easeInOut,
-  //     onComplete:resolve,
-  //   })
-  // }
-  // let animateOuts = currentAnims.map((item) => {
-  //     return new Promise((resolve) => {
-  //       animateOut(item, resolve);
-  //     });
-  // })
-  // Promise.all(animateOuts).then(() => console.log('done'));
-
-
-
-
-  // function asyncFunction (item, resolve) {
-  //   setTimeout(() => {
-  //     console.log('done with', item);
-  //     resolve();
-  //   }, 1000);
-  // }
-  //
-  // let requests = [1,2,3,4,5].map((item) => {
-  //     return new Promise((resolve) => {
-  //       asyncFunction(item, resolve);
-  //     });
-  // })
-  //
-  // Promise.all(animateOuts)
-  //        .then(() => console.log('done'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // function asyncFunction (item, resolve) {
-  //   setTimeout(() => {
-  //     console.log('done with', item);
-  //     resolve();
-  //   }, 1000);
-  // }
-  //
-  // let requests = [1,2,3,4,5].map((item) => {
-  //     return new Promise((resolve) => {
-  //       asyncFunction(item, resolve);
-  //     });
-  // })
-  //
-  // Promise.all(requests).then(() => console.log('done'));
-
-
-
-
   let currentAnims = document.querySelectorAll('.compContainer > div');
 
-  TweenMax.to(currentAnims, 1, {scale:0, ease:Sine.easeInOut, onComplete:handleRemove, onCompleteParams:[changeValue]})
+  // function animateOut(currentAnims, resolve) {
+  //   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
+  // }
 
-  function handleRemove(changeValue) {
-    currentAnims = document.querySelectorAll('.compContainer > div');
-    currentAnims.forEach(currentAnim => {
-      currentAnim.remove();
-    })
-    TweenMax.killAll();
-  }
-  setTimeout( function() {
-    newRequest(overlayInput.value)
-  }, 1000 );
+  new Promise((resolve, reject) => { animateOut(currentAnims, resolve); })
+       .then(() => { new Promise((resolve, reject) => {
+         currentAnims.forEach(currentAnim => {
+           currentAnim.remove();
+         })
+         TweenMax.killAll();
+         resolve();
+         })
+         .then(() => newRequest(changeValue));
+  })
 
 }
-
 
 function toggleOverlay() {
   if (!searchOverlay.classList.contains('fadeIn')) overlayInput.value = ''; ;
