@@ -56,8 +56,8 @@ body {
   /*border: 1px solid grey;*/
 }
 
-.btn,
-.info {
+.searchButton,
+.infoButton {
   box-shadow: none;
   transition: all .15s ease-in-out;
   background: #e8e8e8;
@@ -68,7 +68,7 @@ body {
   width: 33px;
 }
 
-.info {
+.infoButton {
   border-radius: 0%;
   margin-left:10px;
 }

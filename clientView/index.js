@@ -6,48 +6,59 @@ import { animateIn, changeLocation, animateOut } from './animations.js';
 
 let currentAnimSet = [];
 
-function newRequest(param) {
+// newRequest('fresh')
 
-  let definitionData;
+function newRequest(param) {
 
   request.get(`/api${param}`)
          .then((data) => {
 
-           console.log(data.body.returnItem);
           //  console.log(data.body.returnItem.dictData.results);
+          //  console.log(data.body.returnItem.dictData.results);
+           //
+          //  dictData = data.body.returnItem.dictData.results;
+           cleanDictData(data.body.returnItem.dictData.results[0])
+          //  document.write(JSON.stringify(data.body.returnItem.dictData.results[0]))
+          //  cleanIconData(data.body.returnItem.dictData.results[0])
 
-          //  definitionData = data.body.returnItem.dictData.results;
-          //  handleDicta(definitionData)
-
-           let iconData = data.body.returnItem.iconData
-
-           new Promise((resolve, reject) => { generateAnimElements(iconData, resolve); })
-               .then(allAnimSets => {
-
-                 let animSetLength = allAnimSets.length;
-                 let elementsAnimatedIn = 0;
-
-                 let myInterval = setInterval(function(){
-                   let currentAnimSet = allAnimSets[elementsAnimatedIn];
-                   animateIn(currentAnimSet[0], currentAnimSet[1])
-                   elementsAnimatedIn ++
-                   if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-                 }, 50);
-                 return allAnimSets;
-
-               }).then((allAnimSets) => { currentAnimSet = allAnimSets })
+           //
+          //  let iconData = data.body.returnItem.iconData
+           //
+          //  new Promise((resolve, reject) => { generateAnimElements(iconData, resolve); })
+          //      .then(allAnimSets => {
+           //
+          //        let animSetLength = allAnimSets.length;
+          //        let elementsAnimatedIn = 0;
+           //
+          //        let myInterval = setInterval(function(){
+          //          let currentAnimSet = allAnimSets[elementsAnimatedIn];
+          //          animateIn(currentAnimSet[0], currentAnimSet[1])
+          //          elementsAnimatedIn ++
+          //          if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
+          //        }, 50);
+          //        return allAnimSets;
+           //
+          //      }).then((allAnimSets) => { currentAnimSet = allAnimSets })
 
          })
 }
 
-function handleDicta(definitionData) {
-  let dictObject = {}
-  // console.log(definitionData);
-  // dictObject.word = definitionData.word;
-  // dictObject.language = definitionData.lexicalEntries[0]language;
-  // dictObject.lexicalCategory = definitionData.lexicalEntries[0]lexicalCategory;
-  // dictObject.phoneticSpelling = definitionData.lexicalEntries[0]phoneticSpelling;
-  // dictObject.entry = definitionData.lexicalEntries[0]phoneticSpelling;
+/////////// key presses ///////////
+
+function cleanDictData(dictData) {
+  let dictObject = {
+    word: dictData.word,
+    phoneticSpelling: dictData.lexicalEntries[0].pronunciations[0].phoneticSpelling,
+    category: dictData.lexicalEntries[0].lexicalCategory,
+    etymologies: dictData.lexicalEntries[0].entries[0].etymologies[0],
+    definition: dictData.lexicalEntries[0].entries[0].senses[0].definitions[0],
+    subDefinitionOne: dictData.lexicalEntries[0].entries[0].senses[0].subsenses ? dictData.lexicalEntries[0].entries[0].senses[0].subsenses[0].definitions[0] : undefined,
+    subDefinitionTwo: dictData.lexicalEntries[0].entries[0].senses[0].subsenses[1] ? dictData.lexicalEntries[0].entries[0].senses[0].subsenses[0].definitions[1] : undefined,
+    exampleOne: dictData.lexicalEntries[0].entries[0].senses[0].examples ? dictData.lexicalEntries[0].entries[0].senses[0].examples[0].text : undefined,
+    exampleTwo: dictData.lexicalEntries[0].entries[0].senses[0].examples[1] ? dictData.lexicalEntries[0].entries[0].senses[0].examples[1].text : undefined,
+  }
+  // document.write(JSON.stringify(dictObject));
+  console.log(dictObject);
 }
 
 /////////// key presses ///////////
@@ -55,18 +66,74 @@ function handleDicta(definitionData) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  if (e.keyCode === 27) {
+  console.log(e.keyCode);
+  if (e.keyCode === 27) { // escape key
     closeOverlay();
-  } else if (e.keyCode === 13) {
+  } else if (e.keyCode === 13) { // enter
     handleChange(overlayInput.value)
     closeOverlay();
-  } else if (e.keyCode) {
-    if (searchOverlay.classList.contains('fadeIn')) return ;
-    overlayInput.value = '';
-    toggleOverlay()
-    overlayInput.focus()
+  } else if (e.keyCode === 8) { // delete
+    if (overlayInput.value.length === 0) closeOverlay();
+  } else if (e.keyCode) { // any other key
+    handleSearchWindow()
   }
 }
+
+/////////// search window ///////////
+
+function handleSearchWindow() {
+  overlayInput.focus()
+  if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
+  if (searchOverlay.classList.contains('fadeIn')) return;
+  overlayInput.value = '';
+  toggleOverlay()
+}
+
+
+const searchButton = document.querySelector('.searchButton');
+const searchOverlay = document.querySelector('.searchOverlay');
+const overlayInput = document.querySelector('.searchOverlay input');
+const closeButtons = document.querySelectorAll('.close');
+closeButtons.forEach(closeButton => closeButton.addEventListener('click', () => closeOverlay() ))
+
+
+searchButton.addEventListener('click', function(e) { toggleOverlay() })
+// infoButton.addEventListener('click', function(e) { toggleInfoOverlay() })
+
+
+
+function toggleOverlay() {
+  // if (!searchOverlay.classList.contains('fadeIn')) overlayInput.value = ''; ;
+  searchOverlay.classList.toggle('fadeIn')
+  // overlayInput.focus()
+}
+
+function closeOverlay() {
+  if(searchOverlay.classList.contains('fadeIn') || infoOverlay.classList.contains('fadeIn')) {
+    searchOverlay.classList.remove('fadeIn')
+    infoOverlay.classList.remove('fadeIn')
+  }
+}
+
+
+/////////// info window ///////////
+
+const infoOverlay = document.querySelector('.infoOverlay');
+const infoButton = document.querySelector('.infoButton');
+
+infoButton.addEventListener('click', function(e) { toggleInfoOverlay() })
+
+function toggleInfoOverlay() {
+  infoOverlay.classList.toggle('fadeIn');
+}
+
+// infoOverlay.classList.add('fadeIn'); // for debuging
+
+
+
+
+
+
 
 
 /////////// handle change ///////////
@@ -77,44 +144,4 @@ function handleChange(param) {
        .then(() => { new Promise((resolve, reject) => { removeDomNodes(nodesArray, resolve); })
        .then(() => newRequest(param));
        })
-}
-
-/////////// search window ///////////
-
-const btn = document.querySelector('.btn');
-const searchOverlay = document.querySelector('.searchOverlay');
-const closeSearch = document.querySelector('#closeSearch');
-const overlayInput = document.querySelector('.searchOverlay input');
-btn.addEventListener('click', function(e) { toggleOverlay() })
-closeSearch.addEventListener('click', function(e) { closeOverlay() })
-
-function toggleOverlay() {
-  if (!searchOverlay.classList.contains('fadeIn')) overlayInput.value = ''; ;
-  searchOverlay.classList.toggle('fadeIn')
-  overlayInput.focus()
-}
-
-function closeOverlay() {
-  if(searchOverlay.classList.contains('fadeIn')) {
-    searchOverlay.classList.remove('fadeIn')
-  }
-}
-
-
-/////////// info window ///////////
-
-const infoOverlay = document.querySelector('.infoOverlay');
-const info = document.querySelector('.info');
-const closeInfoOverlay = document.querySelector('.closeInfoOverlay');
-info.addEventListener('click', function(e) { toggleInfoOverlay() })
-closeInfoOverlay.addEventListener('click', function(e) { fadeoutInfoOverlay() })
-
-function toggleInfoOverlay() {
-  infoOverlay.classList.toggle('fadeIn');
-}
-
-function fadeoutInfoOverlay() {
-  if( infoOverlay.classList.contains('fadeIn') ) {
-    infoOverlay.classList.remove('fadeIn')
-  }
 }
