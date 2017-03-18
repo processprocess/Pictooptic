@@ -12,13 +12,13 @@ app.get('/api:param', (request, response) => {
   const param = request.params.param;
   const returnItem = {};
 
-  const getDictionaryData = new Promise((resolve, reject) => {
-    dictionary.find(param, function (err, data) {
-      if(err) return console.log(err);
-      returnItem.dictData = data;
-      resolve();
-    });
-  })
+  // const getDictionaryData = new Promise((resolve, reject) => {
+  //   dictionary.find(param, function (err, data) {
+  //     if(err) return console.log(err);
+  //     returnItem.dictData = data;
+  //     resolve();
+  //   });
+  // })
 
   const getNounData  = new Promise((resolve, reject) => {
     nounProject.getIconsByTerm(param, function (err, data) {
@@ -28,7 +28,9 @@ app.get('/api:param', (request, response) => {
     });
   })
 
-  Promise.all([ getDictionaryData, getNounData ])
+  Promise.all([
+    // getDictionaryData,
+    getNounData ])
          .then(() => { response.status(200).send({ returnItem }); })
 });
 

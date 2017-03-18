@@ -1,20 +1,20 @@
 import "gsap";
 import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
-import random from './random.js';
+import getRandomVal from './getRandomVal.js';
 
 export function animateIn(animContainerL, animContainerR) {
   let animateIn = new TimelineLite();
-  // let startY = random(window.innerHeight/8.5, window.innerHeight/1.15);
-  // let startX = random(window.innerWidth/9, window.innerWidth/2);
-  let startY = random(window.innerHeight / 4, window.innerHeight / 1.4);
-  let startX = random(window.innerWidth / 2, window.innerWidth / 4);
-  let endY = random(0, window.innerHeight);
+  // let startY = getRandomVal(window.innerHeight/8.5, window.innerHeight/1.15);
+  // let startX = getRandomVal(window.innerWidth/9, window.innerWidth/2);
+  let startY = getRandomVal(window.innerHeight / 4, window.innerHeight / 1.4);
+  let startX = getRandomVal(window.innerWidth / 2, window.innerWidth / 4);
+  let endY = getRandomVal(0, window.innerHeight);
   let endX = window.innerWidth / 2;
-  let rotation = random(0, 30);
+  let rotation = getRandomVal(0, 30);
   let delay = 0;
   let scalePure = (endY / window.innerHeight);
-  let scale = random(0.1, .45);
-  // let scale = random(0.1, 0.5) * scaleModifier;
+  let scale = getRandomVal(0.1, .45);
+  // let scale = getRandomVal(0.1, 0.5) * scaleModifier;
 
   animateIn.fromTo([animContainerL, animContainerR], 1, {
     y: startY,
@@ -43,11 +43,11 @@ export function animateIn(animContainerL, animContainerR) {
 }
 
 export function changeLocation(animContainerL, animContainerR) {
-  // let endY = random(window.innerHeight/8.5, window.innerHeight/1.15);
-  // let endX = random(window.innerWidth/9, window.innerWidth/2);
-  let endY = random(window.innerHeight / 4, window.innerHeight / 1.4);
-  let endX = random(window.innerWidth / 2, window.innerWidth / 4);
-  let rotation = random(0, 360);
+  // let endY = getRandomVal(window.innerHeight/8.5, window.innerHeight/1.15);
+  // let endX = getRandomVal(window.innerWidth/9, window.innerWidth/2);
+  let endY = getRandomVal(window.innerHeight / 4, window.innerHeight / 1.4);
+  let endX = getRandomVal(window.innerWidth / 2, window.innerWidth / 4);
+  let rotation = getRandomVal(0, 360);
 
   TweenMax.to([animContainerL, animContainerR], 1, {
     y: endY,

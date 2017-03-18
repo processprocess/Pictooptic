@@ -1,36 +1,16 @@
 console.clear()
 import request from 'superagent';
+import removeDomNodes, { staggerRemoveDomNodes } from './removeDomNodes.js';
+import generateAnimElements from './generateAnimElements.js';
 import { animateIn, changeLocation, animateOut } from './animations.js';
-import random from './random.js';
 
-// import "jquery";
-// import $ from "jquery";
-// import "jqueryimgmask";
+let currentAnimSet = [];
 
-// import testString from './testModule.js';
-// import { apiKey as key, sayHi, old, dog } from './testModule.js';
-// console.log(testString, key, old, dog);
-// sayHi('phil');
-
-// import User, { createURL, avatar } from './objectModule.js';
-// const phil = new User('philip', 'phil@gmail.com', 'phil.com');
-// const profile = createURL(phil.name);
-// const image = avatar(phil.email);
-// console.log(phil);
-// console.log(profile);
-// console.log(image);
-
-// newRequest('test')
-
-const compContainer = document.querySelector('.compContainer');
-
-function newRequest(value) {
-
-  const text = value;
+function newRequest(param) {
 
   let definitionData;
 
-  request.get(`/api${text}`)
+  request.get(`/api${param}`)
          .then((data) => {
 
            console.log(data.body.returnItem);
@@ -41,25 +21,21 @@ function newRequest(value) {
 
            let iconData = data.body.returnItem.iconData
 
+           new Promise((resolve, reject) => { generateAnimElements(iconData, resolve); })
+               .then(allAnimSets => {
 
-           iconData.forEach(icon => {
-             let imageURL = icon.preview_url;
-            //  console.log(icon)
-             let animContainerL = document.createElement('div');
-             let animContainerR = document.createElement('div');
-             animContainerL.classList.add('animContainerL');
-             animContainerR.classList.add('animContainerR');
-             animContainerL.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
-             animContainerR.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
-            //  animContainerL.innerHTML = `<img src=${imageURL}>`;
-            //  animContainerR.innerHTML = `<img src=${imageURL}>`;
-             compContainer.appendChild(animContainerL);
-             compContainer.appendChild(animContainerR);
-             animContainerL.addEventListener('mouseover',function(e) { changeLocation(animContainerL, animContainerR); })
-             animContainerR.addEventListener('mouseover',function(e) { changeLocation(animContainerL, animContainerR); })
-             TweenMax.set([animContainerL, animContainerR], { x:window.innerWidth/2, y:window.innerHeight });
-             animateIn(animContainerL, animContainerR)
-           })
+                 let animSetLength = allAnimSets.length;
+                 let elementsAnimatedIn = 0;
+
+                 let myInterval = setInterval(function(){
+                   let currentAnimSet = allAnimSets[elementsAnimatedIn];
+                   animateIn(currentAnimSet[0], currentAnimSet[1])
+                   elementsAnimatedIn ++
+                   if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
+                 }, 50);
+                 return allAnimSets;
+
+               }).then((allAnimSets) => { currentAnimSet = allAnimSets })
 
          })
 }
@@ -72,18 +48,10 @@ function handleDicta(definitionData) {
   // dictObject.lexicalCategory = definitionData.lexicalEntries[0]lexicalCategory;
   // dictObject.phoneticSpelling = definitionData.lexicalEntries[0]phoneticSpelling;
   // dictObject.entry = definitionData.lexicalEntries[0]phoneticSpelling;
-
 }
 
-/////////// search window ///////////
+/////////// key presses ///////////
 
-// console.log(closeSearch);
-const btn = document.querySelector('.btn');
-const searchOverlay = document.querySelector('.searchOverlay');
-const closeSearch = document.querySelector('#closeSearch');
-const overlayInput = document.querySelector('.searchOverlay input');
-btn.addEventListener('click', function(e) { toggleOverlay() })
-closeSearch.addEventListener('click', function(e) { closeOverlay() })
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
@@ -100,28 +68,25 @@ function handleKeydown(e) {
   }
 }
 
-newRequest('test')
 
-function handleChange(changeValue) {
+/////////// handle change ///////////
 
-  let currentAnims = document.querySelectorAll('.compContainer > div');
-
-  // function animateOut(currentAnims, resolve) {
-  //   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
-  // }
-
-  new Promise((resolve, reject) => { animateOut(currentAnims, resolve); })
-       .then(() => { new Promise((resolve, reject) => {
-         currentAnims.forEach(currentAnim => {
-           currentAnim.remove();
-         })
-         TweenMax.killAll();
-         resolve();
-         })
-         .then(() => newRequest(changeValue));
-  })
-
+function handleChange(param) {
+  let nodesArray = document.querySelectorAll('.compContainer > div');
+  new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })
+       .then(() => { new Promise((resolve, reject) => { removeDomNodes(nodesArray, resolve); })
+       .then(() => newRequest(param));
+       })
 }
+
+/////////// search window ///////////
+
+const btn = document.querySelector('.btn');
+const searchOverlay = document.querySelector('.searchOverlay');
+const closeSearch = document.querySelector('#closeSearch');
+const overlayInput = document.querySelector('.searchOverlay input');
+btn.addEventListener('click', function(e) { toggleOverlay() })
+closeSearch.addEventListener('click', function(e) { closeOverlay() })
 
 function toggleOverlay() {
   if (!searchOverlay.classList.contains('fadeIn')) overlayInput.value = ''; ;
