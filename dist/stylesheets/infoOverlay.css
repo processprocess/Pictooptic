@@ -1,0 +1,95 @@
+.infoOverlay {
+  transition: all .5s ease-in-out;
+  position: fixed;
+  top: 0; bottom: 0;
+  right: 50%; left: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: #3A3B45;
+  z-index: 150;
+  line-height: 1.4;
+  letter-spacing: .1px;
+  overflow-y: scroll
+}
+
+.infoOverlay .closeButton {
+  display:inline-block;
+  color: #a7a7a7;
+  position: absolute;
+  text-align: right;
+  top: 20px;
+  right: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.infoWrapper {
+  margin: 40px;
+  color: #a7a7a7;
+  /*border: 1px solid grey;*/
+}
+
+/* --------- Dictionary Data --------- */
+
+.dictWrapper {
+  /*margin: 40px;
+  color: #a7a7a7;
+  border: 1px solid grey;*/
+}
+
+.dictWrapper h1 {
+  font-size: 100px;
+  font-weight: bold;
+}
+
+.dictWrapper h2 {
+  font-weight: bold;
+}
+
+.example {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.pronunciationWord {
+  font-weight: bold;
+}
+
+.origin,
+.pronunciation,
+.mainRule  {
+  margin-top: 20px;
+}
+
+.mainRule {
+  border-top: 3px solid #a7a7a7;
+}
+
+/* --------- Noun Data --------- */
+
+.nounDataWrapper {
+  /*border: 1px solid grey;*/
+}
+
+.iconDataHolder {
+  /*border: 1px solid grey;*/
+  /*width: 100%;*/
+}
+
+.iconDataImageMask {
+  background-color: #a7a7a7;
+  width: 100px;
+  height: 100px;
+  margin: 5px 0;
+}
+
+
+.iconDataRule {
+  border-top: 1px solid #a7a7a7;
+}
+
+.fadeIn {
+  opacity: .98;
+  display:block;
+  pointer-events: all;
+}

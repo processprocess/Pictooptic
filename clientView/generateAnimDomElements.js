@@ -3,7 +3,7 @@ const compContainer = document.querySelector('.compContainer');
 
 let allAnimSets = []
 
-export default function generateAnimElements (iconData, resolve) {
+export default function generateAnimDomElements (iconData, resolve) {
 
   iconData.forEach(icon => {
     let imageURL = icon.preview_url;

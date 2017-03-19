@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>RORSHOCK</title>
-    <link rel="stylesheet" href="/stylesheets/styles.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/stylesheets/styles.css" media="screen">
+    <link rel="stylesheet" href="/stylesheets/infoOverlay.css" media="screen">
+    <link rel="stylesheet" href="/stylesheets/defaultOverrides.css" media="screen">
   </head>
   <body>
 
@@ -13,20 +15,24 @@
     </div>
 
     <div class="searchOverlay">
-      <p id="info">Search any Noun by typing</p>
+      <p class="searchInstructions">Search any Noun by typing</p>
       <input type="text" value="">
-      <span class="close">X</span>
+      <span class="closeButton">X</span>
     </div>
+
 
     <div class="infoOverlay">
-      <div class="definitionWrapper">
-        <h1>word</h1>
-        <h2>pronunciation</h2>
+      <div class="closeButton">X</div>
+
+      <div class="infoWrapper">
+        <div class="dictWrapper"></div>
+        <div class="mainRule"></div>
+        <div class="nounDataWrapper"></div>
+        <div class="nounDataFooter">Creative Commons Logo </div>
       </div>
-      <span class="close">X</span>
+
     </div>
 
-    <div class='classHolder'></div>
 
     <div class="compContainer"></div>
 

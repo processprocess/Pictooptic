@@ -1,0 +1,31 @@
+button:focus {
+  outline:0;
+}
+
+button, input {
+    line-height: normal;
+}
+
+button {
+    overflow: visible;
+    border: none;
+    padding: 0;
+}
+
+body, button, html, input, label, select, textarea {
+    color: #666;
+}
+
+button, html input[type=button], input[type=reset], input[type=submit] {
+    -webkit-appearance: button;
+}
+
+body, button, html, input, label, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+a, button, input, select, textarea {
+    font-size: 100%;
+    vertical-align: baseline;
+}
