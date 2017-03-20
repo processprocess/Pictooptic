@@ -8,11 +8,14 @@ How might this concept be presented to display the variety of ways that ideas ar
 ![alt tag](demoImages/1.png)
 ![alt tag](demoImages/2.png)
 ![alt tag](demoImages/3.png)
+![alt tag](demoImages/4.png)
+![alt tag](demoImages/5.png)
+![alt tag](demoImages/6.png)
 
 ### Technology
 - JavaScript
 - GreenSock
-- Colour Lovers API
-- The Noun Project API
 - Express
+- The Noun Project API
+- The Oxford Dictionary API
 

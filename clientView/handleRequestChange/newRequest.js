@@ -31,5 +31,9 @@ export default function newRequest(param) {
 /////////// handle error ///////////
 
 function handleError(err) {
+  // change background color of page
+  // add error message
+  // suggest other things to search
   console.log(err);
+
 }
