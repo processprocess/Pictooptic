@@ -4,18 +4,19 @@ import removeDomNodes, { staggerRemoveDomNodes } from './removeDomNodes.js';
 import generateAnimDomElements from './generateAnimDomElements.js';
 import { animateIn, changeLocation, animateOut } from './animations.js';
 import { iconSampleObject } from './iconSampleObject.js';
+import { errorDicObject } from './errorDicObject.js';
+import { errorNounObject } from './errorNounObject.js';
 
 let currentAnimSet = [];
 let lastParam;
 
-
 function newRequest(param) {
-
   if (param === lastParam || !param) return;
   lastParam = param;
 
   request.get(`/api${param}`)
          .then((data) => {
+          //  document.write(JSON.stringify(data.body.returnItem.dictData.results[0]))
            console.log(data.body.returnItem);
 
            new Promise((resolve, reject) => { cleanDictData(data.body.returnItem.dictData.results[0], resolve); })
@@ -40,7 +41,31 @@ function newRequest(param) {
          })
 
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { handleError(); console.log(err); })
+}
+
+/////////// handle error ///////////
+
+function handleError() {
+  new Promise((resolve, reject) => { cleanDictData(errorDicObject, resolve); })
+     .then(dictObject => { generateDictDom(dictObject); });
+
+  new Promise((resolve, reject) => { cleanIconData(errorNounObject, resolve); })
+     .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
+
+  new Promise((resolve, reject) => { generateAnimDomElements(errorNounObject, resolve); })
+    //  .then((test) => { console.log('sup'); })
+     .then(allAnimSets => {
+      let animSetLength = allAnimSets.length;
+      let elementsAnimatedIn = 0;
+      let myInterval = setInterval(function(){
+        let currentAnimSet = allAnimSets[elementsAnimatedIn];
+        animateIn(currentAnimSet[0], currentAnimSet[1])
+        elementsAnimatedIn ++
+        if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
+      }, 50);
+      return allAnimSets;
+      })
 }
 
 /////////// clean Dict Data ///////////
