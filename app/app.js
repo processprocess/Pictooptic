@@ -14,15 +14,16 @@ app.get('/api:param', (request, response) => {
 
   const getDictionaryData = new Promise((resolve, reject) => {
     dictionary.find(param, function (err, data) {
-      if(err) return console.log(err);
+      if(err) { return reject(err); }
       returnItem.dictData = data;
       resolve();
     });
+    // reject(err)
   })
 
   // const getNounDataByUser = new Promise((resolve, reject) => {
   //   nounProject.getUserUploads('changhoon.baek.50', function (err, data) {
-  //     if(err) return console.log(err);
+  //     if(err) reject(err);
   //     console.log(data);
   //     returnItem.iconData = data.uploads;
   //     resolve();
@@ -31,10 +32,11 @@ app.get('/api:param', (request, response) => {
 
   const getNounData = new Promise((resolve, reject) => {
     nounProject.getIconsByTerm(param, function (err, data) {
-      if(err) return console.log(err);
+      if(err) { return reject(err); }
       returnItem.iconData = data.icons;
       resolve();
     });
+    // reject(err)8
   })
 
   Promise.all([
@@ -43,6 +45,7 @@ app.get('/api:param', (request, response) => {
     getNounData
   ])
          .then(() => { response.status(200).send({ returnItem }); })
+         .catch(err => { response.status(404).send({ err }); })
 });
 
 module.exports = app;

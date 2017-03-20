@@ -7,7 +7,7 @@ import { iconSampleObject } from './iconSampleObject.js';
 
 let currentAnimSet = [];
 let lastParam;
-// newRequest('fresh')
+
 
 function newRequest(param) {
 
@@ -40,6 +40,7 @@ function newRequest(param) {
          })
 
       })
+      .catch(err => { console.log(err) })
 }
 
 /////////// clean Dict Data ///////////
@@ -51,8 +52,8 @@ function cleanDictData(dictData, resolve) {
     definition: dictData.lexicalEntries[0].entries[0].senses[0].definitions[0],
     exampleOne: dictData.lexicalEntries[0].entries[0].senses[0].examples ? dictData.lexicalEntries[0].entries[0].senses[0].examples[0].text : undefined,
     origin: dictData.lexicalEntries[0].entries[0].etymologies ? dictData.lexicalEntries[0].entries[0].etymologies[0] : undefined,
-    pronunciation: dictData.lexicalEntries[0].pronunciations[0].phoneticSpelling,
-    audio: dictData.lexicalEntries[0].pronunciations[0].audioFile,
+    pronunciation: dictData.lexicalEntries[0].pronunciations ? dictData.lexicalEntries[0].pronunciations[0].phoneticSpelling : undefined,
+    audio: dictData.lexicalEntries[0].pronunciations ? dictData.lexicalEntries[0].pronunciations[0].audioFile : undefined,
   }
   resolve(dictObject);
 }
@@ -141,21 +142,19 @@ function generateIconDom(cleanIconObjects) {
       <div class="iconDataHolder">
         <div class="iconDataImageMask" style="-webkit-mask-image: url('${cleanIconObject.previewURL}'); -webkit-mask-size: 100% 100%;"> </div>
         <div class="iconAndDataWrapper">
-          <div class="iconInfo">
-            <p class="author"> ${cleanIconObject.author}</p>
-            <div class="subInfo">
-              <p>${cleanIconObject.location}</p>
-              <p>uploaded: ${cleanIconObject.date}</p>
-              <a class="id" href="https://thenounproject.com/icon/${cleanIconObject.id}" target="new">Noun id: ${cleanIconObject.id}</a>
-            </div>
+          <p class="author"> ${cleanIconObject.author}</p>
+          <div class="subInfo">
+            <p>${cleanIconObject.location}</p>
+            <p>uploaded: ${cleanIconObject.date}</p>
+            <a class="id" href="https://thenounproject.com/icon/${cleanIconObject.id}" target="new">Noun id: ${cleanIconObject.id}</a>
           </div>
         </div>
-        <div class="searchByTag">
-          <p class="author"> Search by tag:</p>
-          <ul class="iconTags">
-            ${liTagString}
-          <ul>
-        </div>
+      </div>
+      <div class="searchByTag">
+        <p>Search by tag:</p>
+        <ul class="iconTags">
+          ${liTagString}
+        <ul>
       </div>
       <div class="iconDataRule"></div>
       `
@@ -172,17 +171,41 @@ function generateIconDom(cleanIconObjects) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  // console.log(e.keyCode);
+  console.log(e.keyCode);
   if (e.keyCode === 27) { // escape key
     closeOverlay();
   } else if (e.keyCode === 13) { // enter
-    handleChange(overlayInput.value)
-    closeOverlay();
+    new Promise((resolve, reject) => { checkValue(overlayInput.value, resolve, reject); })
+      .then(checkedValue => { handleChange(checkedValue); closeOverlay(); })
+      .catch(error => { handleSubmitError(); });
   } else if (e.keyCode === 8) { // delete
     if (overlayInput.value.length === 0) closeOverlay();
+  } else if (e.keyCode < 64 || e.keyCode >= 91) { // any other key
+    return;
   } else if (e.keyCode) { // any other key
     handleSearchWindow()
   }
+}
+
+function checkValue(value, resolve, reject) {
+  const regex = /^[a-zA-Z]*$/;
+  if (regex.test(value) && value.length > 2) {
+    resolve(value)
+  } else {
+    reject()
+  }
+}
+
+let testVar = 0;
+function handleSubmitError() {
+  const searchInstructions = document.querySelector('.searchInstructions');
+  const currentText = searchInstructions.textContent;
+  const textOptions = ['characters a-z only please', ' nouns and verbs work best'];
+  if (testVar % 2 === 0) { searchInstructions.textContent = textOptions[0]; }
+  else if (testVar % 2 === 1) { searchInstructions.textContent = textOptions[1]; };
+  searchInstructions.classList.add('searchFlash');
+  searchInstructions.addEventListener('animationend', function(e) { searchInstructions.classList.remove('searchFlash') });
+  testVar++;
 }
 
 /////////// close buttons ///////////
@@ -195,10 +218,12 @@ closeButtons.forEach(closeButton => closeButton.addEventListener('click', () => 
 const searchOverlay = document.querySelector('.searchOverlay');
 const overlayInput = document.querySelector('.searchOverlay input');
 const searchButton = document.querySelector('.searchButton');
+const searchInstructions = document.querySelector('.searchInstructions');
 
 searchButton.addEventListener('click', function(e) { handleSearchWindow(); })
 
 function handleSearchWindow() {
+  searchInstructions.textContent = 'Search any Noun by typing';
   overlayInput.focus();
   if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
   if (searchOverlay.classList.contains('searchFade')) return;

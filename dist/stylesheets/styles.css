@@ -94,9 +94,9 @@ body {
   top: 0; bottom: 0;
   right: 0; left: 0;
   pointer-events: none;
+  z-index: 110;
+  background-color: rgba(255, 255, 255, .8);
   opacity: 0;
-  background: white;
-  z-index: 100;
 }
 
 .searchOverlay input {
@@ -105,18 +105,32 @@ body {
     border: 0;
     margin: 40px;
     font-weight: bold;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .searchOverlay input:focus {
   outline: none;
 }
 
-.searchOverlay .searchInstructions {
-    position: absolute;
-    top: 25px;
-    left: 25px;
-    font-weight: normal;
-    color: #ccc;
+.searchInstructions {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  font-weight: normal;
+  color: #999;
+}
+
+
+.searchFlash {
+  animation-name: flash, colors;
+  animation-duration: .4s;
+  animation-iteration-count: 2;
+}
+
+@-webkit-keyframes flash {
+    0% {opacity: 1; }
+    50% {opacity: .5; }
+    100% {opacity: 1; }
 }
 
 .searchOverlay .closeButton {
@@ -128,34 +142,24 @@ body {
 }
 
 .searchFade {
-  opacity: .8;
+  opacity: 1;
   display:block;
   pointer-events: all;
 }
 
-
-/*@media only screen
-  and (max-width: 1100px)
-  {
-    body {
-      background-color: blue;
-    }
-}*/
-
-/*@media only screen
-  and (max-width: 800px)
-  {
-    body {
-      background-color: green;
-    }
-}
-
 @media only screen
-  and (max-width: 400px)
+  and (max-width: 500px)
   {
-    body {
-      background-color: purple;
-    }
-}*/
-
-
+  .searchOverlay input {
+    font-size: 80px;
+    font-weight: bold;
+  }
+  .searchButton:hover,
+  .infoButton:hover {
+    background-color: #e8e8e8;
+  }
+  .searchButton:active,
+  .infoButton:active {
+    background-color: #C7C7C7;
+  }
+}
