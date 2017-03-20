@@ -18,33 +18,31 @@ function newRequest(param) {
          .then((data) => {
            console.log(data.body.returnItem);
 
-            new Promise((resolve, reject) => { cleanDictData(data.body.returnItem.dictData.results[0], resolve); })
-               .then(dictObject => { generateDictDom(dictObject); });
+           new Promise((resolve, reject) => { cleanDictData(data.body.returnItem.dictData.results[0], resolve); })
+              .then(dictObject => { generateDictDom(dictObject); });
 
-          //   let iconDataObject = data.body.returnItem.iconData;
-           //
-          //   new Promise((resolve, reject) => { cleanIconData(iconDataObject, resolve); })
-          //    .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
-           //
-          //  new Promise((resolve, reject) => { generateAnimDomElements(iconDataObject, resolve); })
-          //      .then(allAnimSets => {
-           //
-          //        let animSetLength = allAnimSets.length;
-          //        let elementsAnimatedIn = 0;
-           //
-          //        let myInterval = setInterval(function(){
-          //          let currentAnimSet = allAnimSets[elementsAnimatedIn];
-          //          animateIn(currentAnimSet[0], currentAnimSet[1])
-          //          elementsAnimatedIn ++
-          //          if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-          //        }, 50);
-          //        return allAnimSets;
-        //  })
+           new Promise((resolve, reject) => { cleanIconData(data.body.returnItem.iconData, resolve); })
+            .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
+
+           new Promise((resolve, reject) => { generateAnimDomElements(data.body.returnItem.iconData, resolve); })
+               .then(allAnimSets => {
+
+                 let animSetLength = allAnimSets.length;
+                 let elementsAnimatedIn = 0;
+
+                 let myInterval = setInterval(function(){
+                   let currentAnimSet = allAnimSets[elementsAnimatedIn];
+                   animateIn(currentAnimSet[0], currentAnimSet[1])
+                   elementsAnimatedIn ++
+                   if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
+                 }, 50);
+                 return allAnimSets;
+         })
 
       })
 }
 
-/////////// cleanDictData ///////////
+/////////// clean Dict Data ///////////
 
 function cleanDictData(dictData, resolve) {
   let dictObject = {
@@ -95,7 +93,7 @@ function generateDictDom(dictObject) {
 
 /////////// generate Icon Info ///////////
 
-new Promise((resolve, reject) => { generateAnimDomElements(iconSampleObject, resolve); })
+new Promise((resolve, reject) => { generateAnimDomElements(iconSampleObject, resolve); }) //for debugging
     .then(allAnimSets => {
       let animSetLength = allAnimSets.length;
       let elementsAnimatedIn = 0;
@@ -117,6 +115,11 @@ function cleanIconData(iconData, resolve) {
   iconData.forEach((icon, i) => {
     let cleanIconObject = {
       previewURL: iconData[i].preview_url,
+      author: iconData[i].uploader.name,
+      location: iconData[i].uploader.location,
+      date: iconData[i].date_uploaded,
+      id: iconData[i].id,
+      tags: iconData[i].tags,
     }
     cleanIconObjects.push(cleanIconObject)
   })
@@ -129,15 +132,39 @@ function generateIconDom(cleanIconObjects) {
   let nounWrapper = document.querySelector('.nounDataWrapper')
   let domElementString = '';
   cleanIconObjects.forEach((cleanIconObject, i) => {
+    let liTagString = '';
+    cleanIconObject.tags.forEach((tag, i) => {
+      if (i === 0 || i > 10 || (tag.slug.indexOf('-') != -1) || tag.slug === lastParam) return;
+      liTagString += `<li>${tag.slug}</li>`;
+    })
     domElementString += `
       <div class="iconDataHolder">
         <div class="iconDataImageMask" style="-webkit-mask-image: url('${cleanIconObject.previewURL}'); -webkit-mask-size: 100% 100%;"> </div>
-        <div class="iconDataRule"></div>
+        <div class="iconAndDataWrapper">
+          <div class="iconInfo">
+            <p class="author"> ${cleanIconObject.author}</p>
+            <div class="subInfo">
+              <p>${cleanIconObject.location}</p>
+              <p>uploaded: ${cleanIconObject.date}</p>
+              <a class="id" href="https://thenounproject.com/icon/${cleanIconObject.id}" target="new">Noun id: ${cleanIconObject.id}</a>
+            </div>
+          </div>
+        </div>
+        <div class="searchByTag">
+          <p class="author"> Search by tag:</p>
+          <ul class="iconTags">
+            ${liTagString}
+          <ul>
+        </div>
       </div>
+      <div class="iconDataRule"></div>
       `
   })
-
   nounWrapper.innerHTML = domElementString;
+
+  let tagSlugs = nounWrapper.querySelectorAll('li')
+  tagSlugs.forEach(slug => { slug.addEventListener('click', function() { handleChange(this.textContent); closeOverlay(); }) })
+
 }
 
 /////////// key presses ///////////
@@ -145,7 +172,7 @@ function generateIconDom(cleanIconObjects) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  console.log(e.keyCode);
+  // console.log(e.keyCode);
   if (e.keyCode === 27) { // escape key
     closeOverlay();
   } else if (e.keyCode === 13) { // enter
@@ -172,11 +199,11 @@ const searchButton = document.querySelector('.searchButton');
 searchButton.addEventListener('click', function(e) { handleSearchWindow(); })
 
 function handleSearchWindow() {
-  overlayInput.focus()
+  overlayInput.focus();
   if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
   if (searchOverlay.classList.contains('searchFade')) return;
   overlayInput.value = '';
-  toggleSearchOverlay()
+  toggleSearchOverlay();
 }
 
 function toggleSearchOverlay() {
@@ -187,8 +214,10 @@ function toggleSearchOverlay() {
 
 function closeOverlay() {
   if(searchOverlay.classList.contains('searchFade') || infoOverlay.classList.contains('fadeIn')) {
-    searchOverlay.classList.remove('searchFade')
-    infoOverlay.classList.remove('fadeIn')
+    overlayInput.blur();
+    document.body.click();
+    searchOverlay.classList.remove('searchFade');
+    infoOverlay.classList.remove('fadeIn');
     searchButton.parentNode.classList.remove('navFade');
   }
 }
@@ -199,7 +228,7 @@ function closeOverlay() {
 
 const infoButton = document.querySelector('.infoButton');
 
-infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); })
+infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
 
 function toggleInfoOverlay() {
   infoOverlay.classList.toggle('fadeIn');
@@ -215,3 +244,25 @@ function handleChange(param) {
        .then(() => newRequest(param));
        })
 }
+
+/////////// detect mobile ///////////
+
+// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+//  document.body.style.backgroundColor = 'red';
+// }
+
+/////////// window resize ///////////
+
+const pageWrapper = document.querySelector('.pageWrapper')
+
+window.onload = function() { handleWindowResize() };
+
+function handleWindowResize() {
+  pageWrapper.style.height = window.innerHeight + 'px';
+}
+
+window.addEventListener('resize', () => {
+  if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) return;
+  handleWindowResize();
+  console.log(window.innerWidth, window.innerHeight);
+})

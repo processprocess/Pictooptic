@@ -1,6 +1,7 @@
 .infoOverlay {
   transition: all .5s ease-in-out;
-  position: fixed;
+  position: absolute;
+  /*position: fixed;*/
   top: 0; bottom: 0;
   right: 50%; left: 0;
   pointer-events: none;
@@ -9,6 +10,7 @@
   z-index: 150;
   line-height: 1.4;
   letter-spacing: .1px;
+  -webkit-overflow-scrolling: touch;
   overflow-y: scroll
 }
 
@@ -72,17 +74,86 @@
 }
 
 .iconDataHolder {
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
   /*border: 1px solid grey;*/
-  /*width: 100%;*/
+}
+
+.iconAndDataWrapper {
+  display:flex;
+  flex-grow: 1;
 }
 
 .iconDataImageMask {
   background-color: #a7a7a7;
+  /*margin: 10px 0;*/
   width: 100px;
   height: 100px;
-  margin: 5px 0;
+  flex-shrink: 0;
 }
 
+.iconInfo {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  /*border: 1px solid grey;*/
+}
+
+
+
+.searchByTag {
+  margin-top: 5px;
+  flex-grow: 1;
+  max-width: 40%;
+  min-width: 40%;
+}
+
+.author {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.subInfo {
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 5px;
+  opacity: 8;
+}
+
+a.id   {
+  color: #a7a7a7;
+  margin-top: 10px;
+  transition: all .3s ease-in-out;
+  border-bottom: 1px solid rgba(167, 167, 167, 0);
+  text-decoration: none;
+  display:inline-block;
+}
+
+a.id:hover {
+  border-bottom: 1px solid rgba(167, 167, 167, 1);
+  cursor: pointer;
+}
+
+ul.iconTags {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  /*border: 1px solid blue;*/
+}
+
+.iconTags li {
+  transition: all .3s ease-in-out;
+  border-bottom: 1px solid rgba(167, 167, 167, 0);
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.iconTags li:hover {
+  cursor: pointer;
+  border-bottom: 1px solid rgba(167, 167, 167, 1);
+}
 
 .iconDataRule {
   border-top: 1px solid #a7a7a7;
@@ -92,4 +163,42 @@
   opacity: .98;
   display:block;
   pointer-events: all;
+}
+
+@media only screen
+  and (max-width: 1100px)
+  {
+  .iconDataHolder {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .iconDataImageMask {
+    margin: 10px 0;
+  }
+  .iconInfo {
+    margin-bottom: 5px;
+    margin-left: 0px;
+    max-width: 100%;
+  }
+  .searchByTag {
+    margin: 15px 0;
+    max-width: 100%;
+  }
+}
+
+@media only screen
+  and (max-width: 900px)
+  {
+  .infoOverlay {
+    right: 0%;
+  }
+}
+
+@media only screen
+  and (max-width: 500px)
+  {
+  .dictWrapper h1 {
+    font-size: 90px;
+    font-weight: bold;
+  }
 }

@@ -12,24 +12,34 @@ app.get('/api:param', (request, response) => {
   const param = request.params.param;
   const returnItem = {};
 
-  // const getDictionaryData = new Promise((resolve, reject) => {
-  //   dictionary.find(param, function (err, data) {
+  const getDictionaryData = new Promise((resolve, reject) => {
+    dictionary.find(param, function (err, data) {
+      if(err) return console.log(err);
+      returnItem.dictData = data;
+      resolve();
+    });
+  })
+
+  // const getNounDataByUser = new Promise((resolve, reject) => {
+  //   nounProject.getUserUploads('changhoon.baek.50', function (err, data) {
   //     if(err) return console.log(err);
-  //     returnItem.dictData = data;
-  //     resolve();
-  //   });
-  // })
-  //
-  // const getNounData  = new Promise((resolve, reject) => {
-  //   nounProject.getIconsByTerm(param, function (err, data) {
-  //     if(err) return console.log(err);
-  //     returnItem.iconData = data.icons;
+  //     console.log(data);
+  //     returnItem.iconData = data.uploads;
   //     resolve();
   //   });
   // })
 
+  const getNounData = new Promise((resolve, reject) => {
+    nounProject.getIconsByTerm(param, function (err, data) {
+      if(err) return console.log(err);
+      returnItem.iconData = data.icons;
+      resolve();
+    });
+  })
+
   Promise.all([
     getDictionaryData,
+    // getNounDataByUser,
     getNounData
   ])
          .then(() => { response.status(200).send({ returnItem }); })
