@@ -8,6 +8,10 @@ import handleChange from './handleRequestChange/handleChange.js';
 
 window.addEventListener('keydown', handleKeydown);
 
+new Promise((resolve, reject) => { handleChange('error', resolve) })
+.then(resolveResult => console.log(resolveResult))
+
+
 function handleKeydown(e) {
   // console.log(e.keyCode);
   if (e.keyCode === 27) { // escape key
@@ -91,6 +95,10 @@ window.addEventListener('resize', () => {
   handleWindowResize();
   console.log(window.innerWidth, window.innerHeight);
 })
+
+document.addEventListener("orientationchange",() => {
+  setTimeout(function(){ handleWindowResize(); }, 100 );
+});
 
 /////////// detect mobile ///////////
 

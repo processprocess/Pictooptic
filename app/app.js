@@ -18,6 +18,7 @@ app.get('/api:param', (request, response) => {
   const param = request.params.param;
   const returnItem = {};
 
+
   if (param === 'health') {
     console.log('preload');
     returnItem.dictData = healthDictData;

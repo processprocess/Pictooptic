@@ -10,6 +10,7 @@
 
 body {
   background-color: #A7A7A7;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .pageWrapper {
@@ -95,7 +96,7 @@ body {
   top: 0; bottom: 0;
   right: 0; left: 0;
   pointer-events: none;
-  z-index: 110;
+  z-index: 1000;
   background-color: rgba(255, 255, 255, .8);
   opacity: 0;
 }
@@ -120,7 +121,6 @@ body {
   font-weight: normal;
   color: #999;
 }
-
 
 .searchFlash {
   animation-name: flash, colors;

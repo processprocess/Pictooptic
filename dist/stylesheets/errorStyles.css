@@ -1,0 +1,57 @@
+.errorContainer {
+  color: #3A3B45;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.error404 {
+  font-weight: 100;
+}
+
+.errorInfo {
+  text-align: center;
+}
+
+.errorInfo p{
+  opacity: .5;
+}
+
+.errorBold {
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.errorBold.errorSuggestion {
+  z-index: 404;
+  position: relative;
+  transition: all .1s ease-in-out;
+  border-bottom: 2px solid;
+  border-color: rgba(58, 59, 69, 0);
+  display: inline-block;
+  cursor: pointer;
+}
+
+.errorBold.errorSuggestion:hover {
+  border-color: rgba(58, 59, 69, 1);
+  opacity: 1;
+}
+
+@media screen and (orientation:portrait) {
+  .error404 {
+    font-size: 40vw;
+    line-height: 40vh;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  .error404 {
+    line-height: 40vh;
+    font-size: 60vh;
+  }
+}
