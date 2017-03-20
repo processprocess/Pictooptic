@@ -24,7 +24,8 @@ body {
   /*opacity: 1;*/
   top: -100px;
   left: -100px;
-  /*transform: scale(0);*/
+  margin:0 auto;
+  /*transform: translate(50%, 50%);*/
   /*border: 1px solid rgba(255,255,255,.1)*/
   /*filter: url(#inverse);
   webkit-filter: url(#inverse);*/

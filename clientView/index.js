@@ -1,195 +1,9 @@
 console.clear()
-import request from 'superagent';
-import removeDomNodes, { staggerRemoveDomNodes } from './removeDomNodes.js';
-import generateAnimDomElements from './generateAnimDomElements.js';
-import { animateIn, changeLocation, animateOut } from './animations.js';
-import { iconSampleObject } from './iconSampleObject.js';
-import { errorDicObject } from './errorDicObject.js';
-import { errorNounObject } from './errorNounObject.js';
-
-let currentAnimSet = [];
-let lastParam;
-
-function newRequest(param) {
-  if (param === lastParam || !param) return;
-  lastParam = param;
-
-  request.get(`/api${param}`)
-         .then((data) => {
-          //  document.write(JSON.stringify(data.body.returnItem.dictData.results[0]))
-           console.log(data.body.returnItem);
-
-           new Promise((resolve, reject) => { cleanDictData(data.body.returnItem.dictData.results[0], resolve); })
-              .then(dictObject => { generateDictDom(dictObject); });
-
-           new Promise((resolve, reject) => { cleanIconData(data.body.returnItem.iconData, resolve); })
-            .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
-
-           new Promise((resolve, reject) => { generateAnimDomElements(data.body.returnItem.iconData, resolve); })
-               .then(allAnimSets => {
-
-                 let animSetLength = allAnimSets.length;
-                 let elementsAnimatedIn = 0;
-
-                 let myInterval = setInterval(function(){
-                   let currentAnimSet = allAnimSets[elementsAnimatedIn];
-                   animateIn(currentAnimSet[0], currentAnimSet[1])
-                   elementsAnimatedIn ++
-                   if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-                 }, 50);
-                 return allAnimSets;
-         })
-
-      })
-      .catch(err => { handleError(); console.log(err); })
-}
-
-/////////// handle error ///////////
-
-function handleError() {
-  new Promise((resolve, reject) => { cleanDictData(errorDicObject, resolve); })
-     .then(dictObject => { generateDictDom(dictObject); });
-
-  new Promise((resolve, reject) => { cleanIconData(errorNounObject, resolve); })
-     .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
-
-  new Promise((resolve, reject) => { generateAnimDomElements(errorNounObject, resolve); })
-    //  .then((test) => { console.log('sup'); })
-     .then(allAnimSets => {
-      let animSetLength = allAnimSets.length;
-      let elementsAnimatedIn = 0;
-      let myInterval = setInterval(function(){
-        let currentAnimSet = allAnimSets[elementsAnimatedIn];
-        animateIn(currentAnimSet[0], currentAnimSet[1])
-        elementsAnimatedIn ++
-        if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-      }, 50);
-      return allAnimSets;
-      })
-}
-
-/////////// clean Dict Data ///////////
-
-function cleanDictData(dictData, resolve) {
-  let dictObject = {
-    word: dictData.word,
-    category: dictData.lexicalEntries[0].lexicalCategory,
-    definition: dictData.lexicalEntries[0].entries[0].senses[0].definitions[0],
-    exampleOne: dictData.lexicalEntries[0].entries[0].senses[0].examples ? dictData.lexicalEntries[0].entries[0].senses[0].examples[0].text : undefined,
-    origin: dictData.lexicalEntries[0].entries[0].etymologies ? dictData.lexicalEntries[0].entries[0].etymologies[0] : undefined,
-    pronunciation: dictData.lexicalEntries[0].pronunciations ? dictData.lexicalEntries[0].pronunciations[0].phoneticSpelling : undefined,
-    audio: dictData.lexicalEntries[0].pronunciations ? dictData.lexicalEntries[0].pronunciations[0].audioFile : undefined,
-  }
-  resolve(dictObject);
-}
-
-/////////// generate Dict Info ///////////
-
-const infoOverlay = document.querySelector('.infoOverlay');
-
-infoOverlay.classList.add('fadeIn'); // for debuging
-let testDictObject = {
-  word: "health",
-  category: "Noun",
-  definition: "the state of being free from illness or injury",
-  exampleOne: "he was restored to health",
-  origin: "Old English hǣlth, of Germanic origin; related to whole",
-  pronunciation: "hɛlθ",
-  audio: 'http://audio.oxforddictionaries.com/en/mp3/health_gb_1.mp3'
-}
-generateDictDom(testDictObject)
-
-function generateDictDom(dictObject) {
-  let dictWrapper = document.querySelector('.dictWrapper')
-  dictWrapper.innerHTML = `
-    <h1>${dictObject.word}</h1>
-    <h2>${dictObject.category}</h2>
-    <p>${dictObject.definition}</p>
-    <p class="example">'${dictObject.exampleOne}'</p>
-    <div class="origin">
-      <h3>Origin</h3>
-      <p>${dictObject.origin}</p>
-    </div>
-    <div class="pronunciation">
-      <h3>Pronunciation</h3>
-      <p> <span class="pronunciationWord"> ${dictObject.word} </span> /${dictObject.pronunciation}/</p>
-    </div>
-  `;
-}
-
-/////////// generate Icon Info ///////////
-
-new Promise((resolve, reject) => { generateAnimDomElements(iconSampleObject, resolve); }) //for debugging
-    .then(allAnimSets => {
-      let animSetLength = allAnimSets.length;
-      let elementsAnimatedIn = 0;
-      let myInterval = setInterval(function(){
-        let currentAnimSet = allAnimSets[elementsAnimatedIn];
-        animateIn(currentAnimSet[0], currentAnimSet[1])
-        elementsAnimatedIn ++
-        if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-      }, 50);
-      return allAnimSets;
-    }).then((allAnimSets) => { currentAnimSet = allAnimSets })
-
-new Promise((resolve, reject) => { cleanIconData(iconSampleObject, resolve); })
-  .then(cleanIconObjects => { generateIconDom(cleanIconObjects); });
-
-function cleanIconData(iconData, resolve) {
-  console.log();
-  let cleanIconObjects = [];
-  iconData.forEach((icon, i) => {
-    let cleanIconObject = {
-      previewURL: iconData[i].preview_url,
-      author: iconData[i].uploader.name,
-      location: iconData[i].uploader.location,
-      date: iconData[i].date_uploaded,
-      id: iconData[i].id,
-      tags: iconData[i].tags,
-    }
-    cleanIconObjects.push(cleanIconObject)
-  })
-  resolve(cleanIconObjects);
-}
-
-/////////// generate Icon Dom ///////////
-
-function generateIconDom(cleanIconObjects) {
-  let nounWrapper = document.querySelector('.nounDataWrapper')
-  let domElementString = '';
-  cleanIconObjects.forEach((cleanIconObject, i) => {
-    let liTagString = '';
-    cleanIconObject.tags.forEach((tag, i) => {
-      if (i === 0 || i > 10 || (tag.slug.indexOf('-') != -1) || tag.slug === lastParam) return;
-      liTagString += `<li>${tag.slug}</li>`;
-    })
-    domElementString += `
-      <div class="iconDataHolder">
-        <div class="iconDataImageMask" style="-webkit-mask-image: url('${cleanIconObject.previewURL}'); -webkit-mask-size: 100% 100%;"> </div>
-        <div class="iconAndDataWrapper">
-          <p class="author"> ${cleanIconObject.author}</p>
-          <div class="subInfo">
-            <p>${cleanIconObject.location}</p>
-            <p>uploaded: ${cleanIconObject.date}</p>
-            <a class="id" href="https://thenounproject.com/icon/${cleanIconObject.id}" target="new">Noun id: ${cleanIconObject.id}</a>
-          </div>
-        </div>
-      </div>
-      <div class="searchByTag">
-        <p>Search by tag:</p>
-        <ul class="iconTags">
-          ${liTagString}
-        <ul>
-      </div>
-      <div class="iconDataRule"></div>
-      `
-  })
-  nounWrapper.innerHTML = domElementString;
-
-  let tagSlugs = nounWrapper.querySelectorAll('li')
-  tagSlugs.forEach(slug => { slug.addEventListener('click', function() { handleChange(this.textContent); closeOverlay(); }) })
-
-}
+import newRequest from './handleRequestChange/newRequest.js';
+import checkValue from './handleSubmitValue/checkValue.js';
+import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
+import handleChange from './handleRequestChange/handleChange.js';
+import { iconSampleObject } from './sampleObjects/iconSampleObject.js';
 
 /////////// key presses ///////////
 
@@ -202,35 +16,14 @@ function handleKeydown(e) {
   } else if (e.keyCode === 13) { // enter
     new Promise((resolve, reject) => { checkValue(overlayInput.value, resolve, reject); })
       .then(checkedValue => { handleChange(checkedValue); closeOverlay(); })
-      .catch(error => { handleSubmitError(); });
+      .catch(err => { handleSubmitError(err); });
   } else if (e.keyCode === 8) { // delete
     if (overlayInput.value.length === 0) closeOverlay();
-  } else if (e.keyCode < 64 || e.keyCode >= 91) { // any other key
+  } else if (e.keyCode < 64 || e.keyCode >= 91) { // check if alphabetic
     return;
   } else if (e.keyCode) { // any other key
     handleSearchWindow()
   }
-}
-
-function checkValue(value, resolve, reject) {
-  const regex = /^[a-zA-Z]*$/;
-  if (regex.test(value) && value.length > 2) {
-    resolve(value)
-  } else {
-    reject()
-  }
-}
-
-let testVar = 0;
-function handleSubmitError() {
-  const searchInstructions = document.querySelector('.searchInstructions');
-  const currentText = searchInstructions.textContent;
-  const textOptions = ['characters a-z only please', ' nouns and verbs work best'];
-  if (testVar % 2 === 0) { searchInstructions.textContent = textOptions[0]; }
-  else if (testVar % 2 === 1) { searchInstructions.textContent = textOptions[1]; };
-  searchInstructions.classList.add('searchFlash');
-  searchInstructions.addEventListener('animationend', function(e) { searchInstructions.classList.remove('searchFlash') });
-  testVar++;
 }
 
 /////////// close buttons ///////////
@@ -273,9 +66,8 @@ function closeOverlay() {
 }
 
 /////////// info window ///////////
-// const infoOverlay = document.querySelector('.infoOverlay');
-// infoOverlay.classList.add('fadeIn'); // for debuging
 
+const infoOverlay = document.querySelector('.infoOverlay');
 const infoButton = document.querySelector('.infoButton');
 
 infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
@@ -284,22 +76,6 @@ function toggleInfoOverlay() {
   infoOverlay.classList.toggle('fadeIn');
   infoButton.parentNode.classList.toggle('navFade');
 }
-
-/////////// handle change ///////////
-
-function handleChange(param) {
-  let nodesArray = document.querySelectorAll('.compContainer > div');
-  new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })
-       .then(() => { new Promise((resolve, reject) => { removeDomNodes(nodesArray, resolve); })
-       .then(() => newRequest(param));
-       })
-}
-
-/////////// detect mobile ///////////
-
-// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//  document.body.style.backgroundColor = 'red';
-// }
 
 /////////// window resize ///////////
 
@@ -316,3 +92,9 @@ window.addEventListener('resize', () => {
   handleWindowResize();
   console.log(window.innerWidth, window.innerHeight);
 })
+
+/////////// detect mobile ///////////
+
+// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+//  document.body.style.backgroundColor = 'red';
+// }

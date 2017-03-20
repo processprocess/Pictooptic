@@ -1,5 +1,5 @@
 
-export let errorDicObject = {
+export let errorDictObject = {
    "id":"error",
    "language":"en",
    "lexicalEntries":[

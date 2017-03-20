@@ -13,7 +13,8 @@ export function animateIn(animContainerL, animContainerR) {
   let rotation = getRandomVal(0, 30);
   let delay = 0;
   let scalePure = (endY / window.innerHeight);
-  let scale = getRandomVal(0.1, .45);
+  let scale = getRandomVal(0.1, .7);
+  // let scale = getRandomVal(0.1, .45);
   // let scale = getRandomVal(0.1, 0.5) * scaleModifier;
 
   animateIn.fromTo([animContainerL, animContainerR], 1, {
