@@ -3,14 +3,13 @@ import newRequest from './handleRequestChange/newRequest.js';
 import checkValue from './handleSubmitValue/checkValue.js';
 import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
-import { iconSampleObject } from './sampleObjects/iconSampleObject.js';
 
-/////////// key presses ///////////
+/////////// handle key presses ///////////
 
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  console.log(e.keyCode);
+  // console.log(e.keyCode);
   if (e.keyCode === 27) { // escape key
     closeOverlay();
   } else if (e.keyCode === 13) { // enter

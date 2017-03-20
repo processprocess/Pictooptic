@@ -1,18 +1,7 @@
 /////////// generate Dict Dom ///////////
 
-const infoOverlay = document.querySelector('.infoOverlay');
-infoOverlay.classList.add('fadeIn'); // for debuging
-
-let testDictObject = {
-  word: "health",
-  category: "Noun",
-  definition: "the state of being free from illness or injury",
-  exampleOne: "he was restored to health",
-  origin: "Old English hǣlth, of Germanic origin; related to whole",
-  pronunciation: "hɛlθ",
-  audio: 'http://audio.oxforddictionaries.com/en/mp3/health_gb_1.mp3'
-}
-generateDictDom(testDictObject)
+// const infoOverlay = document.querySelector('.infoOverlay');
+// infoOverlay.classList.add('fadeIn'); // for debuging
 
 export default function generateDictDom(dictObject) {
   let dictWrapper = document.querySelector('.dictWrapper')
