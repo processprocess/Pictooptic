@@ -5,32 +5,20 @@ import getRandomVal from './getRandomVal.js';
 // let scaleModifier = .2;
 let scaleModifier;
 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  scaleModifier = .35
-} else {
-    scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
-}
+
 
 window.addEventListener('resize', () => {
+  handleScaleModifier()
+})
+
+function handleScaleModifier() {
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     scaleModifier = .35
   } else {
       scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
   }
-})
-
-
-// let scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
-// function handleXcaleModifier() {
-//   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//     scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
-//   } else {
-//     scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
-//   }
-// }
-// window.addEventListener('resize', () => { handleXcaleModifier(); })
-// // window.onload = function() { handleXcaleModifier(); };
-
+}
+handleScaleModifier()
 
 
 export let animateInRef;
@@ -110,10 +98,10 @@ export function scale(animContainerL, animContainerR) {
 
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     console.log('test');
-    scale = getRandomVal(0.01, scaleModifier);
+    scale = getRandomVal(0.05, scaleModifier);
   }
 
-  TweenMax.fromTo(animContainerL, 1, { // from
+  TweenMax.fromTo(animContainerL, .2, { // from
     scaleX: animContainerL._gsTransform.scaleX,
     scaleY: animContainerL._gsTransform.scaleY,
   }, { // to
@@ -123,7 +111,7 @@ export function scale(animContainerL, animContainerR) {
     ease:Sine.easeInOut
   })
 
-  TweenMax.fromTo(animContainerR, .1, { // from
+  TweenMax.fromTo(animContainerR, .2, { // from
     scaleX: animContainerR._gsTransform.scaleX,
     scaleY: animContainerR._gsTransform.scaleY,
   }, { // to

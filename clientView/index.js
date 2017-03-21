@@ -80,21 +80,36 @@ function toggleInfoOverlay() {
   infoButton.parentNode.classList.toggle('navFade');
 }
 
-/////////// window resize ///////////
 
-window.onload = function() { document.querySelector('.pageWrapper').style.height = window.innerHeight + 'px'; };
+/////////// handle mobile event ///////////
+import { allAnimSets } from './generateAnimDomElements.js';
+import staggerAnimation from './staggerAnimation.js';
 
-window.addEventListener('resize', () => {
-  if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) return;
-  handleWindowResize();
+
+let compContainer = document.querySelector('.compContainer')
+
+compContainer.addEventListener('touchstart', () => {
+  // alert('touched');
+  staggerAnimation(allAnimSets, 'changeLocation');
+  staggerAnimation(allAnimSets, 'scale' );
 })
 
-document.addEventListener("orientationchange",() => {
-  setTimeout(function(){ handleWindowResize(); }, 100 );
-});
+compContainer.addEventListener('click', () => {
+  // alert('touched');
+  staggerAnimation(allAnimSets, 'changeLocation');
+  staggerAnimation(allAnimSets, 'scale' );
+})
 
-/////////// detect mobile ///////////
 
-// if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//  document.body.style.backgroundColor = 'red';
-// }
+/////////// random color function ///////////
+
+import request from 'superagent';
+
+function randomColorRequest() {
+  request.get(`/color`)
+         .then((data) => {
+          console.log(data.body);
+          })
+}
+
+randomColorRequest()

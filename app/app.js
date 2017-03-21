@@ -6,15 +6,13 @@ const NounProject = require('the-noun-project');
 const nounProject = new NounProject({key: process.env.NOUN_KEY, secret: process.env.NOUN_SECRET});
 const Dictionary = require("oxford-dictionary-api");
 const dictionary = new Dictionary(process.env.OXDIC_ID, process.env.OXDIC_KEY);
-
-const healthDictData = require('./sampleJson/healthDictData.json');
-const healthNounData = require('./sampleJson/healthNounData.json');
-
-const errorDictData = require('./sampleJson/errorDictData.json');
-const errorNounData = require('./sampleJson/errorNounData.json');
-
-const explosionDictData = require('./sampleJson/explosionDictData.json');
-const explosionNounData = require('./sampleJson/explosionNounData.json');
+const healthDictData = require('./json/healthDictData.json');
+const healthNounData = require('./json/healthNounData.json');
+const errorDictData = require('./json/errorDictData.json');
+const errorNounData = require('./json/errorNounData.json');
+const explosionDictData = require('./json/explosionDictData.json');
+const explosionNounData = require('./json/explosionNounData.json');
+const palettes = require('./json/colorPalettes.json');
 
 app.get('/api:param', (request, response) => {
 
@@ -76,6 +74,21 @@ app.get('/api:param', (request, response) => {
       .catch(err => { response.status(404).send({ err }); })
 
   }
+
+});
+
+app.get('/color', (request, response) => {
+
+  function getRandomVal(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function getPalette () {
+    let color = palettes[ Math.floor(getRandomVal(0, palettes.length)) ]
+    response.status(202).send( color );
+  }
+
+  getPalette()
 
 });
 
