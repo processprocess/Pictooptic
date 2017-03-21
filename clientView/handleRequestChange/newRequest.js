@@ -23,7 +23,7 @@ export default function newRequest(param, resolve) {
             .then((cleanIconObjects, resolve) => { generateIconDom(cleanIconObjects, resolve); });
 
           new Promise((resolve, reject) => { generateAnimDomElements(data.body.returnItem.iconData, resolve); })
-            .then(allAnimSets => { staggerAnimation(allAnimSets); })
+            .then(allAnimSets => { staggerAnimation(allAnimSets, 'animateIn'); })
           })
 
           .catch(err => { handleError(err); })

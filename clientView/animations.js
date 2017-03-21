@@ -2,6 +2,8 @@ import "gsap";
 import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
 import getRandomVal from './getRandomVal.js';
 
+export let animateInRef;
+
 export function animateIn(animContainerL, animContainerR) {
   let animateIn = new TimelineLite();
   // let startY = getRandomVal(window.innerHeight/8.5, window.innerHeight/1.15);
@@ -17,7 +19,7 @@ export function animateIn(animContainerL, animContainerR) {
   // let scale = getRandomVal(0.1, .45);
   // let scale = getRandomVal(0.1, 0.5) * scaleModifier;
 
-  animateIn.fromTo([animContainerL, animContainerR], 1, {
+  animateInRef = animateIn.fromTo([animContainerL, animContainerR], 1, {
     y: startY,
     x: startX,
     rotation: 0,
@@ -83,3 +85,5 @@ export function changeLocation(animContainerL, animContainerR) {
 export function animateOut(currentAnims, resolve) {
   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
 }
+
+
