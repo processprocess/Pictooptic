@@ -15,6 +15,7 @@ body {
 
 .pageWrapper {
   position: relative;
+  overflow: hidden;
 }
 
 .animContainerL,

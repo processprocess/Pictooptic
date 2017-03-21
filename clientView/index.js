@@ -5,13 +5,12 @@ import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
 
+new Promise((resolve, reject) => { handleChange('explosion', resolve) }) //for debugging
+// .then(resolveResult => console.log(resolveResult))
+
 /////////// handle key presses ///////////
 
 window.addEventListener('keydown', handleKeydown);
-
-new Promise((resolve, reject) => { handleChange('explosion', resolve) })
-.then(resolveResult => console.log(resolveResult))
-
 
 function handleKeydown(e) {
   // console.log(e.keyCode);
