@@ -3,6 +3,7 @@ import newRequest from './handleRequestChange/newRequest.js';
 import checkValue from './handleSubmitValue/checkValue.js';
 import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
+import handleWindowResize from './handleWindowResize.js';
 
 /////////// handle key presses ///////////
 
@@ -82,33 +83,7 @@ function toggleInfoOverlay() {
 
 /////////// window resize ///////////
 
-import { changeLocation } from './animations.js';
-import { allAnimSets } from './generateAnimDomElements.js';
-
-const pageWrapper = document.querySelector('.pageWrapper')
-
-
-function handleWindowResize() {
-  console.log(window.innerWidth, window.innerHeight);
-  pageWrapper.style.height = window.innerHeight + 'px';
-
-  staggerAnimation(allAnimSets)
-}
-
-function staggerAnimation(allAnimSets) {
-  let animSetLength = allAnimSets.length;
-  let elementsAnimatedIn = 0;
-  let myInterval = setInterval(() => {
-    let currentAnimSet = allAnimSets[elementsAnimatedIn];
-    changeLocation(currentAnimSet[0], currentAnimSet[1])
-    elementsAnimatedIn ++
-
-    if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-  }, 30);
-}
-
-
-
+window.onload = function() { document.querySelector('.pageWrapper').style.height = window.innerHeight + 'px'; };
 
 window.addEventListener('resize', () => {
   if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) return;
@@ -118,30 +93,6 @@ window.addEventListener('resize', () => {
 document.addEventListener("orientationchange",() => {
   setTimeout(function(){ handleWindowResize(); }, 100 );
 });
-
-window.onload = function() { pageWrapper.style.height = window.innerHeight + 'px'; };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /////////// detect mobile ///////////
 
