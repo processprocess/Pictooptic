@@ -16,7 +16,7 @@ export default function handleChange(param, resolve) {
       // })
       .then(() => { return new Promise((resolve, reject) => { newRequest(param, resolve); })
       })
-      .then(() => { resolve('done with change request');
-      })
+      // .then(() => { resolve('done with change request');
+      // })
 
 }

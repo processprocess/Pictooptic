@@ -50,14 +50,26 @@ export function changeLocation(animContainerL, animContainerR) {
   let endX = getRandomVal(window.innerWidth / 2, window.innerWidth / 4);
   let rotation = getRandomVal(0, 360);
 
-  TweenMax.to([animContainerL, animContainerR], 1, {
+  TweenMax.fromTo(animContainerL, 1, {
+    y: animContainerL._gsTransform.y,
+    x: animContainerL._gsTransform.x,
+    rotation: animContainerL._gsTransform.rotation,
+  }, {
     y: endY,
     x: endX,
     rotation: rotation,
+    ease:Sine.easeInOut
+  })
+
+  TweenMax.fromTo(animContainerR, 1, {
+    y: animContainerR._gsTransform.y,
+    x: animContainerR._gsTransform.x,
+    rotation: animContainerR._gsTransform.rotation,
+  }, {
+    y: endY,
+    x: window.innerWidth - endX,
+    rotation: rotation,
     modifiers: {
-      x: function(value, animContainer) {
-        return (animContainer === animContainerR) ? window.innerWidth - animContainerL._gsTransform.x : value;
-      },
       rotation: function(value, animContainer) {
         return (animContainer === animContainerR) ? animContainerL._gsTransform.rotation * -1 : value;
       }
@@ -66,6 +78,7 @@ export function changeLocation(animContainerL, animContainerR) {
   })
 
 }
+
 
 export function animateOut(currentAnims, resolve) {
   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })

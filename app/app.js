@@ -13,6 +13,9 @@ const healthNounData = require('./sampleJson/healthNounData.json');
 const errorDictData = require('./sampleJson/errorDictData.json');
 const errorNounData = require('./sampleJson/errorNounData.json');
 
+const explosionDictData = require('./sampleJson/explosionDictData.json');
+const explosionNounData = require('./sampleJson/explosionNounData.json');
+
 app.get('/api:param', (request, response) => {
 
   const param = request.params.param;
@@ -20,15 +23,21 @@ app.get('/api:param', (request, response) => {
 
 
   if (param === 'health') {
-    console.log('preload');
+    console.log('preload health data');
     returnItem.dictData = healthDictData;
     returnItem.iconData = healthNounData;
     response.status(200).send({ returnItem });
   }
   else if (param === 'error'){
-    console.log('preload');
+    console.log('preload error data');
     returnItem.dictData = errorDictData;
     returnItem.iconData = errorNounData;
+    response.status(200).send({ returnItem });
+  }
+  else if (param === 'explosion'){
+    console.log('preload explosion data');
+    returnItem.dictData = explosionDictData;
+    returnItem.iconData = explosionNounData;
     response.status(200).send({ returnItem });
   }
 

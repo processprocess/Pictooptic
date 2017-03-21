@@ -8,8 +8,8 @@ import handleChange from './handleRequestChange/handleChange.js';
 
 window.addEventListener('keydown', handleKeydown);
 
-// new Promise((resolve, reject) => { handleChange('butter', resolve) })
-// .then(resolveResult => console.log(resolveResult))
+new Promise((resolve, reject) => { handleChange('explosion', resolve) })
+.then(resolveResult => console.log(resolveResult))
 
 
 function handleKeydown(e) {
@@ -82,23 +82,66 @@ function toggleInfoOverlay() {
 
 /////////// window resize ///////////
 
+import { changeLocation } from './animations.js';
+import { allAnimSets } from './generateAnimDomElements.js';
+
 const pageWrapper = document.querySelector('.pageWrapper')
 
-window.onload = function() { handleWindowResize() };
 
 function handleWindowResize() {
+  console.log(window.innerWidth, window.innerHeight);
   pageWrapper.style.height = window.innerHeight + 'px';
+
+  staggerAnimation(allAnimSets)
 }
+
+function staggerAnimation(allAnimSets) {
+  let animSetLength = allAnimSets.length;
+  let elementsAnimatedIn = 0;
+  let myInterval = setInterval(() => {
+    let currentAnimSet = allAnimSets[elementsAnimatedIn];
+    changeLocation(currentAnimSet[0], currentAnimSet[1])
+    elementsAnimatedIn ++
+
+    if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
+  }, 30);
+}
+
+
+
 
 window.addEventListener('resize', () => {
   if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) return;
   handleWindowResize();
-  console.log(window.innerWidth, window.innerHeight);
 })
 
 document.addEventListener("orientationchange",() => {
   setTimeout(function(){ handleWindowResize(); }, 100 );
 });
+
+window.onload = function() { pageWrapper.style.height = window.innerHeight + 'px'; };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /////////// detect mobile ///////////
 

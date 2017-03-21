@@ -11,5 +11,5 @@ export default function staggerAnimation(allAnimSets) {
     elementsAnimatedIn ++
 
     if (elementsAnimatedIn >= animSetLength) { clearInterval(myInterval); }
-  }, 100);
+  }, 30);
 }

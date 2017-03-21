@@ -24,8 +24,6 @@ export default function newRequest(param, resolve) {
 
           new Promise((resolve, reject) => { generateAnimDomElements(data.body.returnItem.iconData, resolve); })
             .then(allAnimSets => { staggerAnimation(allAnimSets); })
-            // .then(() => { console.log('start staggerAnimation');
-            // })
           })
 
           .catch(err => { handleError(err); })

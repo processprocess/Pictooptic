@@ -1,10 +1,10 @@
 import { changeLocation } from './animations.js';
 const compContainer = document.querySelector('.compContainer');
 
+export let allAnimSets = [];
 
 export default function generateAnimDomElements (iconData, resolve) {
-  let allAnimSets = []
-
+  allAnimSets = []
   iconData.forEach(icon => {
     let imageURL = icon.preview_url;
     let animContainerL = document.createElement('div');
