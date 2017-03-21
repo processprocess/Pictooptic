@@ -5,6 +5,7 @@ import cleanIconData from './iconDataHandlers/cleanIconData.js';
 import generateIconDom from './iconDataHandlers/generateIconDom.js';
 import generateAnimDomElements from '../generateAnimDomElements.js';
 import staggerAnimation from '../staggerAnimation.js';
+import handleError from './handleError.js';
 
 /////////// handle request ///////////
 
@@ -23,42 +24,11 @@ export default function newRequest(param, resolve) {
 
           new Promise((resolve, reject) => { generateAnimDomElements(data.body.returnItem.iconData, resolve); })
             .then(allAnimSets => { staggerAnimation(allAnimSets); })
+            // .then(() => { console.log('start staggerAnimation');
+            // })
           })
+
           .catch(err => { handleError(err); })
           // if (!resolve) return;
           resolve('donewithRequest');
-}
-
-/////////// handle error ///////////
-
-function handleError(err) {
-  // newRequest('error');
-
-  console.log('from handle error 404');
-
-  // new Promise((resolve, reject) => { newRequest('error', resolve); console.log(resolve);})
-  //   .then((resolve) => {
-  //     console.log('test');
-  //     let errorContainer = document.querySelector('.errorContainer')
-  //       errorContainer.innerHTML =
-  //       `<div class='errorInfo'>
-  //         <p class="errorBold">error</p>
-  //         <p>word not found</p>
-  //       </div>
-  //       <div class="error404"><p>404</p></div>
-  //       <div class='errorInfo'>
-  //         <p>how about searching</p>
-  //         <p class="errorBold errorSuggestion">banana</p>
-  //       </div>`;
-  //
-  //    })
-
-
-
-  // change background color of page
-  // add error message
-  // suggest other things to search
-
-  // console.log(err);
-
 }

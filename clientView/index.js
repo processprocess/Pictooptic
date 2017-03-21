@@ -8,8 +8,8 @@ import handleChange from './handleRequestChange/handleChange.js';
 
 window.addEventListener('keydown', handleKeydown);
 
-new Promise((resolve, reject) => { handleChange('error', resolve) })
-.then(resolveResult => console.log(resolveResult))
+// new Promise((resolve, reject) => { handleChange('butter', resolve) })
+// .then(resolveResult => console.log(resolveResult))
 
 
 function handleKeydown(e) {
@@ -18,7 +18,7 @@ function handleKeydown(e) {
     closeOverlay();
   } else if (e.keyCode === 13) { // enter
     new Promise((resolve, reject) => { checkValue(overlayInput.value, resolve, reject); })
-      .then(checkedValue => { handleChange(checkedValue); closeOverlay(); })
+      .then(checkedValue => { new Promise((resolve, reject) => { handleChange(checkedValue, resolve) }); closeOverlay(); })
       .catch(err => { handleSubmitError(err); });
   } else if (e.keyCode === 8) { // delete
     if (overlayInput.value.length === 0) closeOverlay();

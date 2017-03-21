@@ -1,4 +1,5 @@
 .errorContainer {
+  transition: opacity 1s ease-in-out;
   color: #3A3B45;
   position: absolute;
   width: 100%;
@@ -8,6 +9,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  opacity: 0;
+}
+
+.errorFade {
+  opacity: 1;
 }
 
 .error404 {
