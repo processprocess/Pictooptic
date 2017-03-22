@@ -1,4 +1,4 @@
-import { animateIn, changeLocation, scale } from './animations.js';
+import { animateIn, changeLocation, scale, changeElementColors } from './animations.js';
 
 /////////// stagger animation ///////////
 
@@ -12,6 +12,7 @@ export default function staggerAnimation(allAnimSets, animationName, resolve, in
     if (animationName === 'animateIn') { animateIn(currentAnimSet[0], currentAnimSet[1]) }
     else if (animationName === 'changeLocation') { changeLocation(currentAnimSet[0], currentAnimSet[1]) }
     else if (animationName === 'scale') { scale(currentAnimSet[0], currentAnimSet[1]) }
+    else if (animationName === 'changeElementColors') { changeElementColors(currentAnimSet[0], currentAnimSet[1]) }
     elementsAnimatedIn ++
     if (elementsAnimatedIn >= animSetLength) {
       clearInterval(myInterval);

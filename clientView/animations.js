@@ -128,4 +128,23 @@ export function animateOut(currentAnims, resolve) {
   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
 }
 
+/////////// random color function ///////////
 
+import { colorPallete } from './handleRequestChange/randomColorRequest.js'
+
+// let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
+
+export function changeBGColor() {
+  TweenMax.to(document.body, 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut })
+}
+
+export function changeElementColors(animContainerL, animContainerR) {
+  animContainerL = animContainerL.querySelector('.maskImage')
+  animContainerR = animContainerR.querySelector('.maskImage')
+  let color = colorPallete[Math.floor(getRandomVal(0, colorPallete.length))];
+  TweenMax.to([animContainerL, animContainerR], .2, {
+    backgroundColor: color,
+    ease:Sine.easeInOut
+  })
+
+}

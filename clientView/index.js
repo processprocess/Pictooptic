@@ -4,7 +4,7 @@ import checkValue from './handleSubmitValue/checkValue.js';
 import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
-
+import { changeBGColor } from './animations.js'
 new Promise((resolve, reject) => { handleChange('explosion', resolve) }) //for debugging
 // .then(resolveResult => console.log(resolveResult))
 
@@ -81,35 +81,36 @@ function toggleInfoOverlay() {
 }
 
 
-/////////// handle mobile event ///////////
+/////////// handle image touch ///////////
+import randomColorRequest from './handleRequestChange/randomColorRequest.js'
+
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
-
-
 let compContainer = document.querySelector('.compContainer')
+
+let clicks = 0;
 
 compContainer.addEventListener('touchstart', () => {
   // alert('touched');
   staggerAnimation(allAnimSets, 'changeLocation');
   staggerAnimation(allAnimSets, 'scale' );
+  staggerAnimation(allAnimSets, 'changeElementColors' );
+  randomColorRequest();
+  changeBGColor();
+  clicks++
 })
 
 compContainer.addEventListener('click', () => {
-  // alert('touched');
   staggerAnimation(allAnimSets, 'changeLocation');
   staggerAnimation(allAnimSets, 'scale' );
+  staggerAnimation(allAnimSets, 'changeElementColors' );
+  randomColorRequest();
+  changeBGColor();
+  clicks++
+  console.log(clicks);
 })
 
 
-/////////// random color function ///////////
+// color will be global variable strored in color request
+// color data will be available to animaitons that are using it
 
-import request from 'superagent';
-
-function randomColorRequest() {
-  request.get(`/color`)
-         .then((data) => {
-          console.log(data.body);
-          })
-}
-
-randomColorRequest()
