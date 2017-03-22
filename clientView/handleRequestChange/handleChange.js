@@ -14,6 +14,8 @@ export default function handleChange(param, resolve) {
       })
       // .then(() => { console.log('done with remove dom nodes');
       // })
+      // .then(() => { return newRequest(param) })
+      // })
       .then(() => { return new Promise((resolve, reject) => { newRequest(param, resolve); })
       })
       .then(() => { resolve('done with change request'); // tied to handleError

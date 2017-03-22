@@ -39,10 +39,12 @@ export default function generateIconDom(cleanIconObjects) {
   nounWrapper.innerHTML = domElementString;
 
   let tagSlugs = nounWrapper.querySelectorAll('li');
-
   tagSlugs.forEach(slug => { slug.addEventListener('click', function() {
     handleChange(this.textContent);
     infoOverlay.classList.remove('fadeIn');
-    searchButton.parentNode.classList.remove('navFade');}) })
+    searchButton.parentNode.classList.remove('navFade');
+  }) })
+  console.log('done');
+
   // resolve('doneGenerating')
 }

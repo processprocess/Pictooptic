@@ -1,40 +1,32 @@
 import "gsap";
 import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
 import getRandomVal from './getRandomVal.js';
+import { colorPallete } from './handleRequestChange/randomColorRequest.js'
 
-// let scaleModifier = .2;
-let scaleModifier;
+/////////// responsive scaling ///////////
 
+let responsiveScale;
 
-
-window.addEventListener('resize', () => {
-  handleScaleModifier()
-})
-
-function handleScaleModifier() {
+function setResponsiveScale() {
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    scaleModifier = .35
+    responsiveScale = .35
   } else {
-      scaleModifier = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
+    responsiveScale = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
   }
 }
-handleScaleModifier()
+window.addEventListener('resize', () => setResponsiveScale())
+setResponsiveScale()
 
+/////////// animateIn ///////////
 
-export let animateInRef;
+export let animateInRef; //used in checkvalue.js
 
 export function animateIn(animContainerL, animContainerR) {
   let animateIn = new TimelineLite();
   let startY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
   let startX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
-  // let startY = getRandomVal(window.innerHeight / 4, window.innerHeight / 1.4);
-  // let startX = getRandomVal(window.innerWidth / 4, window.innerWidth / 2);
-  let endY = getRandomVal(0, window.innerHeight);
-  let endX = window.innerWidth / 2;
   let rotation = getRandomVal(0, 30);
-  let delay = 0;
-  let scalePure = (endY / window.innerHeight);
-  let scale = getRandomVal(0.2, scaleModifier);
+  let scale = getRandomVal(0.2, responsiveScale);
 
   animateInRef = animateIn.fromTo([animContainerL, animContainerR], 1, {
     y: startY,
@@ -57,16 +49,16 @@ export function animateIn(animContainerL, animContainerR) {
         return (animContainer === animContainerR) ? -value : value;
       }
     },
-    ease:Sine.easeInOut
+    ease: Sine.easeInOut
   }, 'start')
 
 }
 
+/////////// changeLocation ///////////
+
 export function changeLocation(animContainerL, animContainerR) {
   let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
   let endX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
-  // let endY = getRandomVal(window.innerHeight / 4, window.innerHeight / 1.4);
-  // let endX = getRandomVal(window.innerWidth / 2, window.innerWidth / 4);
   let rotation = getRandomVal(0, 360);
 
   TweenMax.fromTo(animContainerL, 1, { // from
@@ -88,17 +80,19 @@ export function changeLocation(animContainerL, animContainerR) {
     y: endY,
     x: window.innerWidth - endX,
     rotation: function(index, target) { return rotation * -1; },
-    ease:Sine.easeInOut
+    ease: Sine.easeInOut
   })
 
 }
 
+/////////// scale ///////////
+
 export function scale(animContainerL, animContainerR) {
-  let scale = getRandomVal(0.2, scaleModifier);
+  let scale = getRandomVal(0.2, responsiveScale);
 
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     console.log('test');
-    scale = getRandomVal(0.05, scaleModifier);
+    scale = getRandomVal(0.05, responsiveScale);
   }
 
   TweenMax.fromTo(animContainerL, .2, { // from
@@ -106,9 +100,7 @@ export function scale(animContainerL, animContainerR) {
     scaleY: animContainerL._gsTransform.scaleY,
   }, { // to
     scale: scale,
-    // scaleX: function(index, target) { return target._gsTransform.scaleX * .5; },
-    // scaleY: function(index, target) { return target._gsTransform.scaleY * .5; },
-    ease:Sine.easeInOut
+    ease: Sine.easeInOut
   })
 
   TweenMax.fromTo(animContainerR, .2, { // from
@@ -117,22 +109,12 @@ export function scale(animContainerL, animContainerR) {
   }, { // to
     scaleX: function(index, target) { return scale * -1; },
     scaleY: function(index, target) { return scale; },
-    // scaleX: function(index, target) { return target._gsTransform.scaleX * .5; },
-    // scaleY: function(index, target) { return target._gsTransform.scaleY * .5; },
-    ease:Sine.easeInOut
+    ease: Sine.easeInOut
   })
 
 }
 
-export function animateOut(currentAnims, resolve) {
-  TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
-}
-
-/////////// random color function ///////////
-
-import { colorPallete } from './handleRequestChange/randomColorRequest.js'
-
-// let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
+/////////// random color ///////////
 
 export function changeBGColor() {
   TweenMax.to(document.body, 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut })
@@ -146,5 +128,10 @@ export function changeElementColors(animContainerL, animContainerR) {
     backgroundColor: color,
     ease:Sine.easeInOut
   })
+}
 
+/////////// animate out ///////////
+
+export function animateOut(currentAnims, resolve) {
+  TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
 }

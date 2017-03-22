@@ -14,6 +14,29 @@ const explosionDictData = require('./json/explosionDictData.json');
 const explosionNounData = require('./json/explosionNounData.json');
 const palettes = require('./json/colorPalettes.json');
 
+//
+
+const wordRouter = require('./routes/wordRouter.js');
+
+app.use('/api/words', wordRouter);
+// app.use('/api/users', wordRouter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+
 app.get('/api:param', (request, response) => {
 
   const param = request.params.param;

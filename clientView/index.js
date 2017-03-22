@@ -5,6 +5,7 @@ import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
 import { changeBGColor } from './animations.js'
+
 new Promise((resolve, reject) => { handleChange('explosion', resolve) }) //for debugging
 // .then(resolveResult => console.log(resolveResult))
 
@@ -80,15 +81,13 @@ function toggleInfoOverlay() {
   infoButton.parentNode.classList.toggle('navFade');
 }
 
-
 /////////// handle image touch ///////////
+
 import randomColorRequest from './handleRequestChange/randomColorRequest.js'
 
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
 let compContainer = document.querySelector('.compContainer')
-
-let clicks = 0;
 
 compContainer.addEventListener('touchstart', () => {
   // alert('touched');
@@ -97,7 +96,6 @@ compContainer.addEventListener('touchstart', () => {
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
   changeBGColor();
-  clicks++
 })
 
 compContainer.addEventListener('click', () => {
@@ -106,11 +104,5 @@ compContainer.addEventListener('click', () => {
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
   changeBGColor();
-  clicks++
-  console.log(clicks);
 })
-
-
-// color will be global variable strored in color request
-// color data will be available to animaitons that are using it
 
