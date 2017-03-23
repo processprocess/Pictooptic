@@ -13,6 +13,7 @@ function setResponsiveScale() {
     responsiveScale = .35
   } else {
     responsiveScale = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
+    console.log(responsiveScale);
   }
 }
 window.addEventListener('resize', () => setResponsiveScale())
@@ -118,7 +119,7 @@ export function scale(animContainerL, animContainerR) {
 /////////// random color ///////////
 
 export function changeBGColor() {
-  TweenMax.to(document.body, 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut })
+  TweenMax.to('.pageWrapper', 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut })
 }
 
 export function changeElementColors(animContainerL, animContainerR) {

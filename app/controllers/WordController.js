@@ -29,14 +29,13 @@ class WordController {
 
     // conditional for JSON data.
     const word = req.params.param;
-    console.log('hit');
+    console.log('server hit');
 
     // Fetch definition from DictionaryAPI
     // In the then, call noun project API
 
     NounProjectApi.fetchIcons(req.params.param)
     .then(data => {
-      // if (err) {res.status(404).json(error);}
       const words = data.map(wordData => new Word(wordData));
       // const topTags = WordController.topTags(words);
       // res.status(200).json({ words: words, definition: definition, topTags: topTags);

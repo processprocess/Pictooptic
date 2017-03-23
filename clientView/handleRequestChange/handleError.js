@@ -4,6 +4,7 @@ import getRandomVal from '../getRandomVal.js';
 let errorContainer = document.querySelector('.errorContainer')
 
 let animElements = document.querySelectorAll('.compContainer .maskImage')
+
 /////////// handle error ///////////
 
 export default function handleError(err) {
@@ -22,8 +23,8 @@ export default function handleError(err) {
       <p>how about searching</p>
       <p class="errorBold errorSuggestion">${randSuggestion}</p>
     </div>`;
-  TweenMax.to(document.body, 1, {backgroundColor:'#7D4444', ease:Sine.easeInOut})
-  TweenMax.set(animElements, {backgroundColor:'#401717',})
+  TweenMax.to(document.body, 1, {backgroundColor:'#fff', ease:Sine.easeInOut})
+  TweenMax.set(animElements, {backgroundColor:'#fff',})
   errorContainer.querySelector('.errorSuggestion').addEventListener('click', function() {
     handleChange(this.textContent);
   })

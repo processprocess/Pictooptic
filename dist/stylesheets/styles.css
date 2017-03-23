@@ -9,7 +9,9 @@
 }
 
 body {
-  background-color: #A7A7A7;
+  background-color: #fff;
+  /*background-color: #F4F8F9;*/
+  /*background-color: #A7A7A7;*/
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -34,7 +36,8 @@ body {
 }
 
 .maskImage {
-  background-color: #3A3B45;
+  background-color: #000;
+  /*background-color: #3A3B45;*/
   width: 200px;
   height: 200px;
 }
@@ -51,6 +54,9 @@ body {
   position: absolute;
 }
 
+
+
+
 .navContainer {
   transition: opacity .5s ease-in-out;
   margin: 15px;
@@ -60,10 +66,10 @@ body {
   /*border: 1px solid grey;*/
 }
 
-.navFade {
+/*.navFade {
   opacity:0;
   pointer-events: none;
-}
+}*/
 
 
 

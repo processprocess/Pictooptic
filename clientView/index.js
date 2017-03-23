@@ -56,7 +56,7 @@ function handleSearchWindow() {
 function toggleSearchOverlay() {
   if(!searchOverlay.classList.contains('searchFade')) {overlayInput.value = ''};
   searchOverlay.classList.toggle('searchFade');
-  searchButton.parentNode.classList.toggle('navFade');
+  // searchButton.parentNode.classList.toggle('navFade');
 }
 
 function closeOverlay() {
@@ -65,7 +65,7 @@ function closeOverlay() {
     document.body.click();
     searchOverlay.classList.remove('searchFade');
     infoOverlay.classList.remove('fadeIn');
-    searchButton.parentNode.classList.remove('navFade');
+    // searchButton.parentNode.classList.remove('navFade');
   }
 }
 
@@ -78,7 +78,7 @@ infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
 
 function toggleInfoOverlay() {
   infoOverlay.classList.toggle('fadeIn');
-  infoButton.parentNode.classList.toggle('navFade');
+  // infoButton.parentNode.classList.toggle('navFade');
 }
 
 /////////// handle image touch ///////////
