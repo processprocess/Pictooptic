@@ -6,6 +6,9 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -54,39 +57,53 @@ body {
   position: absolute;
 }
 
+/* --------- navigation --------- */
+
+.navMenu {
+  position: absolute;
+  width:175px;
+  height: 50px;
+  z-index: 1500;
+  display: flex;
+  /*border: 1px solid rgba(0, 0, 255, 1);*/
+
+}
+
+.navMenu button {
+  transition: opacity .2s;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  opacity: .2;
+  /*border: 1px solid rgba(255, 0, 255, 1);*/
+}
+
+.navMenu button:hover {
+  opacity: 1;
+}
+
+.navMenu img {
+  margin: 0 auto;
+  height: 25px;
+  /*border: 1px solid rgba(0, 0, 255, 1);*/
+}
 
 
-
-.navContainer {
+/*.navContainer {
   transition: opacity .5s ease-in-out;
   margin: 15px;
   position: absolute;
   z-index: 51;
   opacity: 1;
-  /*border: 1px solid grey;*/
-}
+}*/
 
 /*.navFade {
   opacity:0;
   pointer-events: none;
 }*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.searchButton,
+/*.searchButton,
 .infoButton {
   transition: background-color .15s ease-in-out;
   border-radius: 50%;
@@ -98,19 +115,24 @@ body {
   position: relative;
   opacity:1;
   pointer-events: all;
-}
+}*/
 
-.infoButton {
+/*.infoButton {
   border-radius: 0%;
   margin-left:10px;
-}
+}*/
 
-.searchButton:hover,
+/*.searchButton:hover,
 .infoButton:hover {
   background-color: #C7C7C7;
-}
+}*/
 
-/* --------- Search Overlay --------- */
+
+
+
+
+
+/* --------- search overlay --------- */
 
 .searchOverlay {
   transition: all .5s ease-in-out;
@@ -174,15 +196,15 @@ body {
   and (max-width: 500px)
   {
   .searchOverlay input {
-    font-size: 80px;
-    font-weight: bold;
+    /*font-size: 80px;
+    font-weight: bold;*/
   }
-  .searchButton:hover,
+  /*.searchButton:hover,
   .infoButton:hover {
-    background-color: #e8e8e8;
+    background-color: #e8e8e8;*/
   }
-  .searchButton:active,
+  /*.searchButton:active,
   .infoButton:active {
-    background-color: #C7C7C7;
+    background-color: #C7C7C7;*/
   }
 }

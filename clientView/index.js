@@ -74,7 +74,7 @@ function closeOverlay() {
 const infoOverlay = document.querySelector('.infoOverlay');
 const infoButton = document.querySelector('.infoButton');
 
-infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
+// infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
 
 function toggleInfoOverlay() {
   infoOverlay.classList.toggle('fadeIn');
