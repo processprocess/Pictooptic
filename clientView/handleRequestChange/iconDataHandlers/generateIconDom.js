@@ -44,7 +44,6 @@ export default function generateIconDom(cleanIconObjects) {
     infoOverlay.classList.remove('fadeIn');
     searchButton.parentNode.classList.remove('navFade');
   }) })
-  console.log('done');
 
   // resolve('doneGenerating')
 }

@@ -9,16 +9,11 @@ export default function handleChange(param, resolve) {
   let nodesArray = document.querySelectorAll('.compContainer > div');
   let errorContainer = document.querySelector('.errorContainer');
   handleErrorRemove()
+  TweenMax.to(document.body, 1, {backgroundColor:'#A7A7A7', ease:Sine.easeInOut}) // re-set background-color
   new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })
-      .then(() => { return new Promise((resolve, reject) => { removeDomNodes(nodesArray, resolve); })
+      .then(() => { return new Promise((resolve, reject) => removeDomNodes(nodesArray, resolve))
       })
-      // .then(() => { console.log('done with remove dom nodes');
-      // })
-      // .then(() => { return newRequest(param) })
-      // })
-      .then(() => { return new Promise((resolve, reject) => { newRequest(param, resolve); })
-      })
-      .then(() => { resolve('done with change request'); // tied to handleError
-      })
+      .then(() => newRequest(param, resolve))
+      .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError
 
 }

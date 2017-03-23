@@ -2,6 +2,9 @@
   "name": "RorShock",
   "version": "1.0.0",
   "main": "server.js",
+  "engines": {
+    "node": "7.5.0"
+  },
   "scripts": {
     "dev": "nodemon ./server.js",
     "start": "node ./server.js",

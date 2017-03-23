@@ -1,7 +1,8 @@
 import "gsap";
 import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
 import getRandomVal from './getRandomVal.js';
-import { colorPallete } from './handleRequestChange/randomColorRequest.js'
+import { colorPallete } from './handleRequestChange/newRequest.js'
+// import { colorPallete } from './handleRequestChange/randomColorRequest.js'
 
 /////////// responsive scaling ///////////
 

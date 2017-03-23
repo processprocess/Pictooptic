@@ -83,7 +83,7 @@ function toggleInfoOverlay() {
 
 /////////// handle image touch ///////////
 
-import randomColorRequest from './handleRequestChange/randomColorRequest.js'
+import { randomColorRequest } from './handleRequestChange/newRequest.js'
 
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';

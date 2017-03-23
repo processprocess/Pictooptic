@@ -6,7 +6,6 @@ export let allAnimSets = [];
 // export default function generateAnimDomElements (iconData) {
 export default function generateAnimDomElements (iconData, resolve) {
   allAnimSets = [];
-  console.log(iconData);
   iconData.forEach(icon => {
     let imageURL = icon.previewURL;
     let animContainerL = document.createElement('div');

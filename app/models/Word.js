@@ -1,5 +1,5 @@
 class Word {
-  constructor({ preview_url, uploader, date_uploaded, id, tags, term } ) {
+  constructor({ preview_url, uploader, date_uploaded, id, tags, term }) {
     this.previewURL = preview_url;
     this.author = uploader.name;
     this.location = uploader.location;
@@ -9,5 +9,7 @@ class Word {
     this.term = term;
   }
 }
+
+// Word rename
 
 module.exports = Word;
