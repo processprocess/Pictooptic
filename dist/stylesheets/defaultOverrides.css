@@ -21,7 +21,7 @@ li {
 }
 
 body, button, html, input, label, select, textarea {
-    color: #666;
+    /*color: #666;*/
 }
 
 button, html input[type=button], input[type=reset], input[type=submit] {

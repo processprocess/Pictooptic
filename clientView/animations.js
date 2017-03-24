@@ -13,7 +13,6 @@ function setResponsiveScale() {
     responsiveScale = .35
   } else {
     responsiveScale = (window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth);
-    console.log(responsiveScale);
   }
 }
 window.addEventListener('resize', () => setResponsiveScale())
@@ -58,12 +57,14 @@ export function animateIn(animContainerL, animContainerR) {
 
 /////////// changeLocation ///////////
 
+export let changingLocation;
+
 export function changeLocation(animContainerL, animContainerR) {
   let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
   let endX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
   let rotation = getRandomVal(0, 360);
 
-  TweenMax.fromTo(animContainerL, 1, { // from
+  changingLocation = TweenMax.fromTo(animContainerL, 1, { // from
     y: animContainerL._gsTransform.y,
     x: animContainerL._gsTransform.x,
     rotation: animContainerL._gsTransform.rotation,
@@ -118,8 +119,9 @@ export function scale(animContainerL, animContainerR) {
 
 /////////// random color ///////////
 
-export function changeBGColor() {
-  TweenMax.to('.pageWrapper', 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut })
+export function changeBGColor(elements) {
+  // TweenMax.to('.pageWrapper', 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut, delay:0, })
+  TweenMax.to(elements, 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut, delay:0, })
 }
 
 export function changeElementColors(animContainerL, animContainerR) {
@@ -132,8 +134,25 @@ export function changeElementColors(animContainerL, animContainerR) {
   })
 }
 
+/////////// make black and white ///////////
+
+export function blackAndWhiteBG() {
+  TweenMax.to('.pageWrapper', 1, {backgroundColor:'rgba(255,255,255,0)', ease:Sine.easeInOut})
+}
+
+export function blackAndWhiteElements(animContainerL, animContainerR) {
+  animContainerL = animContainerL.querySelector('.maskImage')
+  animContainerR = animContainerR.querySelector('.maskImage')
+  let oddOrEven = Math.floor(getRandomVal(0, 2));
+  TweenMax.to([animContainerL, animContainerR], .2, {
+    backgroundColor: oddOrEven%2 === 0 ? 'black' : 'white',
+    ease:Sine.easeInOut
+  })
+}
+
 /////////// animate out ///////////
 
 export function animateOut(currentAnims, resolve) {
   TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
 }
+

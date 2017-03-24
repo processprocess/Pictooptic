@@ -52,118 +52,108 @@ body {
   overflow: hidden;
 }
 
-.element {
-  background-color: grey;
-  position: absolute;
-}
-
 /* --------- navigation --------- */
 
-.navMenu {
+.mainNav {
   position: absolute;
-  width:175px;
+  width:200px;
   height: 50px;
-  z-index: 1500;
   display: flex;
   /*border: 1px solid rgba(0, 0, 255, 1);*/
-
 }
 
-.navMenu button {
+button {
+  z-index: 1500;
   transition: opacity .2s;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
+  /*height: 100%;*/
   display: flex;
   opacity: .2;
   /*border: 1px solid rgba(255, 0, 255, 1);*/
 }
 
-.navMenu button:hover {
-  opacity: 1;
+.mainNav button {
+  width: 100%;
 }
 
-.navMenu img {
+.mainNav img,
+.infoButton img,
+.close img {
   margin: 0 auto;
   height: 25px;
   /*border: 1px solid rgba(0, 0, 255, 1);*/
 }
 
-
-/*.navContainer {
-  transition: opacity .5s ease-in-out;
-  margin: 15px;
-  position: absolute;
-  z-index: 51;
+button:hover {
   opacity: 1;
-}*/
+}
 
-/*.navFade {
-  opacity:0;
-  pointer-events: none;
-}*/
+button.infoButton {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 50px;
+  /*border: 1px solid rgba(255, 0, 0, 1);*/
+}
 
-/*.searchButton,
-.infoButton {
-  transition: background-color .15s ease-in-out;
-  border-radius: 50%;
-  height: 33px;
-  width: 33px;
-  background: #e8e8e8;
-  box-shadow: none;
-  cursor: pointer;
-  position: relative;
-  opacity:1;
-  pointer-events: all;
-}*/
-
-/*.infoButton {
-  border-radius: 0%;
-  margin-left:10px;
-}*/
-
-/*.searchButton:hover,
-.infoButton:hover {
-  background-color: #C7C7C7;
-}*/
-
-
-
-
-
+button.infoButton img {
+  height: 20px;
+}
 
 /* --------- search overlay --------- */
 
 .searchOverlay {
-  transition: all .5s ease-in-out;
-  position: fixed;
-  top: 0; bottom: 0;
-  right: 0; left: 0;
+  transition: opacity .5s ease-in-out;
+  position: absolute;
+  width: 100%;
+  height: 45%;
+  /*background-color: rgba(255, 255, 255, 0);*/
+  background-color: rgba(255, 255, 255, .9);
+  z-index: 2000;
   pointer-events: none;
-  z-index: 1000;
-  background-color: rgba(255, 255, 255, .8);
-  opacity: 0;
+  opacity:0;
+  /*border-bottom: 3px black solid;*/
+  /*border: thin black solid;*/
+}
+
+.searchLetters {
+  font-size: 30vh;
+  letter-spacing: -1.3vh;
+  line-height: 0px;
+  font-weight: 500;
+}
+
+.strut {
+  display: inline-block;
+  height: 100%;
 }
 
 .searchOverlay input {
-    padding: 20px;
-    font-size: 100px;
-    border: 0;
-    margin: 40px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0);
+  /*margin-left: -2.5vh;*/
+  margin-left: 1vh;
+  background: rgba(0,0,0,0);
+  height: 100%;
+  width: 98%;
+  border: none;
+  z-index: 3000;
+  color: black;
+  -webkit-text-fill-color: black;
 }
 
 .searchOverlay input:focus {
   outline: none;
+  opacity:1;
 }
 
 .searchInstructions {
+  font-size: 4vh;
+  letter-spacing: -.1vh;
   position: absolute;
-  top: 25px;
-  left: 25px;
-  font-weight: normal;
-  color: #999;
+  left: 20px;
+  bottom: 25vh;
+  /*top: 25px;*/
+  /*font-weight: normal;*/
+  /*color: #999;*/
 }
 
 .searchFlash {
@@ -178,33 +168,31 @@ body {
     100% {opacity: 1; }
 }
 
-.searchOverlay .closeButton {
+.closeButton {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-weight: bold;
+  width: 25px;
   cursor: pointer;
 }
 
 .searchFade {
-  opacity: 1;
   display:block;
   pointer-events: all;
+  opacity: 1;
 }
 
-@media only screen
-  and (max-width: 500px)
-  {
-  .searchOverlay input {
-    /*font-size: 80px;
-    font-weight: bold;*/
-  }
-  /*.searchButton:hover,
-  .infoButton:hover {
-    background-color: #e8e8e8;*/
-  }
-  /*.searchButton:active,
-  .infoButton:active {
-    background-color: #C7C7C7;*/
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width:120px;
+  /*margin-left: -1px;*/
+}
+
+@media only screen and (max-width: 800px){
+  .mainNav {
+    width:100%;
+    bottom: 0;
   }
 }

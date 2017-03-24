@@ -14,7 +14,7 @@ export default function checkValue(value, resolve, reject) {
     reject(`that's your latest search, try seraching something new`);
   } else {
     currentValue = value;
+    if(!resolve) return
     resolve(value);
   }
 }
-

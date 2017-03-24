@@ -45,7 +45,7 @@ const searchInstructions = document.querySelector('.searchInstructions');
 searchButton.addEventListener('click', function(e) { handleSearchWindow(); })
 
 function handleSearchWindow() {
-  searchInstructions.textContent = 'Search any Noun by typing';
+  searchInstructions.textContent = 'type any word';
   overlayInput.focus();
   if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
   if (searchOverlay.classList.contains('searchFade')) return;
@@ -84,7 +84,6 @@ function toggleInfoOverlay() {
 /////////// handle image touch ///////////
 
 import { randomColorRequest } from './handleRequestChange/newRequest.js'
-
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
 let compContainer = document.querySelector('.compContainer')
@@ -95,14 +94,43 @@ compContainer.addEventListener('touchstart', () => {
   staggerAnimation(allAnimSets, 'scale' );
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
-  changeBGColor();
+  changeBGColor(['.pageWrapper']);
 })
+
+
 
 compContainer.addEventListener('click', () => {
   staggerAnimation(allAnimSets, 'changeLocation');
   staggerAnimation(allAnimSets, 'scale' );
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
-  changeBGColor();
+  changeBGColor(['.pageWrapper']);
+  // changeBGColor(['.pageWrapper', '.searchOverlay']);
 })
 
+/////////// random search ///////////
+
+import { animateInRef } from './animations.js';
+import getRandomVal from './getRandomVal.js'
+
+let wordArray = ['abstract', 'fish', 'taco']
+let randomButton = document.querySelector('.randomButton');
+
+randomButton.addEventListener('click', function(e) {
+  if (animateInRef.isActive()) return;
+  let randomWord = wordArray[Math.floor(getRandomVal(0, wordArray.length))];
+  handleChange(randomWord)
+})
+
+/////////// black and white mode ///////////
+import { blackAndWhiteBG, blackAndWhiteElements } from './animations.js';
+// import staggerAnimation from './staggerAnimation.js';
+
+let blackAndWhiteButton = document.querySelector('.blackWhiteButton');
+
+blackAndWhiteButton.addEventListener('click', function(e) {
+  blackAndWhiteBG();
+  staggerAnimation(allAnimSets, 'changeLocation');
+  staggerAnimation(allAnimSets, 'scale' );
+  staggerAnimation(allAnimSets, 'blackAndWhiteElements');
+})
