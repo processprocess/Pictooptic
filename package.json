@@ -1,5 +1,5 @@
 {
-  "name": "RorShock",
+  "name": "roRShock",
   "version": "1.0.0",
   "main": "server.js",
   "engines": {
@@ -10,8 +10,8 @@
     "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Philip Bell",
+  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.16.0",
     "babel-loader": "^6.2.5",
@@ -20,8 +20,6 @@
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "gsap": "^1.19.1",
-    "jquery": "^3.1.1",
-    "jqueryimgmask": "0.0.1",
     "npm": "^4.4.1",
     "oxford-dictionary-api": "^1.0.1",
     "superagent": "^2.3.0",
