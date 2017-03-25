@@ -9,6 +9,12 @@ import { blackAndWhiteBG } from '../animations.js';
 export default function handleChange(param, resolve) {
   let nodesArray = document.querySelectorAll('.compContainer > div');
   let errorContainer = document.querySelector('.errorContainer');
+  let currentSearch = document.querySelector('.currentSearch');
+  currentSearch.textContent = param;
+
+  const currentSearchWord = document.querySelector('.currentSearchWord');
+  currentSearchWord.textContent = param;
+  // currentSearch.classList.add('currentSearchFade')
   handleErrorRemove()
   blackAndWhiteBG()
   new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })

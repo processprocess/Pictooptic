@@ -11,7 +11,7 @@ export default function handleError(err) {
 
   let suggestionArray = ['pattern', 'geometry', 'puppy'];
   let randSuggestion = suggestionArray[Math.floor(getRandomVal(0, suggestionArray.length))];
-  handleChange('error')
+  // handleChange('error')
   errorContainer.classList.add('errorFade')
   errorContainer.innerHTML =
     `<div class='errorInfo'>

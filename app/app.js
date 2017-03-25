@@ -85,14 +85,14 @@ module.exports = app;
 //       });
 //     })
 //
-//     // const getNounDataByUser = new Promise((resolve, reject) => {
-//     //   nounProject.getUserUploads('changhoon.baek.50', function (err, data) {
-//     //     if(err) reject(err);
-//     //     console.log(data);
-//     //     returnItem.iconData = data.uploads;
-//     //     resolve();
-//     //   });
-//     // })
+    // const getNounDataByUser = new Promise((resolve, reject) => {
+    //   nounProject.getUserUploads('changhoon.baek.50', function (err, data) {
+    //     if(err) reject(err);
+    //     console.log(data);
+    //     returnItem.iconData = data.uploads;
+    //     resolve();
+    //   });
+    // })
 //
 //     const getNounData = new Promise((resolve, reject) => {
 //       nounProject.getIconsByTerm(param, function (err, data) {

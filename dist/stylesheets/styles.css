@@ -54,50 +54,97 @@ body {
 
 /* --------- navigation --------- */
 
-.mainNav {
-  position: absolute;
-  width:200px;
-  height: 50px;
-  display: flex;
+/*.mainNav {*/
+  /*position: absolute;*/
+  /*width:100%;*/
+  /*width:200px;*/
+  /*height: 50px;*/
+  /*display: flex;*/
   /*border: 1px solid rgba(0, 0, 255, 1);*/
-}
+/*}*/
 
-button {
-  z-index: 1500;
-  transition: opacity .2s;
-  cursor: pointer;
+/*button {*/
+  /*z-index: 1500;*/
+  /*transition: opacity .2s;*/
+  /*cursor: pointer;*/
   /*height: 100%;*/
-  display: flex;
-  opacity: .2;
+  /*display: flex;*/
+  /*opacity: .2;*/
   /*border: 1px solid rgba(255, 0, 255, 1);*/
-}
+/*}*/
 
-.mainNav button {
+/*.mainNav button {
   width: 100%;
-}
+}*/
 
-.mainNav img,
-.infoButton img,
-.close img {
+/*.mainNav img,
+.infoButton img {
   margin: 0 auto;
   height: 25px;
-  /*border: 1px solid rgba(0, 0, 255, 1);*/
+  border: 1px solid rgba(0, 0, 255, 1);
+}*/
+
+/*button:hover {
+  opacity: 1;
+}*/
+
+/*button.infoButton {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 50px;
+  border: 1px solid rgba(255, 0, 0, 1);
+}*/
+
+/*button.infoButton img {
+  height: 20px;
+}*/
+
+/* --------- buttons --------- */
+
+button {
+  transition: opacity .3s ease-in-out;
+  opacity: .3;
 }
 
 button:hover {
   opacity: 1;
 }
 
-button.infoButton {
-  position: absolute;
-  right: 0;
-  width: 40px;
-  height: 50px;
-  /*border: 1px solid rgba(255, 0, 0, 1);*/
+.buttonContainer {
+  width: 100%;
 }
 
-button.infoButton img {
-  height: 20px;
+.searchButton {
+  top: 61px;
+  left: 7px;
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  z-index: 1000;
+  display: inline;
+  margin: 0 auto;
+  /*border: thin black solid;*/
+  /*display: none;*/
+}
+
+.searchButton img {
+  margin: 0 auto;
+  width: 20px;
+  display: inline;
+}
+
+.closeButton {
+  position: absolute;
+  top: 60px;
+  left: 5px;
+  width: 40px;
+  height: 40px;
+  z-index: 1000;
+}
+
+.closeButton img {
+  width: 18px;
 }
 
 /* --------- search overlay --------- */
@@ -105,39 +152,36 @@ button.infoButton img {
 .searchOverlay {
   transition: opacity .5s ease-in-out;
   position: absolute;
-  width: 100%;
-  height: 45%;
-  /*background-color: rgba(255, 255, 255, 0);*/
+  width: 50%;
+  height: 100%;
   background-color: rgba(255, 255, 255, .9);
   z-index: 2000;
   pointer-events: none;
+  /*opacity:1;*/
   opacity:0;
-  /*border-bottom: 3px black solid;*/
-  /*border: thin black solid;*/
 }
 
 .searchLetters {
-  font-size: 30vh;
-  letter-spacing: -1.3vh;
+  font-size: 20vh;
+  letter-spacing: -.5vh;
   line-height: 0px;
   font-weight: 500;
-}
-
-.strut {
-  display: inline-block;
-  height: 100%;
+  left: 20px;
 }
 
 .searchOverlay input {
-  /*margin-left: -2.5vh;*/
-  margin-left: 1vh;
+  position: absolute;
+  /*text-align: center;*/
   background: rgba(0,0,0,0);
-  height: 100%;
-  width: 98%;
+  height: 25vh;
+  width: 100%;
+  top: 34%;
+  overflow: visible;
   border: none;
   z-index: 3000;
   color: black;
   -webkit-text-fill-color: black;
+  /*border: thin black solid;*/
 }
 
 .searchOverlay input:focus {
@@ -146,18 +190,61 @@ button.infoButton img {
 }
 
 .searchInstructions {
-  font-size: 4vh;
-  letter-spacing: -.1vh;
   position: absolute;
+  top: 29%;
+  font-size: 3vh;
+  /*font-size: 20px;*/
   left: 20px;
-  bottom: 25vh;
-  /*top: 25px;*/
+  opacity: .5;
+  /*border: thin black solid;*/
+  /*text-align: center;*/
+  /*padding-top: 15px;*/
+  /*font-size: 4vh;*/
+  /*letter-spacing: -.1vh;*/
   /*font-weight: normal;*/
-  /*color: #999;*/
+}
+
+.randomWord {
+  transition: border-bottom .3s ease-in-out, opacity .3s ease-in-out;
+  position: absolute;
+  top: 64%;
+  font-size: 2vh;
+  left: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  opacity: .5;
+}
+
+.randomWord:hover {
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  opacity: 1;
+}
+
+
+
+/*.iconTags li {
+  transition: all .3s ease-in-out;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  display: inline-block;
+  margin: 4px 3px;
+}
+
+.iconTags li:hover {
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}*/
+
+.orSearchTag {
+  position: absolute;
+  top: 68%;
+  font-size: 2vh;
+  left: 20px;
+  opacity: .5;
 }
 
 .searchFlash {
   animation-name: flash, colors;
+  /*animation-name: flash, colors;*/
   animation-duration: .4s;
   animation-iteration-count: 2;
 }
@@ -168,27 +255,70 @@ button.infoButton img {
     100% {opacity: 1; }
 }
 
-.closeButton {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 25px;
-  cursor: pointer;
-}
-
 .searchFade {
   display:block;
-  pointer-events: all;
+  pointer-events:all;
   opacity: 1;
 }
 
-.logo {
+button.logo{
   position: absolute;
-  top: 20px;
-  left: 20px;
-  width:120px;
-  /*margin-left: -1px;*/
+  z-index: 3000;
+  top: 24px;
+  left: 15px;
 }
+
+.logo img {
+  height: 26px;
+  /*width:120px;*/
+}
+
+button.noun-project {
+  position: absolute;
+  z-index: 3000;
+  right: 15px;
+  bottom: 15px;
+}
+
+.noun-project img {
+  height: 22px;
+  /*width:120px;*/
+}
+
+.currentSearch {
+  transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+  /*transition: opacity .2s;*/
+  position: absolute;
+  /*width: 100%;*/
+  /*height: 175px;*/
+  top: 60px;
+  left: 53px;
+  font-size: 25px;
+  /*letter-spacing: -.1vh;*/
+  font-weight: 600;
+  /*text-align: center;*/
+  z-index: 2000;
+  opacity: .3;
+}
+
+.currentSearch:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  cursor: pointer;
+  opacity: 1;
+}
+
+/*.currentSearchFade {
+  opacity: 1;
+  animation-name: searchFade;
+  animation-duration: .4s;
+  animation-delay: 1s;
+}*/
+
+/*@-webkit-keyframes searchFade {
+    0% {opacity: 1; }
+    100% {opacity: 0; }
+}*/
 
 @media only screen and (max-width: 800px){
   .mainNav {

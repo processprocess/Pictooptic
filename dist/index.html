@@ -18,46 +18,51 @@
 
     <div class="pageWrapper">
 
-      <div class="mainNav">
-        <button type="button" class="searchButton"><img src="../icons/search.png"></button>
-        <button type="button" class="randomButton"><img src="../icons/random.png"></button>
-        <button type="button" class="bookletButton"><img src="../icons/booklet.png"></button>
-        <button type="button" class="blackWhiteButton"><img src="../icons/black-white.png"></button>
+      <!-- <div class="mainNav"> -->
+        <!-- <button type="button" class="searchButton"><img src="../images/search.png"></button> -->
+        <!-- <button type="button" class="randomButton"><img src="../images/random.png"></button> -->
+        <!-- <button type="button" class="bookletButton"><img src="../images/booklet.png"></button> -->
+        <!-- <button type="button" class="blackWhiteButton"><img src="../images/black-white.png"></button> -->
+        <!-- <button type="button" class="infoButton"><img src="../images/info.png"></button> -->
+      <!-- </div> -->
+
+      <button type="button" class="logo"><img src="../images/logo.png"></button>
+
+      <div class="buttonContainer">
+        <button type="button" class="searchButton"><img src="../images/search.png"></button>
       </div>
 
-      <button type="button" class="infoButton"><img src="../icons/info.png"></button>
+      <div class="currentSearch"></div>
 
       <div class="searchOverlay">
-        <img class=logo src="../icons/logo.png">
-        <img class=closeButton src="../icons/close.png">
-        <p class="searchInstructions">type any word</p>
+        <div class="buttonContainer">
+          <button type="button" class="closeButton"><img src="../images/close.png"></button>
+        </div>
+        <p class="searchInstructions">enter any word</p>
         <input type="text" class="searchLetters" value="Tight">
-        <span class="strut"></span>
+        <p><span class="randomWord">or give me a random word</span></p>
       </div>
-
       <div class="infoOverlay">
-        <div class="closeButton">X</div>
+        <button type="button" class="closeButton"><img src="../images/close.png"></button>
         <div class="infoWrapper">
-          <div class="dictWrapper"></div>
-          <div class="mainRule"></div>
+          <div class="currentSearchHeaderWrapper">
+            <div class="currentSearchWord">pattern</div>
+            <div class="topRelatedTags">top related words: <span>color form patterns</span></div>
+            <div class="mainRule"></div>
+            <div class="searchByUser">search by user, tags and related collection</div>
+          </div>
           <div class="nounDataWrapper"></div>
+          <div class="mainRule"></div>
           <div class="nounDataFooter">Creative Commons Logo </div>
+          <!-- <button type="button" class="noun-project"><img src="../images/noun-project.png"></button> -->
         </div>
       </div>
 
-      <div class="errorContainer">
-        <!-- <div class='errorInfo'>
-          <p class="errorBold">error</p>
-          <p>word not found</p>
-        </div>
-        <div class="error404"><p>404</p></div>
-        <div class='errorInfo'>
-          <p>how about searching</p>
-          <p class="errorBold errorSuggestion">banana</p>
-        </div> -->
-      </div>
+      <div class="errorContainer"></div>
 
       <div class="compContainer"></div>
+
+
 
     </div>
 

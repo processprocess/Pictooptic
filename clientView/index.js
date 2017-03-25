@@ -6,8 +6,34 @@ import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
 import { changeBGColor } from './animations.js'
 
-new Promise((resolve, reject) => { handleChange('explosion', resolve) }) //for debugging
+/////////// load random on enter ///////////
+
+let randomWordArray = ['abstract', 'astronaut', 'explosion', 'flower', 'girl', 'health', 'melt', 'pattern', 'person', 'smile', 'splatter', 'taco'];
+new Promise((resolve, reject) => { handleChange(randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))], resolve) }) //for debugging
 // .then(resolveResult => console.log(resolveResult))
+
+/////////// random search ///////////
+
+import { animateInRef } from './animations.js';
+import getRandomVal from './getRandomVal.js'
+
+const logo = document.querySelector('.logo');
+const randomWordButton = document.querySelector('.randomWord')
+
+
+logo.addEventListener('click', function(e) {
+  if (animateInRef.isActive()) return;
+  let randomWord = randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))];
+  closeOverlay();
+  handleChange(randomWord);
+})
+
+randomWordButton.addEventListener('click', function(e) {
+  if (animateInRef.isActive()) return;
+  let randomWord = randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))];
+  closeOverlay();
+  handleChange(randomWord);
+})
 
 /////////// handle key presses ///////////
 
@@ -45,7 +71,7 @@ const searchInstructions = document.querySelector('.searchInstructions');
 searchButton.addEventListener('click', function(e) { handleSearchWindow(); })
 
 function handleSearchWindow() {
-  searchInstructions.textContent = 'type any word';
+  searchInstructions.textContent = 'enter any word';
   overlayInput.focus();
   if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
   if (searchOverlay.classList.contains('searchFade')) return;
@@ -69,18 +95,6 @@ function closeOverlay() {
   }
 }
 
-/////////// info window ///////////
-
-const infoOverlay = document.querySelector('.infoOverlay');
-const infoButton = document.querySelector('.infoButton');
-
-// infoButton.addEventListener('click', function(e) { toggleInfoOverlay(); });
-
-function toggleInfoOverlay() {
-  infoOverlay.classList.toggle('fadeIn');
-  // infoButton.parentNode.classList.toggle('navFade');
-}
-
 /////////// handle image touch ///////////
 
 import { randomColorRequest } from './handleRequestChange/newRequest.js'
@@ -95,6 +109,7 @@ compContainer.addEventListener('touchstart', () => {
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
   changeBGColor(['.pageWrapper']);
+  closeOverlay()
 })
 
 
@@ -105,32 +120,53 @@ compContainer.addEventListener('click', () => {
   staggerAnimation(allAnimSets, 'changeElementColors' );
   randomColorRequest();
   changeBGColor(['.pageWrapper']);
+  closeOverlay()
   // changeBGColor(['.pageWrapper', '.searchOverlay']);
-})
-
-/////////// random search ///////////
-
-import { animateInRef } from './animations.js';
-import getRandomVal from './getRandomVal.js'
-
-let wordArray = ['abstract', 'fish', 'taco']
-let randomButton = document.querySelector('.randomButton');
-
-randomButton.addEventListener('click', function(e) {
-  if (animateInRef.isActive()) return;
-  let randomWord = wordArray[Math.floor(getRandomVal(0, wordArray.length))];
-  handleChange(randomWord)
 })
 
 /////////// black and white mode ///////////
 import { blackAndWhiteBG, blackAndWhiteElements } from './animations.js';
 // import staggerAnimation from './staggerAnimation.js';
 
-let blackAndWhiteButton = document.querySelector('.blackWhiteButton');
+// let blackAndWhiteButton = document.querySelector('.blackWhiteButton');
 
-blackAndWhiteButton.addEventListener('click', function(e) {
-  blackAndWhiteBG();
-  staggerAnimation(allAnimSets, 'changeLocation');
-  staggerAnimation(allAnimSets, 'scale' );
-  staggerAnimation(allAnimSets, 'blackAndWhiteElements');
-})
+// blackAndWhiteButton.addEventListener('click', function(e) {
+//   blackAndWhiteBG();
+//   staggerAnimation(allAnimSets, 'changeLocation');
+//   staggerAnimation(allAnimSets, 'scale' );
+//   staggerAnimation(allAnimSets, 'blackAndWhiteElements');
+// })
+
+/////////// current search container ///////////
+
+const infoOverlay = document.querySelector('.infoOverlay');
+let currentSearch = document.querySelector('.currentSearch');
+
+currentSearch.addEventListener('click', function(e) { toggleInfoOverlay(); });
+
+function toggleInfoOverlay() {
+  infoOverlay.classList.toggle('fadeIn');
+  searchOverlay.classList.remove('searchFade');
+}
+
+//
+// currentSearch.addEventListener('animationend', function(e) {
+//   currentSearch.classList.remove('currentSearchFade');
+// })
+//
+// currentSearch.addEventListener('mouseenter', function(e) {
+//   currentSearch.classList.add('currentSearchFade')
+//   currentSearch.addEventListener('mouseleave', function(e) {
+//     delay(function(){
+//       currentSearch.classList.remove('currentSearchFade');
+//     }, 1000);
+//   })
+// })
+//
+// const delay = (function(){
+//   let timer = 0;
+//   return function(callback, ms){
+//     clearTimeout (timer);
+//     timer = setTimeout(callback, ms);
+//   };
+// })();

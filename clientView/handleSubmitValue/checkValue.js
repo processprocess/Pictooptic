@@ -3,10 +3,11 @@ import { animateInRef } from '../animations.js';
 let currentValue = '';
 
 export default function checkValue(value, resolve, reject) {
-  const regex = /^[a-zA-Z]*$/;
-  if (!regex.test(value)) {
-    reject('characters a-z only');
-  } else if (animateInRef.isActive()) {
+  // const regex = /^[a-zA-Z]*$/;
+  // if (!regex.test(value)) {
+  //   reject('characters a-z only');
+  // }
+  if (animateInRef.isActive()) {
     reject(`please wait for the current animation to complete`);
   } else if (value.length <= 2) {
     reject('nouns and verbs work best');
