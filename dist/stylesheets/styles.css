@@ -32,6 +32,7 @@ body {
   top: -100px;
   left: -100px;
   margin:0 auto;
+  transform: scale(0);
   /*transform: translate(50%, 50%);*/
   /*border: 1px solid rgba(255,255,255,.1)*/
   /*filter: url(#inverse);
@@ -321,8 +322,14 @@ button.noun-project {
 }*/
 
 @media only screen and (max-width: 800px){
-  .mainNav {
+  .searchOverlay {
     width:100%;
-    bottom: 0;
+  }
+  .searchLetters {
+    font-size: 10vh;
+    letter-spacing: -.5vh;
+    line-height: 0px;
+    font-weight: 500;
+    left: 20px;
   }
 }

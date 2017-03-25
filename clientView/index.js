@@ -170,3 +170,15 @@ function toggleInfoOverlay() {
 //     timer = setTimeout(callback, ms);
 //   };
 // })();
+
+/////////// detect unusable browser ///////////
+
+if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+  document.body.innerHTML =
+  `roRShock is not supported on firefox right now :(
+  <br>
+  please view it in chrome or safari for now. you'll love it!
+  <br>
+  Thank you!
+  `
+}
