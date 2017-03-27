@@ -86,26 +86,36 @@ import staggerAnimation from './staggerAnimation.js';
 let compContainer = document.querySelector('.compContainer')
 
 compContainer.addEventListener('touchstart', () => {
+  // staggerAnimation(allAnimSets, 'compChangeFunctionThree');
+  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo', 'compChangeFunctionThree']
+  const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
+  staggerAnimation(allAnimSets, animComps[randomIndex]);
+
   // alert('touched');
-  staggerAnimation(allAnimSets, 'changeLocation');
-  staggerAnimation(allAnimSets, 'scale' );
+  // staggerAnimation(allAnimSets, 'changeLocation');
+  // staggerAnimation(allAnimSets, 'scale' );
+  // randomColorRequest();
   staggerAnimation(allAnimSets, 'changeElementColors' );
-  randomColorRequest();
-  changeBGColor(['.pageWrapper']);
+  // changeBGColor(['.pageWrapper']);
   closeOverlay()
 })
-
-
 
 compContainer.addEventListener('click', () => {
-  staggerAnimation(allAnimSets, 'changeLocation');
-  staggerAnimation(allAnimSets, 'scale' );
+  // staggerAnimation(allAnimSets, 'compChangeFunctionThree');
+
+  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo', 'compChangeFunctionThree']
+  const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
+  staggerAnimation(allAnimSets, animComps[randomIndex]);
+  console.log(randomIndex);
+
+  // staggerAnimation(allAnimSets, 'changeLocation');
+  // staggerAnimation(allAnimSets, 'scale' );
+  // randomColorRequest();
   staggerAnimation(allAnimSets, 'changeElementColors' );
-  randomColorRequest();
-  changeBGColor(['.pageWrapper']);
+  // changeBGColor(['.pageWrapper']);
   closeOverlay()
-  // changeBGColor(['.pageWrapper', '.searchOverlay']);
 })
+
 
 /////////// black and white mode ///////////
 import { blackAndWhiteBG, blackAndWhiteElements } from './animations.js';
