@@ -2,15 +2,26 @@ import handleChange from './handleChange.js';
 const infoOverlay = document.querySelector('.infoOverlay');
 const searchButton = document.querySelector('.searchButton');
 
+import { currentParam } from './handleChange.js'
+
 /////////// generate Icon Dom ///////////
 
+const currentSearchWord = document.querySelector('.currentSearchWord');
+currentSearchWord.addEventListener('click', function(e) { infoOverlay.classList.remove('fadeIn') })
+
 export default function generateIconDom(cleanIconObjects) {
+  const searchTerm = cleanIconObjects[0].term.toLowerCase();
   const currentSearchWord = document.querySelector('.currentSearchWord');
-  // currentSearchWord.textContent = searchTerm;
+  const currentSearch = document.querySelector('.currentSearch');
+  if(currentParam === 'randomSample') {
+    currentSearch.textContent = searchTerm;
+    currentSearchWord.textContent = searchTerm;
+  } else {
+    currentSearch.textContent = currentParam;
+    currentSearchWord.textContent = currentParam;
+  }
   const nounDataWrapper = document.querySelector('.nounDataWrapper');
   let domElementString = '';
-  const searchTerm = cleanIconObjects[0].term.toLowerCase();
-  currentSearchWord.addEventListener('click', function(e) { infoOverlay.classList.remove('fadeIn') })
   cleanIconObjects.forEach((cleanIconObject, i) => {
     let liTagString = '';
     let firstTag = cleanIconObject.tags[0];

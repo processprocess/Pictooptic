@@ -4,17 +4,16 @@ import newRequest from './newRequest.js';
 import { handleErrorRemove } from './handleError.js';
 import { blackAndWhiteBG } from '../animations.js';
 
+// import { searchTerm } from './generateIconDom.js'
+
 /////////// handle change ///////////
 
+export let currentParam = 'testbutter';
+
 export default function handleChange(param, resolve) {
+  currentParam = param;
   let nodesArray = document.querySelectorAll('.compContainer > div');
   let errorContainer = document.querySelector('.errorContainer');
-  let currentSearch = document.querySelector('.currentSearch');
-  currentSearch.textContent = param;
-
-  const currentSearchWord = document.querySelector('.currentSearchWord');
-  currentSearchWord.textContent = param;
-  // currentSearch.classList.add('currentSearchFade')
   handleErrorRemove()
   blackAndWhiteBG()
   new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })
@@ -22,5 +21,4 @@ export default function handleChange(param, resolve) {
       })
       .then(() => newRequest(param, resolve))
       .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError
-
 }

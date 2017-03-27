@@ -3,6 +3,7 @@ import { animateInRef } from '../animations.js';
 let currentValue = '';
 
 export default function checkValue(value, resolve, reject) {
+  console.log(currentValue);
   // const regex = /^[a-zA-Z]*$/;
   // if (!regex.test(value)) {
   //   reject('characters a-z only');

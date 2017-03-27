@@ -8,9 +8,7 @@ import { changeBGColor } from './animations.js'
 
 /////////// load random on enter ///////////
 
-let randomWordArray = ['abstract', 'astronaut', 'explosion', 'flower', 'girl', 'health', 'melt', 'pattern', 'person', 'smile', 'splatter', 'taco'];
-new Promise((resolve, reject) => { handleChange(randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))], resolve) }) //for debugging
-// .then(resolveResult => console.log(resolveResult))
+new Promise((resolve, reject) => { handleChange('randomSample', resolve) })
 
 /////////// random search ///////////
 
@@ -18,21 +16,11 @@ import { animateInRef } from './animations.js';
 import getRandomVal from './getRandomVal.js'
 
 const logo = document.querySelector('.logo');
-const randomWordButton = document.querySelector('.randomWord')
-
 
 logo.addEventListener('click', function(e) {
   if (animateInRef.isActive()) return;
-  let randomWord = randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))];
   closeOverlay();
-  handleChange(randomWord);
-})
-
-randomWordButton.addEventListener('click', function(e) {
-  if (animateInRef.isActive()) return;
-  let randomWord = randomWordArray[Math.floor(getRandomVal(0, randomWordArray.length))];
-  closeOverlay();
-  handleChange(randomWord);
+  handleChange('randomSample')
 })
 
 /////////// handle key presses ///////////

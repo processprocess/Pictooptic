@@ -14,16 +14,6 @@ class NounProjectApi {
           resolve(icons);
         });
       })
-    // } else if (param.charAt(0) === '#') {
-    //   param = param.slice(1)
-    //   console.log('hitting by collection');
-    //   return new Promise((resolve, reject) => {
-    //     nounProject.getCollectionIconsById(param, function (err, data) {
-    //       if(err) { return reject(err); }
-    //       const icons = data.icons;
-    //       resolve(icons);
-    //     });
-    //   })
     } else {
       return new Promise((resolve, reject) => {
         nounProject.getIconsByTerm(param, function (err, data) {
@@ -37,15 +27,3 @@ class NounProjectApi {
 }
 
 module.exports = NounProjectApi;
-
-
-// } else if (param.charAt(0) === '#') {
-  // param = param.slice(1)
-  // console.log('hitting by collection');
-  // return new Promise((resolve, reject) => {
-  //   nounProject.getCollectionIconsById(param, function (err, data) {
-  //     if(err) { return reject(err); }
-  //     const icons = data.icons;
-  //     resolve(icons);
-  //   });
-  // })

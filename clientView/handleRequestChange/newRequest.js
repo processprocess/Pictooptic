@@ -9,7 +9,9 @@ import handleError from './handleError.js';
 export default function newRequest(param, resolve) {
   request.get(`/api/words/${param}`)
          .then((data) => {
-            // document.write(JSON.stringify(data.body))
+
+          //  console.log(data);
+
             const cleanIconObjects = data.body;
             generateIconDom(cleanIconObjects);
 
