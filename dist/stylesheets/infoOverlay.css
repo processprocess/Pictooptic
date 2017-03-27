@@ -98,7 +98,7 @@
   opacity: .5;
 }
 
-.clickable:hover {
+.author:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 1);
   opacity: 1;
 }

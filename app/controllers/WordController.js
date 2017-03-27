@@ -15,8 +15,6 @@ class WordController {
       res.status(200).json(words);
     } else {
       console.log('server hit');
-      // Fetch definition from DictionaryAPI
-      // In the then, call noun project API
       NounProjectApi.fetchIcons(req.params.param)
       .then(data => {
         // res.status(200).json(data); return // for debugging

@@ -1,14 +1,14 @@
 console.clear()
 import newRequest from './handleRequestChange/newRequest.js';
-import checkValue from './handleSubmitValue/checkValue.js';
-import handleSubmitError from './handleSubmitValue/handleSubmitError.js';
+import checkValue from './handleRequestChange/checkValue.js';
+// import handleSubmitError from './handleRequestChange/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
 import { changeBGColor } from './animations.js'
 
 /////////// load random on enter ///////////
 
-new Promise((resolve, reject) => { handleChange('randomSample', resolve) })
+handleChange('randomSample')
 
 /////////// random search ///////////
 
@@ -19,7 +19,6 @@ const logo = document.querySelector('.logo');
 
 logo.addEventListener('click', function(e) {
   if (animateInRef.isActive()) return;
-  closeOverlay();
   handleChange('randomSample')
 })
 
@@ -28,15 +27,13 @@ logo.addEventListener('click', function(e) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  // console.log(e.keyCode);
+  let submitValue = overlayInput.value;
   if (e.keyCode === 27) { // escape key
     closeOverlay();
   } else if (e.keyCode === 13) { // enter
-    new Promise((resolve, reject) => { checkValue(overlayInput.value, resolve, reject); })
-      .then(checkedValue => { new Promise((resolve, reject) => { handleChange(checkedValue, resolve) }); closeOverlay(); })
-      .catch(err => { handleSubmitError(err); });
+    checkValue(submitValue)
   } else if (e.keyCode === 8) { // delete
-    if (overlayInput.value.length === 0) closeOverlay();
+    if (submitValue.length === 0) closeOverlay();
   } else if (e.keyCode < 64 || e.keyCode >= 91) { // check if alphabetic
     return;
   } else if (e.keyCode) { // any other key
@@ -70,7 +67,6 @@ function handleSearchWindow() {
 function toggleSearchOverlay() {
   if(!searchOverlay.classList.contains('searchFade')) {overlayInput.value = ''};
   searchOverlay.classList.toggle('searchFade');
-  // searchButton.parentNode.classList.toggle('navFade');
 }
 
 function closeOverlay() {
@@ -79,7 +75,6 @@ function closeOverlay() {
     document.body.click();
     searchOverlay.classList.remove('searchFade');
     infoOverlay.classList.remove('fadeIn');
-    // searchButton.parentNode.classList.remove('navFade');
   }
 }
 
@@ -163,9 +158,9 @@ function toggleInfoOverlay() {
 
 if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
   document.body.innerHTML =
-  `roRShock is not supported on firefox right now :(
+  `roRShock is not currently supported on firefox
   <br>
-  please view it in chrome or safari for now. you'll love it!
+  please view this page in chrome or safari for now.
   <br>
   Thank you!
   `

@@ -4,14 +4,13 @@ import newRequest from './newRequest.js';
 import { handleErrorRemove } from './handleError.js';
 import { blackAndWhiteBG } from '../animations.js';
 
-// import { searchTerm } from './generateIconDom.js'
-
 /////////// handle change ///////////
 
-export let currentParam = 'testbutter';
+export let currentParam = document.querySelector('.currentSearch').textContent;
 
 export default function handleChange(param, resolve) {
   currentParam = param;
+  closeOverlay();
   let nodesArray = document.querySelectorAll('.compContainer > div');
   let errorContainer = document.querySelector('.errorContainer');
   handleErrorRemove()
@@ -21,4 +20,17 @@ export default function handleChange(param, resolve) {
       })
       .then(() => newRequest(param, resolve))
       .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError
+}
+
+const infoOverlay = document.querySelector('.infoOverlay');
+const searchOverlay = document.querySelector('.searchOverlay');
+const overlayInput = document.querySelector('.searchOverlay input');
+
+function closeOverlay() {
+  if(searchOverlay.classList.contains('searchFade') || infoOverlay.classList.contains('fadeIn')) {
+    overlayInput.blur();
+    document.body.click();
+    searchOverlay.classList.remove('searchFade');
+    infoOverlay.classList.remove('fadeIn');
+  }
 }

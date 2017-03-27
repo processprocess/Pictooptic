@@ -9,15 +9,11 @@ import handleError from './handleError.js';
 export default function newRequest(param, resolve) {
   request.get(`/api/words/${param}`)
          .then((data) => {
-
           //  console.log(data);
-
             const cleanIconObjects = data.body;
             generateIconDom(cleanIconObjects);
-
             const allAnimSets = generateAnimDomElements(cleanIconObjects);
             staggerAnimation(allAnimSets, 'animateIn');
-
          })
          .catch(err => { handleError(err); })
          if (!resolve) return;
@@ -35,7 +31,3 @@ export function randomColorRequest() {
           return data.body
           })
 }
-
-
-// new Promise((resolve, reject) => { cleanDictData(data.body.returnItem.dictData.results[0], resolve); })
-//   .then(dictObject => { generateDictDom(dictObject); });

@@ -89,11 +89,39 @@ export function changeLocation(animContainerL, animContainerR) {
 
 /////////// scale ///////////
 
-export function scale(animContainerL, animContainerR) {
-  let scale = getRandomVal(0.2, responsiveScale);
+export function scale(animContainerL, animContainerR, currentSet) {
 
+
+  // let xOffset = animContainerL._gsTransform.x / (window.innerWidth/2)
+  //
+  // let scale = xOffset;
+  // TweenMax.fromTo(animContainerL, .2, { // from
+  //   scaleX: animContainerL._gsTransform.scaleX,
+  //   scaleY: animContainerL._gsTransform.scaleY,
+  // }, { // to
+  //   scale: scale,
+  //   ease: Sine.easeInOut,
+  //   modifiers: {
+  //     scale: function(value, animContainer) {
+  //       return animContainerL._gsTransform.x / (window.innerWidth/2)
+  //     },
+  //   },
+  // })
+  //
+  // TweenMax.fromTo(animContainerR, .2, { // from
+  //   scaleX: animContainerR._gsTransform.scaleX,
+  //   scaleY: animContainerR._gsTransform.scaleY,
+  // }, { // to
+  //   scaleX: function(index, target) { return scale * -1; },
+  //   scaleY: function(index, target) { return scale; },
+  //   ease: Sine.easeInOut
+  // })
+
+
+
+
+  let scale = getRandomVal(0.2, responsiveScale);
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    console.log('test');
     scale = getRandomVal(0.05, responsiveScale);
   }
 
