@@ -4,7 +4,6 @@ import checkValue from './handleRequestChange/checkValue.js';
 // import handleSubmitError from './handleRequestChange/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
-import { changeBGColor } from './animations.js'
 
 /////////// load random on enter ///////////
 
@@ -30,6 +29,7 @@ function handleKeydown(e) {
   let submitValue = overlayInput.value;
   if (e.keyCode === 27) { // escape key
     closeOverlay();
+    if(infoOverlay.classList.contains('infoevents')) closeInfo();
   } else if (e.keyCode === 13) { // enter
     checkValue(submitValue)
   } else if (e.keyCode === 8) { // delete
@@ -41,12 +41,10 @@ function handleKeydown(e) {
   }
 }
 
-/////////// close buttons ///////////
+/////////// Search Overlay //////////
 
-const closeButtons = document.querySelectorAll('.closeButton');
-closeButtons.forEach(closeButton => closeButton.addEventListener('click', () => closeOverlay() ))
-
-/////////// search window ///////////
+const closeSearch = document.querySelector('.searchOverlay .closeButton');
+closeSearch.addEventListener('click', () =>  closeOverlay())
 
 const searchOverlay = document.querySelector('.searchOverlay');
 const overlayInput = document.querySelector('.searchOverlay input');
@@ -58,7 +56,7 @@ searchButton.addEventListener('click', function(e) { handleSearchWindow(); })
 function handleSearchWindow() {
   searchInstructions.textContent = 'enter any word';
   overlayInput.focus();
-  if (infoOverlay.classList.contains('fadeIn')) infoOverlay.classList.remove('fadeIn');
+  if (infoOverlay.classList.contains('infoevents')) infoOverlay.classList.remove('infoevents');
   if (searchOverlay.classList.contains('searchFade')) return;
   overlayInput.value = '';
   toggleSearchOverlay();
@@ -70,108 +68,78 @@ function toggleSearchOverlay() {
 }
 
 function closeOverlay() {
-  if(searchOverlay.classList.contains('searchFade') || infoOverlay.classList.contains('fadeIn')) {
+  if(searchOverlay.classList.contains('searchFade')) {
     overlayInput.blur();
     document.body.click();
     searchOverlay.classList.remove('searchFade');
-    infoOverlay.classList.remove('fadeIn');
   }
 }
 
 /////////// handle image touch ///////////
 
-import { randomColorRequest } from './handleRequestChange/newRequest.js'
+import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
-let compContainer = document.querySelector('.compContainer')
-
-compContainer.addEventListener('touchstart', () => {
-  // staggerAnimation(allAnimSets, 'compChangeFunctionThree');
-  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo', 'compChangeFunctionThree']
-  const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
-  staggerAnimation(allAnimSets, animComps[randomIndex]);
-
-  // alert('touched');
-  // staggerAnimation(allAnimSets, 'changeLocation');
-  // staggerAnimation(allAnimSets, 'scale' );
-  // randomColorRequest();
-  staggerAnimation(allAnimSets, 'changeElementColors' );
-  // changeBGColor(['.pageWrapper']);
-  closeOverlay()
-})
+import { changeBGColor, changeColor, changeBorderColor } from './animations.js';
+const compContainer = document.querySelector('.compContainer');
+const infoOverlay = document.querySelector('.infoOverlay');
+const currentSearch = document.querySelector('.currentSearch');
+const currentSearchWord = document.querySelector('.currentSearchWord');
+const topRelatedTags = document.querySelector('.topRelatedTags');
+const mainRule = document.querySelector('.mainRule');
 
 compContainer.addEventListener('click', () => {
-  // staggerAnimation(allAnimSets, 'compChangeFunctionThree');
 
-  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo', 'compChangeFunctionThree']
+  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo'];
   const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
   staggerAnimation(allAnimSets, animComps[randomIndex]);
-  console.log(randomIndex);
-
-  // staggerAnimation(allAnimSets, 'changeLocation');
-  // staggerAnimation(allAnimSets, 'scale' );
-  // randomColorRequest();
+  randomColorRequest();
   staggerAnimation(allAnimSets, 'changeElementColors' );
-  // changeBGColor(['.pageWrapper']);
-  closeOverlay()
+  changeBGColor(['.pageWrapper']);
+  // changeBGColor(['.pageWrapper', '.infoOverlay']);
+  setTimeout(function(){
+    changeColor([currentSearch, currentSearchWord, topRelatedTags]);
+    changeBorderColor(mainRule);
+  }, 500 );
+  // closeOverlay();
+})
+
+/////////// info grid ///////////
+
+const gridButton = document.querySelector('.gridButton')
+gridButton.addEventListener('click', () => {
+  document.querySelector('.eventBlocker').classList.add('noEvents');
+  new Promise((resolve, reject) => { staggerAnimation(allAnimSets, 'gridIn', 10, resolve); })
+    .then((resolve) => document.querySelector('.eventBlocker').classList.remove('noEvents'))
+  infoOverlay.classList.add('infoevents')
+  searchOverlay.classList.remove('searchFade');
+})
+
+const closeInfoButton = document.querySelector('.infoOverlay .closeButton');
+closeInfoButton.addEventListener('click', closeInfo)
+
+function closeInfo() {
+  staggerAnimation(allAnimSets, 'gridOut', 1);
+  setTimeout(function(){
+    infoOverlay.classList.remove('infoevents');
+    setTimeout(function(){
+       infoOverlay.scrollTop = 0
+     }, 1000 );
+  }, 200 );
+}
+
+currentSearchWord.addEventListener('click', function(e) { closeInfo(); });
+
+compContainer.addEventListener('touchstart', () => {
 })
 
 
-/////////// black and white mode ///////////
-import { blackAndWhiteBG, blackAndWhiteElements } from './animations.js';
-// import staggerAnimation from './staggerAnimation.js';
-
-// let blackAndWhiteButton = document.querySelector('.blackWhiteButton');
-
-// blackAndWhiteButton.addEventListener('click', function(e) {
-//   blackAndWhiteBG();
-//   staggerAnimation(allAnimSets, 'changeLocation');
-//   staggerAnimation(allAnimSets, 'scale' );
-//   staggerAnimation(allAnimSets, 'blackAndWhiteElements');
-// })
-
-/////////// current search container ///////////
-
-const infoOverlay = document.querySelector('.infoOverlay');
-let currentSearch = document.querySelector('.currentSearch');
-
-currentSearch.addEventListener('click', function(e) { toggleInfoOverlay(); });
-
-function toggleInfoOverlay() {
-  infoOverlay.classList.toggle('fadeIn');
-  searchOverlay.classList.remove('searchFade');
-}
-
-//
-// currentSearch.addEventListener('animationend', function(e) {
-//   currentSearch.classList.remove('currentSearchFade');
-// })
-//
-// currentSearch.addEventListener('mouseenter', function(e) {
-//   currentSearch.classList.add('currentSearchFade')
-//   currentSearch.addEventListener('mouseleave', function(e) {
-//     delay(function(){
-//       currentSearch.classList.remove('currentSearchFade');
-//     }, 1000);
-//   })
-// })
-//
-// const delay = (function(){
-//   let timer = 0;
-//   return function(callback, ms){
-//     clearTimeout (timer);
-//     timer = setTimeout(callback, ms);
-//   };
-// })();
-
-/////////// detect unusable browser ///////////
-
-if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-  document.body.innerHTML =
-  `roRShock is not currently supported on firefox
-  <br>
-  please view this page in chrome or safari for now.
-  <br>
-  Thank you!
-  `
-}
+// if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+//   document.body.innerHTML =
+//   `roRShock is not currently supported on firefox
+//   <br>
+//   please view this page in chrome or safari for now.
+//   <br>
+//   Thank you!
+//   `
+// }

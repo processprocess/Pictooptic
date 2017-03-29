@@ -117,20 +117,75 @@ export function scale(animContainerL, animContainerR, currentSet) {
 
 }
 
-/////////// random color ///////////
+/////////// change colors ///////////
 
 export function changeBGColor(elements) {
-  // TweenMax.to('.pageWrapper', 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut, delay:0, })
-  TweenMax.to(elements, 1, { backgroundColor:colorPallete[Math.floor(getRandomVal(0, colorPallete.length))], ease:Sine.easeInOut, delay:0, })
+  TweenMax.to(elements, 1, { backgroundColor:colorPallete[0], ease:Sine.easeInOut })
 }
 
-export function changeElementColors(animContainerL, animContainerR) {
-  animContainerL = animContainerL.querySelector('.maskImage')
-  animContainerR = animContainerR.querySelector('.maskImage')
+export function changeElementColors(animContainerL, animContainerR, animData, elementsAnimatedIn) {
+  animContainerL = animContainerL.querySelector('.maskImage');
+  animContainerR = animContainerR.querySelector('.maskImage');
   let color = colorPallete[Math.floor(getRandomVal(0, colorPallete.length))];
   TweenMax.to([animContainerL, animContainerR], .2, {
     backgroundColor: color,
     ease:Sine.easeInOut
+  })
+  animData = animData.querySelector('.iconDataHolder > .iconDataImageMask');
+  TweenMax.set(animData, {
+    backgroundColor: color
+  })
+}
+
+export function changeColor(element) {
+  TweenMax.to(element, .3, { color:colorPallete[4], ease:Sine.easeInOut, delay:0, })
+}
+
+export function changeBorderColor(element) {
+  TweenMax.to(element, .3, { borderColor:colorPallete[4], ease:Sine.easeInOut, delay:0, })
+}
+
+/////////// info animations ///////////
+
+export function gridIn(animContainerL, animData) {
+  const animDataX = animData.offsetLeft + animData.offsetWidth/2;
+  const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
+
+  TweenMax.to(animContainerL, .9, {
+    x: animDataX,
+    y: animDataY,
+    rotation: 0,
+    scaleX: .5,
+    scaleY: .5,
+    ease: Sine.easeInOut,
+    onComplete: ()=> {animContainerL.classList.add('hidden'); animData.classList.add('show')}
+  })
+}
+
+export function gridOut(animContainerL, animContainerR,  animData) {
+  animData.classList.remove('show')
+  animContainerL.classList.remove('hidden')
+  const animDataX = animData.offsetLeft + animData.offsetWidth/2;
+  const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
+  const endX = window.innerWidth - animContainerR._gsTransform.x;
+  const endY = animContainerR._gsTransform.y;
+  const endRotation = animContainerR._gsTransform.rotation * -1;
+  const endscaleX = (animContainerR._gsTransform.scaleX) * -1;
+  const endscaleY = animContainerR._gsTransform.scaleY;
+
+  TweenMax.fromTo(animContainerL, .9, {
+    x: animDataX,
+    y: animDataY,
+    rotation: 0,
+    scaleX: .5,
+    scaleY: .5,
+  }, {
+    x: endX,
+    y: endY,
+    rotation: endRotation,
+    scaleX: endscaleX,
+    scaleY: endscaleY,
+    ease: Sine.easeInOut
   })
 }
 
@@ -278,7 +333,8 @@ export function compChangeFunctionThree(animContainerL, animContainerR) {
   // console.log( centerX/endX )
   // console.log( (((centerX/endX)/2) + ((centerY/endY)/2)) / 2 )
 
-  let scale = ( (centerX/endX)/2 )
+  let scale = .5
+  // let scale = ( (centerX/endX)/2 )
 
   // let minX = window.innerWidth/7;
   // let maxX = window.innerWidth/2;

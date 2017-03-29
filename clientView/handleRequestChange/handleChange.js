@@ -11,12 +11,13 @@ export let currentParam = document.querySelector('.currentSearch').textContent;
 export default function handleChange(param, resolve) {
   currentParam = param;
   closeOverlay();
-  let nodesArray = document.querySelectorAll('.compContainer > div');
+  let nodesAnimArray = Array.from(document.querySelectorAll('.compContainer > div'));
+  let nodesDataArray = Array.from(document.querySelectorAll('.nounDataWrapper > div'));
   let errorContainer = document.querySelector('.errorContainer');
   handleErrorRemove()
   blackAndWhiteBG()
-  new Promise((resolve, reject) => { animateOut(nodesArray, resolve); })
-      .then(() => { return new Promise((resolve, reject) => removeDomNodes(nodesArray, resolve))
+  new Promise((resolve, reject) => { animateOut(nodesAnimArray, resolve); })
+      .then(() => { return new Promise((resolve, reject) => removeDomNodes([nodesAnimArray, nodesDataArray], resolve))
       })
       .then(() => newRequest(param, resolve))
       .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError

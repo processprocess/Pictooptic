@@ -1,15 +1,18 @@
 .infoOverlay {
-  transition: opacity .5s ease-in-out;
+  transition: opacity .2s ease-in-out;
   position: absolute;
   width: 50%;
   height: 100%;
-  background-color: rgba(255, 255, 255, .95);
   z-index: 2000;
   -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
   pointer-events: none;
-  /*opacity: 1;*/
   opacity: 0;
+}
+
+.infoevents {
+  pointer-events: all;
+  opacity: 1;
 }
 
 .infoOverlay .closeButton {
@@ -52,10 +55,12 @@
 
 .mainRule {
   border-top: 3px solid black;
+  width: 90%
 }
 
 /*whole data wrapper*/
 .nounDataWrapper {
+  /*position: relative;*/
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -64,8 +69,6 @@
 
 /*individual data wrapper*/
 .iconDataHolder {
-  /*flex: 1;*/
-  /*flex: 1 0 auto;*/
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 1;
@@ -73,19 +76,31 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 35px 0 0px 0;
+  justify-content: center;
   min-width: 160px;
-  /*border: thin rgba(0,0,0,.2) solid;*/
+  width:200px;
+  height:200px;
+  top: -100px;
+  left: -100px;
+  margin:0 auto;
+  transform: scale(1);
+  opacity: 0;
+}
+
+.show {
+  opacity: 1;
 }
 
 .iconDataImageMask {
+  align-self: center;
   background-color: black;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   flex-shrink: 0;
 }
 
 .author {
+  /*flex:0;*/
   transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   margin-top: 10px;
@@ -182,16 +197,6 @@ ul.iconTags {
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 1);
   opacity: 1;
-}
-
-/*.iconDataRule {
-  border-top: 1px solid #a7a7a7;
-}*/
-
-.fadeIn {
-  opacity: .98;
-  display:block;
-  pointer-events: all;
 }
 
 @media only screen
