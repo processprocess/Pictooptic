@@ -145,6 +145,24 @@ export function changeBorderColor(element) {
   TweenMax.to(element, .3, { borderColor:colorPallete[4], ease:Sine.easeInOut, delay:0, })
 }
 
+/////////// letter colors ///////////
+
+export function letterColors(element) {
+  let elementSpans = Array.from(element.querySelectorAll('span'));
+  let lastColor;
+  TweenMax.to(elementSpans, .5, {
+    color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+    ease:Sine.easeInOut,
+  })
+  // let elementText = element.textContent;
+  // let newText = '';
+  // for(let i = 0 ; i < elementText.length ; i++) {
+  //   let color = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
+  //   newText += `<span style='color:${color};'>${elementText[i]}</span>`
+  // }
+  // element.innerHTML = newText;
+}
+
 /////////// info animations ///////////
 
 export function gridIn(animContainerL, animData) {

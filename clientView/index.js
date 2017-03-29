@@ -18,7 +18,8 @@ const logo = document.querySelector('.logo');
 
 logo.addEventListener('click', function(e) {
   if (animateInRef.isActive()) return;
-  handleChange('randomSample')
+  handleChange('randomSample');
+  if(infoOverlay.classList.contains('infoevents')) closeInfo();
 })
 
 /////////// handle key presses ///////////
@@ -80,7 +81,7 @@ function closeOverlay() {
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
-import { changeBGColor, changeColor, changeBorderColor } from './animations.js';
+import { changeBGColor, changeColor, changeBorderColor, letterColors } from './animations.js';
 const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
 const currentSearch = document.querySelector('.currentSearch');
@@ -96,12 +97,15 @@ compContainer.addEventListener('click', () => {
   randomColorRequest();
   staggerAnimation(allAnimSets, 'changeElementColors' );
   changeBGColor(['.pageWrapper']);
-  // changeBGColor(['.pageWrapper', '.infoOverlay']);
   setTimeout(function(){
-    changeColor([currentSearch, currentSearchWord, topRelatedTags]);
+    letterColors(currentSearchWord)
+    letterColors(currentSearch)
+    changeColor([topRelatedTags]);
     changeBorderColor(mainRule);
   }, 500 );
-  // closeOverlay();
+})
+
+compContainer.addEventListener('touchstart', () => {
 })
 
 /////////// info grid ///////////
@@ -111,7 +115,8 @@ gridButton.addEventListener('click', () => {
   document.querySelector('.eventBlocker').classList.add('noEvents');
   new Promise((resolve, reject) => { staggerAnimation(allAnimSets, 'gridIn', 10, resolve); })
     .then((resolve) => document.querySelector('.eventBlocker').classList.remove('noEvents'))
-  infoOverlay.classList.add('infoevents')
+  infoOverlay.classList.add('infoevents');
+  currentSearch.classList.add('fadeOut');
   searchOverlay.classList.remove('searchFade');
 })
 
@@ -122,6 +127,7 @@ function closeInfo() {
   staggerAnimation(allAnimSets, 'gridOut', 1);
   setTimeout(function(){
     infoOverlay.classList.remove('infoevents');
+    currentSearch.classList.remove('fadeOut');
     setTimeout(function(){
        infoOverlay.scrollTop = 0
      }, 1000 );
@@ -129,9 +135,6 @@ function closeInfo() {
 }
 
 currentSearchWord.addEventListener('click', function(e) { closeInfo(); });
-
-compContainer.addEventListener('touchstart', () => {
-})
 
 
 // if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){

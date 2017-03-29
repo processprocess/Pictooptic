@@ -6,8 +6,24 @@ import { currentParam } from './handleRequestChange/handleChange.js'
 
 export let allAnimSets = [];
 
-// export default function generateAnimDomElements (iconData) {
+let currentSearchWord = document.querySelector('.currentSearchWord');
+let currentSearch = document.querySelector('.currentSearch');
+let topRelatedTags = document.querySelector('.topRelatedTags');
+let mainRule = document.querySelector('.mainRule');
+
 export default function generateAnimDomElements (iconData, resolve) {
+  let term = iconData[0].term;
+  let spanText = '';
+  for(let i = 0 ; i < term.length ; i++) {
+    spanText += `<span>${term[i]}</span>`
+  }
+  currentSearchWord.innerHTML = spanText;
+  currentSearch.innerHTML = spanText;
+  currentSearchWord.setAttribute('style', 'color:black');
+  currentSearch.setAttribute('style', 'color:black');
+  topRelatedTags.setAttribute('style', 'color:black');
+  mainRule.setAttribute('style', 'border-color:black');
+
   allAnimSets = [];
   iconData.forEach(icon => {
     let imageURL = icon.previewURL;
@@ -38,9 +54,9 @@ export default function generateAnimDomElements (iconData, resolve) {
     iconDataImageMask.classList.add('iconDataImageMask');
     iconDataImageMask.setAttribute('style', `-webkit-mask-image: url('${imageURL}'); -webkit-mask-size: 100% 100%;`);
     iconDataImageMask.addEventListener('click',function(e) { changeLocation(animContainerL, animContainerR);  })
-    // let iconDataAuthor = document.createElement('p');
-    // iconDataHolder.appendChild(iconDataAuthor);
-    // iconDataAuthor.textContent = 'author <br> tag tag tag'
+    let iconDataAuthor = document.createElement('p');
+    iconDataHolder.appendChild(iconDataAuthor);
+    iconDataAuthor.textContent = 'author <br> tag tag tag'
 
     // ${author}
     // <ul class="iconTags">${liTagString}<ul>

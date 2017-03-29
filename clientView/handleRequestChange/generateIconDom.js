@@ -1,30 +1,30 @@
-import handleChange from './handleChange.js';
-const infoOverlay = document.querySelector('.infoOverlay');
-
-import { currentParam } from './handleChange.js'
+// import handleChange from './handleChange.js';
+// const infoOverlay = document.querySelector('.infoOverlay');
+//
+// import { currentParam } from './handleChange.js'
 
 /////////// generate Icon Dom ///////////
 
-export let currentSearchParam;
+// export let currentSearchParam;
 
-const currentSearchWord = document.querySelector('.currentSearchWord');
-currentSearchWord.addEventListener('click', function(e) { infoOverlay.classList.remove('fadeIn') })
-
-const currentSearch = document.querySelector('.currentSearch');
-const nounDataWrapper = document.querySelector('.nounDataWrapper');
+// const currentSearchWord = document.querySelector('.currentSearchWord');
+// currentSearchWord.addEventListener('click', function(e) { infoOverlay.classList.remove('fadeIn') })
+//
+// const currentSearch = document.querySelector('.currentSearch');
+// const nounDataWrapper = document.querySelector('.nounDataWrapper');
 
 export default function generateIconDom(cleanIconObjects) {
-  const searchTerm = cleanIconObjects[0].term.toLowerCase();
+  // const searchTerm = cleanIconObjects[0].term.toLowerCase();
 
-  if(currentParam === 'randomSample') {
-    currentSearch.textContent = searchTerm;
-    currentSearchWord.textContent = searchTerm;
-    currentSearchParam = searchTerm;
-  } else {
-    currentSearch.textContent = currentParam;
-    currentSearchWord.textContent = currentParam;
-    currentSearchParam = currentParam;
-  }
+  // if(currentParam === 'randomSample') {
+  //   currentSearch.textContent = searchTerm;
+  //   currentSearchWord.textContent = searchTerm;
+  //   currentSearchParam = searchTerm;
+  // } else {
+  //   currentSearch.textContent = currentParam;
+  //   currentSearchWord.textContent = currentParam;
+  //   currentSearchParam = currentParam;
+  // }
 
   // let domElementString = '';
   // cleanIconObjects.forEach((cleanIconObject, i) => {
