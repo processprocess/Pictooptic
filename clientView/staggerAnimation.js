@@ -9,7 +9,9 @@ export default function staggerAnimation(allAnimSets, animationName, interval, r
   let elementsAnimatedIn = 0;
   let myInterval = setInterval(() => {
     let currentAnimSet = allAnimSets[elementsAnimatedIn];
-    if (animationName === 'animateIn') { animateIn(currentAnimSet[0], currentAnimSet[1], elementsAnimatedIn)}
+
+    if (animationName === 'animateIn') { animateIn(currentAnimSet[0], currentAnimSet[1]) }
+
     else if (animationName === 'changeLocation') { changeLocation(currentAnimSet[0], currentAnimSet[1], elementsAnimatedIn )}
     else if (animationName === 'scale') { scale(currentAnimSet[0], currentAnimSet[1], elementsAnimatedIn)}
     else if (animationName === 'changeElementColors') { changeElementColors(currentAnimSet[0], currentAnimSet[1], currentAnimSet[2], elementsAnimatedIn)}

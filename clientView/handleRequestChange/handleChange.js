@@ -2,22 +2,29 @@ import { animateOut } from '../animations.js';
 import removeDomNodes from './removeDomNodes.js';
 import newRequest from './newRequest.js';
 import { handleErrorRemove } from './handleError.js';
-import { blackAndWhiteBG } from '../animations.js';
+import { blackAndWhiteBG, lettersOut } from '../animations.js';
+import { allAnimSets } from '../generateAnimDomElements.js';
 
 /////////// handle change ///////////
 
-export let currentParam = document.querySelector('.currentSearch').textContent;
+// export let currentParam = document.querySelectorAll('.currentSearch').textContent;
 
 export default function handleChange(param, resolve) {
-  currentParam = param;
+  // currentParam = param;
   closeOverlay();
-  let nodesAnimArray = Array.from(document.querySelectorAll('.compContainer > div'));
-  let nodesDataArray = Array.from(document.querySelectorAll('.nounDataWrapper > div'));
-  let errorContainer = document.querySelector('.errorContainer');
+  const nodesAnimArrayL = Array.from(document.querySelectorAll('.leftContainer > .anim'));
+  const nodesAnimArrayR = Array.from(document.querySelectorAll('.rightContainer > .anim'));
+  const nodesDataArray = Array.from(document.querySelectorAll('.nounDataWrapper > div'));
+  const errorContainer = document.querySelector('.errorContainer');
+  const animOutSets = allAnimSets.map(element => {return [element[0], element[1]] });
   handleErrorRemove()
   blackAndWhiteBG()
-  new Promise((resolve, reject) => { animateOut(nodesAnimArray, resolve); })
-      .then(() => { return new Promise((resolve, reject) => removeDomNodes([nodesAnimArray, nodesDataArray], resolve))
+  new Promise((resolve, reject) => {
+    lettersOut()
+    animateOut(animOutSets, {stagger:.01, duration:.75}, resolve);
+  })
+  // new Promise((resolve, reject) => { animateOut([nodesAnimArrayL, nodesAnimArrayR], {stagger:.01, duration:.5}, resolve); })
+      .then(() => { return new Promise((resolve, reject) => removeDomNodes([nodesAnimArrayL, nodesAnimArrayR, nodesDataArray], resolve))
       })
       .then(() => newRequest(param, resolve))
       .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError

@@ -18,8 +18,11 @@ const logo = document.querySelector('.logo');
 
 logo.addEventListener('click', function(e) {
   if (animateInRef.isActive()) return;
-  handleChange('randomSample');
   if(infoOverlay.classList.contains('infoevents')) closeInfo();
+  setTimeout(function(){
+    handleChange('randomSample');
+  }, 20 );
+
 })
 
 /////////// handle key presses ///////////
@@ -66,9 +69,12 @@ function handleSearchWindow() {
 function toggleSearchOverlay() {
   if(!searchOverlay.classList.contains('searchFade')) {overlayInput.value = ''};
   searchOverlay.classList.toggle('searchFade');
+  document.querySelector('.rightContainer').classList.toggle('tilt');
+  // searchOverlay.classList.toggle('tilt');
 }
 
 function closeOverlay() {
+  document.querySelector('.rightContainer').classList.remove('tilt');
   if(searchOverlay.classList.contains('searchFade')) {
     overlayInput.blur();
     document.body.click();
@@ -81,25 +87,25 @@ function closeOverlay() {
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
 import staggerAnimation from './staggerAnimation.js';
-import { changeBGColor, changeColor, changeBorderColor, letterColors } from './animations.js';
+import { changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
 const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
-const currentSearch = document.querySelector('.currentSearch');
+const currentSearch = document.querySelectorAll('.currentSearch');
 const currentSearchWord = document.querySelector('.currentSearchWord');
 const topRelatedTags = document.querySelector('.topRelatedTags');
 const mainRule = document.querySelector('.mainRule');
 
 compContainer.addEventListener('click', () => {
 
-  const animComps = ['compChangeFunctionOne', 'compChangeFunctionTwo'];
+  const animComps = ['compChangeFunctionTwo'];
   const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
   staggerAnimation(allAnimSets, animComps[randomIndex]);
   randomColorRequest();
   staggerAnimation(allAnimSets, 'changeElementColors' );
   changeBGColor(['.pageWrapper']);
   setTimeout(function(){
-    letterColors(currentSearchWord)
     letterColors(currentSearch)
+    letterColors(currentSearchWord)
     changeColor([topRelatedTags]);
     changeBorderColor(mainRule);
   }, 500 );
@@ -116,22 +122,25 @@ gridButton.addEventListener('click', () => {
   new Promise((resolve, reject) => { staggerAnimation(allAnimSets, 'gridIn', 10, resolve); })
     .then((resolve) => document.querySelector('.eventBlocker').classList.remove('noEvents'))
   infoOverlay.classList.add('infoevents');
-  currentSearch.classList.add('fadeOut');
+  // currentSearch.classList.add('fadeOut');
   searchOverlay.classList.remove('searchFade');
+  lettersOut()
 })
 
 const closeInfoButton = document.querySelector('.infoOverlay .closeButton');
 closeInfoButton.addEventListener('click', closeInfo)
 
 function closeInfo() {
+  lettersIn()
   staggerAnimation(allAnimSets, 'gridOut', 1);
   setTimeout(function(){
     infoOverlay.classList.remove('infoevents');
-    currentSearch.classList.remove('fadeOut');
+    // currentSearch.classList.remove('fadeOut');
     setTimeout(function(){
        infoOverlay.scrollTop = 0
      }, 1000 );
   }, 200 );
+
 }
 
 currentSearchWord.addEventListener('click', function(e) { closeInfo(); });

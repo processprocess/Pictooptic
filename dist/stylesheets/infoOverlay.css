@@ -8,6 +8,7 @@
   overflow-y: scroll;
   pointer-events: none;
   opacity: 0;
+  overflow: visible;
 }
 
 .infoevents {
@@ -22,6 +23,18 @@
 .infoWrapper {
   margin: 0 40px;
   /*border: 1px solid grey;*/
+}
+
+/* --------- gradient --------- */
+
+.gradient {
+  position: absolute;
+  z-index: 5000;
+  left: 100%;
+  width: 2%;
+  height: 100%;
+  /*display: inline-block;*/
+  background: linear-gradient(to right, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0)); /* Standard syntax */
 }
 
 /* --------- Noun Data --------- */

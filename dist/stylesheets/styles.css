@@ -72,53 +72,58 @@ body {
   overflow: hidden;
 }
 
-/* --------- navigation --------- */
-
-/*.mainNav {*/
-  /*position: absolute;*/
-  /*width:100%;*/
-  /*width:200px;*/
-  /*height: 50px;*/
-  /*display: flex;*/
-  /*border: 1px solid rgba(0, 0, 255, 1);*/
-/*}*/
-
-/*button {*/
-  /*z-index: 1500;*/
-  /*transition: opacity .2s;*/
-  /*cursor: pointer;*/
-  /*height: 100%;*/
-  /*display: flex;*/
-  /*opacity: .2;*/
-  /*border: 1px solid rgba(255, 0, 255, 1);*/
-/*}*/
-
-/*.mainNav button {
-  width: 100%;
-}*/
-
-/*.mainNav img,
-.infoButton img {
-  margin: 0 auto;
-  height: 25px;
-  border: 1px solid rgba(0, 0, 255, 1);
-}*/
-
-/*button:hover {
-  opacity: 1;
-}*/
-
-/*button.infoButton {
+.leftContainer {
   position: absolute;
-  right: 0;
-  width: 40px;
-  height: 50px;
-  border: 1px solid rgba(255, 0, 0, 1);
-}*/
+  top:0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+  transform: scaleX(1);
+}
 
-/*button.infoButton img {
-  height: 20px;
-}*/
+.rightContainer {
+  transition: transform 1s ease, opacity 1s ease;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  transform-origin: left;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 50%;
+  width: 50%;
+  overflow: hidden;
+}
+
+.tilt {
+  transform: rotateY( 50deg ) skewY(-10deg) ;
+  opacity: .5;
+  /*background: linear-gradient(to right, rgba(255, 255, 255, .3), rgba(255, 255, 255, 0)); /* Standard syntax */*/
+}
+
+.searchOverlay {
+  transition: opacity 1s ease, transform 1s ease;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  transform-origin: left;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  z-index: 2000;
+  pointer-events: none;
+  /*opacity:1;*/
+  opacity:0;
+  overflow: hidden;
+  transform: rotateY( 60deg ) skewY(5deg) ;
+}
+
+.searchFade {
+  transform: rotateY( 0deg ) skewY(0deg) ;
+  display:block;
+  pointer-events:all;
+  opacity: 1;
+}
 
 /* --------- buttons --------- */
 
@@ -187,18 +192,6 @@ button:hover {
 }
 
 /* --------- search overlay --------- */
-
-.searchOverlay {
-  transition: opacity .5s ease-in-out;
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, .9);
-  z-index: 2000;
-  pointer-events: none;
-  /*opacity:1;*/
-  opacity:0;
-}
 
 .searchLetters {
   font-size: 20vh;
@@ -294,12 +287,6 @@ button:hover {
     100% {opacity: 1; }
 }
 
-.searchFade {
-  display:block;
-  pointer-events:all;
-  opacity: 1;
-}
-
 button.logo{
   position: absolute;
   z-index: 3000;
@@ -325,7 +312,7 @@ button.noun-project {
 }
 
 .currentSearch {
-  transition: opacity .5s;
+  /*transition: opacity .5s;*/
   /*border-bottom: 1px solid rgba(0, 0, 0, .3);*/
   position: absolute;
   color: black;

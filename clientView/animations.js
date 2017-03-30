@@ -23,35 +23,64 @@ setResponsiveScale()
 export let animateInRef; //used in checkvalue.js
 
 export function animateIn(animContainerL, animContainerR) {
-  let animateIn = new TimelineLite();
-  let startY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
-  let startX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
-  let rotation = getRandomVal(0, 30);
-  let scale = getRandomVal(0.2, responsiveScale);
 
-  animateInRef = animateIn.fromTo([animContainerL, animContainerR], 1, {
-    y: startY,
-    x: startX,
-    rotation: 0,
-    scale: 0,
-  }, {
-    y: startY,
-    x: startX,
-    rotation: rotation,
-    scale: scale,
+  let startX = window.innerWidth/2 ;
+  let startY = getRandomVal(window.innerHeight/2, window.innerHeight/2);
+  let endX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
+  let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
+  let scale = getRandomVal(0.2, responsiveScale);
+  let rotation = getRandomVal(0, 30);
+
+  TweenMax.set([animContainerL, animContainerR], {
+    scaleY: scale,
+    scaleX: scale,
     modifiers: {
-      x: function(value, animContainer) {
-        return (animContainer === animContainerR) ? window.innerWidth - value : value;
-      },
       scaleX: function(value, animContainer) {
         return (animContainer === animContainerR) ? -value : value;
+      },
+    }
+  })
+
+  animateInRef = TweenMax.fromTo([animContainerL, animContainerR], 2, {
+    y: startY,
+    x: () => startX + animContainerL.getBoundingClientRect().height,
+    rotation: 0,
+  }, {
+    y: endY,
+    x: endX,
+    rotation: rotation,
+    modifiers: {
+      x: function(value, animContainer) {
+        return (animContainer === animContainerR) ? window.innerWidth / 2 - value : value;
       },
       rotation: function(value, animContainer) {
         return (animContainer === animContainerR) ? -value : value;
       }
     },
     ease: Sine.easeInOut
-  }, 'start')
+  })
+
+}
+
+/////////// animate out ///////////
+
+export function animateOut(elements, options, resolve) {
+  let windowCalc = window.innerWidth/2;
+
+  options = options || {};
+  let duration = options.duration || 0.1;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite({onComplete:resolve});
+
+  tl.staggerTo(elements, duration, {
+    x: function(index, element) {
+      let windowAndBounding = windowCalc + element.getBoundingClientRect().width;
+      // return element.classList.contains('rightContainer') ? element._gsTransform.x - windowAndBounding : element._gsTransform.x + windowAndBounding;
+      return element.classList.contains('animContainerR') ? element._gsTransform.x - windowAndBounding : element._gsTransform.x + windowAndBounding;
+    },
+    ease:Sine.easeIn,
+  }, stagger)
+  return tl;
 
 }
 
@@ -81,7 +110,7 @@ export function changeLocation(animContainerL, animContainerR) {
     rotation: animContainerR._gsTransform.rotation,
   }, { // to
     y: endY,
-    x: window.innerWidth - endX,
+    x: window.innerWidth / 2 - endX,
     rotation: function(index, target) { return rotation * -1; },
     ease: Sine.easeInOut
   })
@@ -147,20 +176,56 @@ export function changeBorderColor(element) {
 
 /////////// letter colors ///////////
 
-export function letterColors(element) {
-  let elementSpans = Array.from(element.querySelectorAll('span'));
-  let lastColor;
-  TweenMax.to(elementSpans, .5, {
-    color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-    ease:Sine.easeInOut,
+export function letterColors(elements) {
+  if(elements.length > 0) {
+    elements.forEach(element => {
+      let elementSpans = Array.from(element.querySelectorAll('span'));
+      let lastColor;
+
+      TweenMax.to(elementSpans, .5, {
+        color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+        ease:Sine.easeInOut,
+      })
+    })
+  } else {
+    let elementSpans = Array.from(elements.querySelectorAll('span'));
+    let lastColor;
+
+    TweenMax.to(elementSpans, .5, {
+      color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
+  }
+
+}
+
+/////////// move letters in ///////////
+
+export function lettersIn() {
+  let currentSearch = document.querySelectorAll('.currentSearch');
+  TweenMax.to(currentSearch, 1.5, {
+    x: function(index, element) {
+      return element.offsetParent.classList.contains('leftContainer') ? window.innerWidth/4 : window.innerWidth/4 * -1
+    },
+    ease:Sine.easeInOut
   })
-  // let elementText = element.textContent;
-  // let newText = '';
-  // for(let i = 0 ; i < elementText.length ; i++) {
-  //   let color = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
-  //   newText += `<span style='color:${color};'>${elementText[i]}</span>`
-  // }
-  // element.innerHTML = newText;
+}
+
+/////////// move letters out ///////////
+
+export function lettersOut() {
+  let currentSearch = document.querySelectorAll('.currentSearch');
+  TweenMax.to(currentSearch, 1.5, {
+    x: function(index, element) {
+      const children = element.children;
+      let elementInnerWidth = 0;
+      for (var i = 0; i < children.length; i++) {
+        elementInnerWidth += children[i].offsetWidth;
+      }
+      return element.offsetParent.classList.contains('leftContainer') ? window.innerWidth/4 + elementInnerWidth : window.innerWidth/4 * -1 - elementInnerWidth
+    },
+    ease:Sine.easeInOut
+  })
 }
 
 /////////// info animations ///////////
@@ -185,7 +250,7 @@ export function gridOut(animContainerL, animContainerR,  animData) {
   animContainerL.classList.remove('hidden')
   const animDataX = animData.offsetLeft + animData.offsetWidth/2;
   const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
-  const endX = window.innerWidth - animContainerR._gsTransform.x;
+  const endX = window.innerWidth/2 - animContainerR._gsTransform.x;
   const endY = animContainerR._gsTransform.y;
   const endRotation = animContainerR._gsTransform.rotation * -1;
   const endscaleX = (animContainerR._gsTransform.scaleX) * -1;
@@ -221,12 +286,6 @@ export function blackAndWhiteElements(animContainerL, animContainerR) {
     backgroundColor: oddOrEven%2 === 0 ? 'black' : 'white',
     ease:Sine.easeInOut
   })
-}
-
-/////////// animate out ///////////
-
-export function animateOut(currentAnims, resolve) {
-  TweenMax.to(currentAnims, 1, { scale:0, ease:Sine.easeInOut, onComplete:resolve })
 }
 
 /////////// comp change One ///////////
@@ -276,29 +335,19 @@ export function compChangeFunctionOne(animContainerL, animContainerR, elementsAn
 
 }
 
-/////////// comp change Two GRID ///////////
+/////////// comp change Two grid angle ///////////
 
 export function compChangeFunctionTwo(animContainerL, animContainerR) {
-
-  // let minX = 0;
   let minX = window.innerWidth/7;
   let maxX = window.innerWidth/2;
-
   let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
-  let rotation = 0
-  // let rotation = getRandomVal(0, 180);
-
   let endX = getRandomVal(minX, maxX);
-  // let endX = getRandomVal(0, maxX);
-  // let scale = ((endX - minX) / (maxX - minX));
+
+  let rotation = 0
   let scale = (((endX - minX) * responsiveScale) / (maxX - minX))  ;
-  // let scale = (endX) / (maxX);
-  // let scale = (maxX - endX) / (maxX);
-  // console.log(scale);
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     scale = (((endX - minX)* responsiveScale) / (maxX - minX));
   }
-
 
   TweenMax.fromTo(animContainerL, 1, { // from
     y: animContainerL._gsTransform.y,
@@ -322,7 +371,7 @@ export function compChangeFunctionTwo(animContainerL, animContainerR) {
     scaleY: animContainerR._gsTransform.scaleY,
   }, { // to
     y: endY,
-    x: window.innerWidth - endX,
+    x: window.innerWidth / 2 - endX,
     rotation: function(index, target) { return rotation * -1; },
     scaleX: function(index, target) { return scale * -1; },
     scaleY: function(index, target) { return scale; },
