@@ -228,9 +228,10 @@ export function lettersOut() {
   })
 }
 
-/////////// info animations ///////////
+/////////// grid in ///////////
 
-export function gridIn(animContainerL, animData) {
+export function gridIn(animContainerL, animData, resolve) {
+
   const animDataX = animData.offsetLeft + animData.offsetWidth/2;
   const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
 
@@ -241,12 +242,57 @@ export function gridIn(animContainerL, animData) {
     scaleX: .5,
     scaleY: .5,
     ease: Sine.easeInOut,
-    onComplete: ()=> {animContainerL.classList.add('hidden'); animData.classList.add('show')}
+    onComplete: ()=> {
+      animContainerL.classList.add('hidden');
+      animData.classList.add('show');
+      resolve();
+    }
   })
 }
 
+export function gridInTest(elements, options, resolve) {
+  document.querySelector('.gradient').classList.add('show');
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite({onComplete:resolve});
+
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+
+    const animDataX = animData.offsetLeft + animData.offsetWidth/2;
+    const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
+
+    tl.add(
+      TweenMax.to(animContainerL, duration, {
+        x: animDataX,
+        y: animDataY,
+        rotation: 0,
+        scaleX: .5,
+        scaleY: .5,
+        ease: Sine.easeInOut,
+        onComplete: ()=> {
+          animContainerL.classList.add('hidden');
+          animData.querySelector('.iconDataImageMask').classList.add('show');
+          // animData.classList.add('show');
+        },
+        delay:stagger,
+      })
+    );
+
+  })
+
+  return tl;
+}
+
+
+/////////// grid out ///////////
+
 export function gridOut(animContainerL, animContainerR,  animData) {
-  animData.classList.remove('show')
+  document.querySelector('.gradient').classList.remove('show')
+  animData.querySelector('.iconDataImageMask').classList.remove('show');
   animContainerL.classList.remove('hidden')
   const animDataX = animData.offsetLeft + animData.offsetWidth/2;
   const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;

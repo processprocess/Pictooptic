@@ -107,6 +107,8 @@ compContainer.addEventListener('click', () => {
     letterColors(currentSearch)
     letterColors(currentSearchWord)
     changeColor([topRelatedTags]);
+    changeColor(document.querySelectorAll('.author'));
+    changeColor(document.querySelectorAll('li'));
     changeBorderColor(mainRule);
   }, 500 );
 })
@@ -116,15 +118,26 @@ compContainer.addEventListener('touchstart', () => {
 
 /////////// info grid ///////////
 
+import { gridInTest } from './animations.js';
+// document.querySelector('.testButton').addEventListener('click', function(e) {
+//    gridInTest(allAnimSets, {stagger:-.49, duration:.5}, resolve)
+// })
+
 const gridButton = document.querySelector('.gridButton')
 gridButton.addEventListener('click', () => {
+
   document.querySelector('.eventBlocker').classList.add('noEvents');
-  new Promise((resolve, reject) => { staggerAnimation(allAnimSets, 'gridIn', 10, resolve); })
-    .then((resolve) => document.querySelector('.eventBlocker').classList.remove('noEvents'))
-  infoOverlay.classList.add('infoevents');
-  // currentSearch.classList.add('fadeOut');
-  searchOverlay.classList.remove('searchFade');
   lettersOut()
+  setTimeout(function(){
+    infoOverlay.classList.add('infoevents');
+  }, 850 );
+
+  new Promise((resolve, reject) => { gridInTest(allAnimSets, {stagger:-.99, duration:1}, resolve) })
+    .then((resolve) => {
+      searchOverlay.classList.remove('searchFade');
+      document.querySelector('.eventBlocker').classList.remove('noEvents');
+    })
+
 })
 
 const closeInfoButton = document.querySelector('.infoOverlay .closeButton');

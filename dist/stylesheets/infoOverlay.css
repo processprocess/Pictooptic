@@ -8,7 +8,7 @@
   overflow-y: scroll;
   pointer-events: none;
   opacity: 0;
-  overflow: visible;
+  /*overflow: visible;*/
 }
 
 .infoevents {
@@ -28,13 +28,14 @@
 /* --------- gradient --------- */
 
 .gradient {
+  transition: opacity 1s;
   position: absolute;
-  z-index: 5000;
-  left: 100%;
+  z-index: 10000;
+  left: 50%;
   width: 2%;
   height: 100%;
-  /*display: inline-block;*/
-  background: linear-gradient(to right, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0)); /* Standard syntax */
+  background: linear-gradient(to right, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0));
+  opacity: 0;
 }
 
 /* --------- Noun Data --------- */
@@ -68,16 +69,14 @@
 
 .mainRule {
   border-top: 3px solid black;
-  width: 90%
+  width: 100%
 }
 
 /*whole data wrapper*/
 .nounDataWrapper {
-  /*position: relative;*/
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  /*border: 1px solid blue;*/
 }
 
 /*individual data wrapper*/
@@ -97,10 +96,6 @@
   left: -100px;
   margin:0 auto;
   transform: scale(1);
-  opacity: 0;
-}
-
-.show {
   opacity: 1;
 }
 
@@ -110,26 +105,40 @@
   width: 100px;
   height: 100px;
   flex-shrink: 0;
+  opacity: 0;
+}
+
+.show {
+  opacity: 1;
 }
 
 .author {
-  /*flex:0;*/
-  transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  margin-top: 10px;
+  position: absolute;
+  height: 0;
+  display: block;
+  top: 160px;
   font-size: 1em;
   cursor: pointer;
-  /*letter-spacing: -.5vh;*/
-  /*line-height: 0px;*/
   font-weight: 500;
-  /*left: 20px;*/
-  opacity: .5;
 }
 
-.author:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 1);
-  opacity: 1;
+ul {
+  position: absolute;
+  height: 0;
+  top: 175px;
+  display: block;
 }
+
+li.iconTag {
+  display: inline-block;
+  margin: 0 3px;
+  font-size: 0.707em;
+  cursor: pointer;
+  /*border-bottom: 1px solid rgba(0, 0, 0, .2);*/
+}
+
+
+
 
 /*.iconTags li {
   transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
@@ -192,13 +201,7 @@
   font-weight: bold;
 }*/
 
-ul.iconTags {
-  max-width: 200px;
-  font-weight: bold;
-  font-size: 0.707em;
-}
-
-.iconTags li {
+/*.iconTags li {
   transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   display: inline-block;
@@ -210,7 +213,7 @@ ul.iconTags {
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 1);
   opacity: 1;
-}
+}*/
 
 @media only screen
   and (max-width: 800px)
