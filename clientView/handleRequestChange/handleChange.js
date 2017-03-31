@@ -1,9 +1,9 @@
-import { animateOut } from '../animations.js';
 import removeDomNodes from './removeDomNodes.js';
 import newRequest from './newRequest.js';
 import { handleErrorRemove } from './handleError.js';
-import { blackAndWhiteElements, blackAndWhiteBG, lettersOut } from '../animations.js';
+import { blackAndWhiteElements, blackAndWhiteBG, lettersOut, animateOut } from '../animations.js';
 import { allAnimSets } from '../generateAnimDomElements.js';
+import staggerAnimation from '../staggerAnimation.js';
 
 /////////// handle change ///////////
 

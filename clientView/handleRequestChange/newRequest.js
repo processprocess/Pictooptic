@@ -2,6 +2,7 @@ import request from 'superagent';
 import generateAnimDomElements from '../generateAnimDomElements.js';
 import handleError from './handleError.js';
 import { lettersIn, animateIn } from '../animations.js';
+import staggerAnimation from '../staggerAnimation.js';
 
 /////////// handle request ///////////
 
@@ -10,7 +11,12 @@ export default function newRequest(param, resolve) {
          .then((data) => {
             const cleanIconObjects = data.body;
             const animSets = generateAnimDomElements(cleanIconObjects);
-            animateIn(animSets, {stagger:-1.49, duration:1.5})
+
+            new Promise(function(resolve, reject) {
+              staggerAnimation(animSets, 'animateIn', 30, resolve );
+            }).then((resolve) => console.log('animateIn done'))
+
+            // animateIn(animSets, {stagger:-1.46, duration:1.5})
             lettersIn()
          })
          .catch(err => { handleError(err); console.log(err)})

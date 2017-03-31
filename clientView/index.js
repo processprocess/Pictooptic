@@ -77,6 +77,7 @@ function closeOverlay() {
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
 import { compChangeGrid, changeElementColors, changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
+import staggerAnimation from './staggerAnimation.js';
 const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
 const currentSearch = document.querySelectorAll('.currentSearch');
@@ -89,11 +90,15 @@ document.querySelector('.testButton').addEventListener('click', function(e) {
 })
 
 compContainer.addEventListener('click', () => {
-  compChangeGrid(allAnimSets, {stagger:-.88, duration:.9});
+  new Promise(function(resolve, reject) {
+    staggerAnimation(allAnimSets, 'compChangeGrid', 30, resolve );
+  }).then((resolve) => console.log('compChangeGrid done'))
   randomColorRequest();
   setTimeout(function(){
+    new Promise(function(resolve, reject) {
+      staggerAnimation(allAnimSets, 'changeElementColors', 30, resolve );
+    }).then((resolve) => console.log('changeElementColors done'))
     changeBGColor(['.pageWrapper']);
-    changeElementColors(allAnimSets, {stagger:-.48, duration:.5});
     letterColors(currentSearch)
     letterColors(currentSearchWord)
     changeColor([topRelatedTags]);
@@ -111,21 +116,20 @@ compContainer.addEventListener('touchstart', () => {
 import { gridIn, gridOut } from './animations.js';
 
 const gridButton = document.querySelector('.gridButton')
-gridButton.addEventListener('click', () => {
 
+gridButton.addEventListener('click', () => {
   document.querySelector('.eventBlocker').classList.add('noEvents');
   lettersOut()
-
   setTimeout(function(){
     infoOverlay.classList.add('infoevents');
-  }, 850 );
-
-  new Promise((resolve, reject) => { gridIn(allAnimSets, {stagger:-.99, duration:1}, resolve) })
-    .then((resolve) => {
-      searchOverlay.classList.remove('searchFade');
-      document.querySelector('.eventBlocker').classList.remove('noEvents');
-    })
-
+  }, 750 );
+  new Promise(function(resolve, reject) {
+    staggerAnimation(allAnimSets, 'gridIn', 10, resolve );
+  }).then((resolve) => {
+    searchOverlay.classList.remove('searchFade');
+    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    console.log('gridIn done');
+  })
 })
 
 const closeInfoButton = document.querySelector('.infoOverlay .closeButton');
@@ -133,7 +137,13 @@ closeInfoButton.addEventListener('click', closeInfo)
 
 function closeInfo() {
   lettersIn()
-  gridOut(allAnimSets, {stagger:-.89, duration:.9})
+
+  new Promise(function(resolve, reject) {
+    staggerAnimation(allAnimSets, 'gridOut', 10, resolve );
+  }).then((resolve) => console.log('gridOut done'))
+
+  // gridOut(allAnimSets, {stagger:-.89, duration:.9})
+
   setTimeout(function(){
     infoOverlay.classList.remove('infoevents');
     setTimeout(function(){
