@@ -1,28 +1,19 @@
 console.clear()
 import newRequest from './handleRequestChange/newRequest.js';
 import checkValue from './handleRequestChange/checkValue.js';
-// import handleSubmitError from './handleRequestChange/handleSubmitError.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import handleWindowResize from './handleWindowResize.js';
-
-/////////// load random on enter ///////////
-
-handleChange('randomSample')
+import getRandomVal from './getRandomVal.js'
 
 /////////// random search ///////////
 
-import { animateInRef } from './animations.js';
-import getRandomVal from './getRandomVal.js'
+handleChange('randomSample') // for debugging
 
 const logo = document.querySelector('.logo');
 
 logo.addEventListener('click', function(e) {
-  if (animateInRef.isActive()) return;
   if(infoOverlay.classList.contains('infoevents')) closeInfo();
-  setTimeout(function(){
-    handleChange('randomSample');
-  }, 20 );
-
+  handleChange('randomSample');
 })
 
 /////////// handle key presses ///////////
@@ -70,7 +61,6 @@ function toggleSearchOverlay() {
   if(!searchOverlay.classList.contains('searchFade')) {overlayInput.value = ''};
   searchOverlay.classList.toggle('searchFade');
   document.querySelector('.rightContainer').classList.toggle('tilt');
-  // searchOverlay.classList.toggle('tilt');
 }
 
 function closeOverlay() {
@@ -86,8 +76,7 @@ function closeOverlay() {
 
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
-import staggerAnimation from './staggerAnimation.js';
-import { changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
+import { compChangeGrid, changeElementColors, changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
 const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
 const currentSearch = document.querySelectorAll('.currentSearch');
@@ -95,22 +84,23 @@ const currentSearchWord = document.querySelector('.currentSearchWord');
 const topRelatedTags = document.querySelector('.topRelatedTags');
 const mainRule = document.querySelector('.mainRule');
 
-compContainer.addEventListener('click', () => {
+document.querySelector('.testButton').addEventListener('click', function(e) {
+   changeElementColors(allAnimSets, {stagger:-.39, duration:.4});
+})
 
-  const animComps = ['compChangeFunctionTwo'];
-  const randomIndex = Math.floor(Math.random() * (animComps.length - 0) + 0);
-  staggerAnimation(allAnimSets, animComps[randomIndex]);
+compContainer.addEventListener('click', () => {
+  compChangeGrid(allAnimSets, {stagger:-.88, duration:.9});
   randomColorRequest();
-  staggerAnimation(allAnimSets, 'changeElementColors' );
-  changeBGColor(['.pageWrapper']);
   setTimeout(function(){
+    changeBGColor(['.pageWrapper']);
+    changeElementColors(allAnimSets, {stagger:-.48, duration:.5});
     letterColors(currentSearch)
     letterColors(currentSearchWord)
     changeColor([topRelatedTags]);
     changeColor(document.querySelectorAll('.author'));
     changeColor(document.querySelectorAll('li'));
     changeBorderColor(mainRule);
-  }, 500 );
+  }, 100 );
 })
 
 compContainer.addEventListener('touchstart', () => {
@@ -118,21 +108,19 @@ compContainer.addEventListener('touchstart', () => {
 
 /////////// info grid ///////////
 
-import { gridInTest } from './animations.js';
-// document.querySelector('.testButton').addEventListener('click', function(e) {
-//    gridInTest(allAnimSets, {stagger:-.49, duration:.5}, resolve)
-// })
+import { gridIn, gridOut } from './animations.js';
 
 const gridButton = document.querySelector('.gridButton')
 gridButton.addEventListener('click', () => {
 
   document.querySelector('.eventBlocker').classList.add('noEvents');
   lettersOut()
+
   setTimeout(function(){
     infoOverlay.classList.add('infoevents');
   }, 850 );
 
-  new Promise((resolve, reject) => { gridInTest(allAnimSets, {stagger:-.99, duration:1}, resolve) })
+  new Promise((resolve, reject) => { gridIn(allAnimSets, {stagger:-.99, duration:1}, resolve) })
     .then((resolve) => {
       searchOverlay.classList.remove('searchFade');
       document.querySelector('.eventBlocker').classList.remove('noEvents');
@@ -145,10 +133,9 @@ closeInfoButton.addEventListener('click', closeInfo)
 
 function closeInfo() {
   lettersIn()
-  staggerAnimation(allAnimSets, 'gridOut', 1);
+  gridOut(allAnimSets, {stagger:-.89, duration:.9})
   setTimeout(function(){
     infoOverlay.classList.remove('infoevents');
-    // currentSearch.classList.remove('fadeOut');
     setTimeout(function(){
        infoOverlay.scrollTop = 0
      }, 1000 );

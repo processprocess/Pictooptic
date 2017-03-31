@@ -33,8 +33,7 @@ export default function generateAnimDomElements (iconData, resolve) {
   topRelatedTags.setAttribute('style', 'color:black');
   mainRule.setAttribute('style', 'border-color:black');
 
-  allAnimSets = [];
-  iconData.forEach(icon => {
+  iconData.forEach((icon, index) => {
     // ICON ANIM
     let imageURL = icon.previewURL;
     let animContainerL = document.createElement('div');
@@ -49,8 +48,8 @@ export default function generateAnimDomElements (iconData, resolve) {
     // //  animContainerR.innerHTML = `<img src=${imageURL}>`;
     leftContainer.appendChild(animContainerL);
     rightContainer.appendChild(animContainerR);
-    animContainerL.addEventListener('mouseover',()=> { changeLocation(animContainerL, animContainerR); })
-    animContainerR.addEventListener('mouseover',()=> { changeLocation(animContainerL, animContainerR); })
+    animContainerL.addEventListener('mouseover',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9}); })
+    animContainerR.addEventListener('mouseover',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9}); })
 
     // ICON DATA
     let iconDataHolder = document.createElement('div');
@@ -59,7 +58,7 @@ export default function generateAnimDomElements (iconData, resolve) {
     iconDataHolder.appendChild(iconDataImageMask);
     iconDataImageMask.classList.add('iconDataImageMask');
     iconDataImageMask.setAttribute('style', `-webkit-mask-image: url('${imageURL}'); -webkit-mask-size: 100% 100%;`);
-    iconDataImageMask.addEventListener('click',()=> { changeLocation(animContainerL, animContainerR);  })
+    iconDataImageMask.addEventListener('click',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9});  })
     let iconDataAuthor = document.createElement('p');
     iconDataAuthor.classList.add('author');
     iconDataHolder.appendChild(iconDataAuthor);

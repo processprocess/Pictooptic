@@ -1,8 +1,7 @@
 import request from 'superagent';
 import generateAnimDomElements from '../generateAnimDomElements.js';
-import staggerAnimation from '../staggerAnimation.js';
 import handleError from './handleError.js';
-import { lettersIn } from '../animations.js';
+import { lettersIn, animateIn } from '../animations.js';
 
 /////////// handle request ///////////
 
@@ -10,8 +9,8 @@ export default function newRequest(param, resolve) {
   request.get(`/api/words/${param}`)
          .then((data) => {
             const cleanIconObjects = data.body;
-            const allAnimSets = generateAnimDomElements(cleanIconObjects);
-            staggerAnimation(allAnimSets, 'animateIn', 30);
+            const animSets = generateAnimDomElements(cleanIconObjects);
+            animateIn(animSets, {stagger:-1.49, duration:1.5})
             lettersIn()
          })
          .catch(err => { handleError(err); console.log(err)})

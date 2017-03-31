@@ -3,69 +3,71 @@ import ModifiersPlugin from '../node_modules/gsap/ModifiersPlugin.js';
 import getRandomVal from './getRandomVal.js';
 import { colorPallete } from './handleRequestChange/newRequest.js'
 
-/////////// responsive scaling ///////////
-
-let responsiveScale;
-
-function setResponsiveScale() {
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    responsiveScale = .35
-  } else {
-    // responsiveScale = (window.innerWidth * window.innerHeight) / 2073600;
-    responsiveScale = ((window.innerWidth * window.innerHeight) / (window.screen.availHeight * window.screen.availWidth)) * 1.5;
-  }
-}
-window.addEventListener('resize', () => setResponsiveScale())
-setResponsiveScale()
+import { windowSize } from './handleWindowResize.js'
+import { responsiveScale } from './handleWindowResize.js'
 
 /////////// animateIn ///////////
 
-export let animateInRef; //used in checkvalue.js
+export function animateIn(elements, options) {
 
-export function animateIn(animContainerL, animContainerR) {
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
 
-  let startX = window.innerWidth/2 ;
-  let startY = getRandomVal(window.innerHeight/2, window.innerHeight/2);
-  let endX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
-  let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
-  let scale = getRandomVal(0.2, responsiveScale);
-  let rotation = getRandomVal(0, 30);
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
 
-  TweenMax.set([animContainerL, animContainerR], {
-    scaleY: scale,
-    scaleX: scale,
-    modifiers: {
-      scaleX: function(value, animContainer) {
-        return (animContainer === animContainerR) ? -value : value;
-      },
-    }
-  })
+    let startX = windowSize.width / 2 ;
+    let startY = windowSize.height / 2;
+    let endX = getRandomVal(windowSize.width/5, windowSize.width/2);
+    let endY = getRandomVal(windowSize.height/5.7, windowSize.height/1.27);
+    let rotation = getRandomVal(0, 30);
+    let scale = getRandomVal(0.2, responsiveScale);
 
-  animateInRef = TweenMax.fromTo([animContainerL, animContainerR], 2, {
-    y: startY,
-    x: () => startX + animContainerL.getBoundingClientRect().height,
-    rotation: 0,
-  }, {
-    y: endY,
-    x: endX,
-    rotation: rotation,
-    modifiers: {
-      x: function(value, animContainer) {
-        return (animContainer === animContainerR) ? window.innerWidth / 2 - value : value;
-      },
-      rotation: function(value, animContainer) {
-        return (animContainer === animContainerR) ? -value : value;
+    TweenMax.set([animContainerL, animContainerR], {
+      scaleY: scale,
+      scaleX: scale,
+      modifiers: {
+        scaleX: function(value, animContainer) {
+          return (animContainer === animContainerR) ? -value : value;
+        },
       }
-    },
-    ease: Sine.easeInOut
+    })
+
+    tl.add(
+      TweenMax.fromTo([animContainerL, animContainerR], duration, {
+        y: startY,
+        x: () => startX + animContainerL.getBoundingClientRect().height,
+        rotation: 0,
+      }, {
+        y: endY,
+        x: endX,
+        rotation: rotation,
+        modifiers: {
+          x: function(value, animContainer) {
+            return (animContainer === animContainerR) ? windowSize.width / 2 - value : value;
+          },
+          rotation: function(value, animContainer) {
+            return (animContainer === animContainerR) ? -value : value;
+          }
+        },
+        ease: Sine.easeInOut,
+        delay:stagger
+      })
+    );
+
   })
 
+  return tl;
 }
 
 /////////// animate out ///////////
 
 export function animateOut(elements, options, resolve) {
-  let windowCalc = window.innerWidth/2;
+  let windowCalc = windowSize.width/2;
 
   options = options || {};
   let duration = options.duration || 0.1;
@@ -86,84 +88,135 @@ export function animateOut(elements, options, resolve) {
 
 /////////// changeLocation ///////////
 
-export let changingLocation;
+export function changeLocation(elements, options) {
 
-export function changeLocation(animContainerL, animContainerR) {
-  let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
-  let endX = getRandomVal(window.innerWidth/5, window.innerWidth/2);
-  let rotation = getRandomVal(0, 360);
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
 
-  changingLocation = TweenMax.fromTo(animContainerL, 1, { // from
-    y: animContainerL._gsTransform.y,
-    x: animContainerL._gsTransform.x,
-    rotation: animContainerL._gsTransform.rotation,
-  }, { // to
-    y: endY,
-    x: endX,
-    rotation: rotation,
-    ease:Sine.easeInOut
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
+
+    let endY = getRandomVal(windowSize.height/5.7, windowSize.height/1.27);
+    let endX = getRandomVal(windowSize.width/5, windowSize.width/2);
+    let rotation = getRandomVal(0, 360);
+
+    tl.add(
+      TweenMax.fromTo([animContainerL, animContainerR], duration, { // from
+        y: function(index, target) {
+          return (target === animContainerL) ? animContainerL._gsTransform.y : animContainerR._gsTransform.y
+        },
+        x: function(index, target) {
+          return (target === animContainerL) ? animContainerL._gsTransform.x : animContainerR._gsTransform.x
+        },
+        rotation: function(index, target) {
+          return (target === animContainerL) ? animContainerL._gsTransform.rotation : animContainerR._gsTransform.rotation
+        },
+      }, { // to
+        y: endY,
+        x: function(index, target) {
+          return (target === animContainerL) ? endX : windowSize.width / 2 - endX
+        },
+        // x: endX,
+        rotation: function(index, target) {
+          return (target === animContainerL) ? rotation : rotation * -1
+        },
+        ease:Sine.easeInOut,
+        delay:stagger
+      })
+    );
   })
 
-  TweenMax.fromTo(animContainerR, 1, { // from
-    y: animContainerR._gsTransform.y,
-    x: animContainerR._gsTransform.x,
-    rotation: animContainerR._gsTransform.rotation,
-  }, { // to
-    y: endY,
-    x: window.innerWidth / 2 - endX,
-    rotation: function(index, target) { return rotation * -1; },
-    ease: Sine.easeInOut
-  })
-
+  return tl;
 }
 
 /////////// scale ///////////
 
-export function scale(animContainerL, animContainerR, currentSet) {
+export function scale(elements, options) {
 
-  let scale = getRandomVal(0.2, responsiveScale);
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
 
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    scale = getRandomVal(0.05, responsiveScale)
-  }
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
 
-  TweenMax.fromTo(animContainerL, .2, { // from
-    scaleX: animContainerL._gsTransform.scaleX,
-    scaleY: animContainerL._gsTransform.scaleY,
-  }, { // to
-    scale: scale,
-    ease: Sine.easeInOut
+    let scale = getRandomVal(0.2, responsiveScale);
+
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      scale = getRandomVal(0.05, responsiveScale)
+    }
+
+    tl.add(
+      TweenMax.fromTo([animContainerL, animContainerR], duration, { // from
+        scaleX: function(index, target) {
+          return (target === animContainerL) ? animContainerL._gsTransform.scaleX : animContainerR._gsTransform.scaleX;
+        },
+        scaleY: function(index, target) {
+          return (target === animContainerL) ? animContainerL._gsTransform.scaleY : animContainerR._gsTransform.scaleY;
+        },
+      }, { // to
+        scaleX: function(index, target) {
+          return (target === animContainerL) ? scale : scale * -1;
+        },
+        scaleY: scale,
+        ease: Sine.easeInOut,
+        delay:stagger, // put delay back in tween // add duration in beginning
+      })
+    );
+
   })
 
-  TweenMax.fromTo(animContainerR, .2, { // from
-    scaleX: animContainerR._gsTransform.scaleX,
-    scaleY: animContainerR._gsTransform.scaleY,
-  }, { // to
-    scaleX: function(index, target) { return scale * -1; },
-    scaleY: function(index, target) { return scale; },
-    ease: Sine.easeInOut
-  })
-
+  return tl;
 }
 
-/////////// change colors ///////////
+/////////// change bg ///////////
 
 export function changeBGColor(elements) {
   TweenMax.to(elements, 1, { backgroundColor:colorPallete[0], ease:Sine.easeInOut })
 }
 
-export function changeElementColors(animContainerL, animContainerR, animData, elementsAnimatedIn) {
-  animContainerL = animContainerL.querySelector('.maskImage');
-  animContainerR = animContainerR.querySelector('.maskImage');
-  let color = colorPallete[Math.floor(getRandomVal(0, colorPallete.length))];
-  TweenMax.to([animContainerL, animContainerR], .2, {
-    backgroundColor: color,
-    ease:Sine.easeInOut
+/////////// change element colors ///////////
+
+export function changeElementColors(elements, options) {
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
+
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
+
+    animContainerL = animContainerL.querySelector('.maskImage');
+    animContainerR = animContainerR.querySelector('.maskImage');
+    let color = colorPallete[Math.floor(getRandomVal(0, 4))];
+    animData = animData.querySelector('.iconDataHolder > .iconDataImageMask');
+
+    tl.add(
+      TweenMax.to([animContainerL, animContainerR], duration, {
+      // TweenMax.to([animContainerL, animContainerR, animData], duration, {
+        backgroundColor: color,
+        ease:Sine.easeInOut,
+        delay:stagger
+      })
+    );
+
+      TweenMax.set(animData, {
+        backgroundColor: color
+      })
+
   })
-  animData = animData.querySelector('.iconDataHolder > .iconDataImageMask');
-  TweenMax.set(animData, {
-    backgroundColor: color
-  })
+
+  return tl;
 }
 
 export function changeColor(element) {
@@ -205,7 +258,7 @@ export function lettersIn() {
   let currentSearch = document.querySelectorAll('.currentSearch');
   TweenMax.to(currentSearch, 1.5, {
     x: function(index, element) {
-      return element.offsetParent.classList.contains('leftContainer') ? window.innerWidth/4 : window.innerWidth/4 * -1
+      return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 : windowSize.width/4 * -1
     },
     ease:Sine.easeInOut
   })
@@ -222,7 +275,7 @@ export function lettersOut() {
       for (var i = 0; i < children.length; i++) {
         elementInnerWidth += children[i].offsetWidth;
       }
-      return element.offsetParent.classList.contains('leftContainer') ? window.innerWidth/4 + elementInnerWidth : window.innerWidth/4 * -1 - elementInnerWidth
+      return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + elementInnerWidth : windowSize.width/4 * -1 - elementInnerWidth
     },
     ease:Sine.easeInOut
   })
@@ -230,27 +283,7 @@ export function lettersOut() {
 
 /////////// grid in ///////////
 
-export function gridIn(animContainerL, animData, resolve) {
-
-  const animDataX = animData.offsetLeft + animData.offsetWidth/2;
-  const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
-
-  TweenMax.to(animContainerL, .9, {
-    x: animDataX,
-    y: animDataY,
-    rotation: 0,
-    scaleX: .5,
-    scaleY: .5,
-    ease: Sine.easeInOut,
-    onComplete: ()=> {
-      animContainerL.classList.add('hidden');
-      animData.classList.add('show');
-      resolve();
-    }
-  })
-}
-
-export function gridInTest(elements, options, resolve) {
+export function gridIn(elements, options, resolve) {
   document.querySelector('.gradient').classList.add('show');
 
   options = options || {};
@@ -290,65 +323,162 @@ export function gridInTest(elements, options, resolve) {
 
 /////////// grid out ///////////
 
-export function gridOut(animContainerL, animContainerR,  animData) {
+export function gridOut(elements, options, resolve) {
   document.querySelector('.gradient').classList.remove('show')
-  animData.querySelector('.iconDataImageMask').classList.remove('show');
-  animContainerL.classList.remove('hidden')
-  const animDataX = animData.offsetLeft + animData.offsetWidth/2;
-  const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
-  const endX = window.innerWidth/2 - animContainerR._gsTransform.x;
-  const endY = animContainerR._gsTransform.y;
-  const endRotation = animContainerR._gsTransform.rotation * -1;
-  const endscaleX = (animContainerR._gsTransform.scaleX) * -1;
-  const endscaleY = animContainerR._gsTransform.scaleY;
 
-  TweenMax.fromTo(animContainerL, .9, {
-    x: animDataX,
-    y: animDataY,
-    rotation: 0,
-    scaleX: .5,
-    scaleY: .5,
-  }, {
-    x: endX,
-    y: endY,
-    rotation: endRotation,
-    scaleX: endscaleX,
-    scaleY: endscaleY,
-    ease: Sine.easeInOut
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
+  // let tl = new TimelineLite({onComplete:resolve});
+
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
+
+    animData.querySelector('.iconDataImageMask').classList.remove('show');
+    animContainerL.classList.remove('hidden')
+    const animDataX = animData.offsetLeft + animData.offsetWidth/2;
+    const animDataY = animData.offsetTop + animData.offsetHeight/2 - animData.offsetParent.scrollTop;
+    const endX = windowSize.width/2 - animContainerR._gsTransform.x;
+    const endY = animContainerR._gsTransform.y;
+    const endRotation = animContainerR._gsTransform.rotation * -1;
+    const endscaleX = (animContainerR._gsTransform.scaleX) * -1;
+    const endscaleY = animContainerR._gsTransform.scaleY;
+
+    tl.add(
+      TweenMax.fromTo(animContainerL, duration, {
+        x: animDataX,
+        y: animDataY,
+        rotation: 0,
+        scaleX: .5,
+        scaleY: .5,
+      }, {
+        x: endX,
+        y: endY,
+        rotation: endRotation,
+        scaleX: endscaleX,
+        scaleY: endscaleY,
+        ease: Sine.easeInOut,
+        delay:stagger
+      })
+    );
+
   })
+
+  return tl;
 }
 
-/////////// make black and white ///////////
+/////////// black and white BG ///////////
 
 export function blackAndWhiteBG() {
   TweenMax.to('.pageWrapper', 1, {backgroundColor:'rgba(255,255,255,0)', ease:Sine.easeInOut})
 }
 
-export function blackAndWhiteElements(animContainerL, animContainerR) {
-  animContainerL = animContainerL.querySelector('.maskImage')
-  animContainerR = animContainerR.querySelector('.maskImage')
-  let oddOrEven = Math.floor(getRandomVal(0, 2));
-  TweenMax.to([animContainerL, animContainerR], .2, {
-    backgroundColor: oddOrEven%2 === 0 ? 'black' : 'white',
-    ease:Sine.easeInOut
+/////////// black and white elements ///////////
+
+export function blackAndWhiteElements(elements, options) {
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
+
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
+
+    animContainerL = animContainerL.querySelector('.maskImage')
+    animContainerR = animContainerR.querySelector('.maskImage')
+    // let oddOrEven = Math.floor(getRandomVal(0, 2));
+
+    tl.add(
+      TweenMax.to([animContainerL, animContainerR], duration, {
+        backgroundColor: 'black',
+        // backgroundColor: oddOrEven%2 === 0 ? 'black' : 'white',
+        ease:Sine.easeInOut,
+        delay:stagger
+      })
+    );
+
   })
+
+  return tl;
 }
 
-/////////// comp change One ///////////
+/////////// comp change grid angle ///////////
+
+export function compChangeGrid(elements, options) {
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite();
+
+  let minX = windowSize.width/7;
+  let maxX = windowSize.width/2;
+  let rotation = 0
+
+  elements.forEach(element => {
+    let animData = element[2];
+    let animContainerL = element[0];
+    let animContainerR = element[1];
+
+    let endY = getRandomVal(windowSize.height/5.7, windowSize.height/1.27);
+    let endX = getRandomVal(minX, maxX);
+    let scale = (((endX - minX) * responsiveScale) / (maxX - minX))  ;
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      scale = (((endX - minX)* responsiveScale) / (maxX - minX));
+    }
+
+    tl.add(
+      TweenMax.fromTo([animContainerL, animContainerR], duration, { // from
+        scaleX: function(index, target){
+          return (target === animContainerL) ? animContainerL._gsTransform.scaleX : animContainerR._gsTransform.scaleX;
+        },
+        scaleY: function(index, target){
+          return (target === animContainerL) ? animContainerL._gsTransform.scaleY : animContainerR._gsTransform.scaleY;
+        },
+      }, { // to
+        y: endY,
+        x: function(index, target){
+          return (target === animContainerL) ? endX : windowSize.width / 2 - endX;
+        },
+        rotation: 0,
+        scaleX: function(index, target){
+          return (target === animContainerL) ? scale :  scale * -1;
+        },
+        scaleY: scale,
+        ease:Sine.easeInOut,
+        delay:stagger
+      })
+    );
+
+  })
+
+  return tl;
+}
+
+
+
+
+/////////// comp change linear ///////////
 
 export let compChangeOne;
 
 export function compChangeFunctionOne(animContainerL, animContainerR, elementsAnimatedIn) {
-  let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
+  let endY = getRandomVal(windowSize.height/5.7, windowSize.height/1.27);
   let rotation = getRandomVal(0, 180);
 
-  let xPositions = [window.innerWidth/4, window.innerWidth/2]
+  let xPositions = [windowSize.width/4, windowSize.width/2]
   const randomInt = Math.floor(Math.random() * (xPositions.length - 0) + 0);
   let endX = xPositions[randomInt]
 
-  // let endX = getRandomVal(window.innerWidth/2, window.innerWidth/2);
+  // let endX = getRandomVal(windowSize.width/2, windowSize.width/2);
 
-  let scale = (endY * responsiveScale) / (window.innerHeight/1.27);
+  let scale = (endY * responsiveScale) / (windowSize.height/1.27);
 
   compChangeOne = TweenMax.fromTo(animContainerL, 1, { // from
     y: animContainerL._gsTransform.y,
@@ -372,52 +502,7 @@ export function compChangeFunctionOne(animContainerL, animContainerR, elementsAn
     scaleY: animContainerR._gsTransform.scaleY,
   }, { // to
     y: endY,
-    x: window.innerWidth - endX,
-    rotation: function(index, target) { return rotation * -1; },
-    scaleX: function(index, target) { return scale * -1; },
-    scaleY: function(index, target) { return scale; },
-    ease: Sine.easeInOut
-  })
-
-}
-
-/////////// comp change Two grid angle ///////////
-
-export function compChangeFunctionTwo(animContainerL, animContainerR) {
-  let minX = window.innerWidth/7;
-  let maxX = window.innerWidth/2;
-  let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
-  let endX = getRandomVal(minX, maxX);
-
-  let rotation = 0
-  let scale = (((endX - minX) * responsiveScale) / (maxX - minX))  ;
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    scale = (((endX - minX)* responsiveScale) / (maxX - minX));
-  }
-
-  TweenMax.fromTo(animContainerL, 1, { // from
-    y: animContainerL._gsTransform.y,
-    x: animContainerL._gsTransform.x,
-    rotation: animContainerL._gsTransform.rotation,
-    scaleX: animContainerL._gsTransform.scaleX,
-    scaleY: animContainerL._gsTransform.scaleY,
-  }, { // to
-    y: endY,
-    x: endX,
-    rotation: rotation,
-    scale: scale,
-    ease:Sine.easeInOut
-  })
-
-  TweenMax.fromTo(animContainerR, 1, { // from
-    y: animContainerR._gsTransform.y,
-    x: animContainerR._gsTransform.x,
-    rotation: animContainerR._gsTransform.rotation,
-    scaleX: animContainerR._gsTransform.scaleX,
-    scaleY: animContainerR._gsTransform.scaleY,
-  }, { // to
-    y: endY,
-    x: window.innerWidth / 2 - endX,
+    x: windowSize.width - endX,
     rotation: function(index, target) { return rotation * -1; },
     scaleX: function(index, target) { return scale * -1; },
     scaleY: function(index, target) { return scale; },
@@ -431,12 +516,12 @@ export function compChangeFunctionTwo(animContainerL, animContainerR) {
 export function compChangeFunctionThree(animContainerL, animContainerR) {
   let rotation = getRandomVal(0, 180);
 
-  let radii = [window.innerWidth/4, window.innerWidth/6, window.innerWidth/13];
+  let radii = [windowSize.width/4, windowSize.width/6, windowSize.width/13];
   const randomInt = Math.floor(Math.random() * (radii.length - 0) + 0);
   let radius = radii[randomInt];
 
-  let centerX = window.innerWidth / 2;
-  let centerY = window.innerHeight / 2;
+  let centerX = windowSize.width / 2;
+  let centerY = windowSize.height / 2;
 
   let angle = Math.floor(Math.random() * (360 - 0) + 0);
 
@@ -449,9 +534,9 @@ export function compChangeFunctionThree(animContainerL, animContainerR) {
   let scale = .5
   // let scale = ( (centerX/endX)/2 )
 
-  // let minX = window.innerWidth/7;
-  // let maxX = window.innerWidth/2;
-  // let endY = getRandomVal(window.innerHeight/5.7, window.innerHeight/1.27);
+  // let minX = windowSize.width/7;
+  // let maxX = windowSize.width/2;
+  // let endY = getRandomVal(windowSize.height/5.7, windowSize.height/1.27);
   // let endX = getRandomVal(minX, maxX);
   // let scale = (((endX - minX) * responsiveScale) / (maxX - minX))  ;
   // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -481,7 +566,7 @@ export function compChangeFunctionThree(animContainerL, animContainerR) {
     scaleY: animContainerR._gsTransform.scaleY,
   }, { // to
     y: endY,
-    x: window.innerWidth - endX,
+    x: windowSize.width - endX,
     rotation: function(index, target) { return rotation * -1; },
     scaleX: function(index, target) { return scale * -1; },
     scaleY: function(index, target) { return scale; },
@@ -489,3 +574,8 @@ export function compChangeFunctionThree(animContainerL, animContainerR) {
   })
 
 }
+
+
+
+
+

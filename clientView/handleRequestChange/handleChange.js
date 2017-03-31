@@ -2,7 +2,7 @@ import { animateOut } from '../animations.js';
 import removeDomNodes from './removeDomNodes.js';
 import newRequest from './newRequest.js';
 import { handleErrorRemove } from './handleError.js';
-import { blackAndWhiteBG, lettersOut } from '../animations.js';
+import { blackAndWhiteElements, blackAndWhiteBG, lettersOut } from '../animations.js';
 import { allAnimSets } from '../generateAnimDomElements.js';
 
 /////////// handle change ///////////
@@ -19,6 +19,7 @@ export default function handleChange(param, resolve) {
   const animOutSets = allAnimSets.map(element => {return [element[0], element[1]] });
   handleErrorRemove()
   blackAndWhiteBG()
+  blackAndWhiteElements(allAnimSets, {stagger:-.39, duration:.4});
   new Promise((resolve, reject) => {
     lettersOut()
     animateOut(animOutSets, {stagger:.01, duration:.75}, resolve);
