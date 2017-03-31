@@ -10,6 +10,7 @@ import staggerAnimation from '../staggerAnimation.js';
 // export let currentParam = document.querySelectorAll('.currentSearch').textContent;
 
 export default function handleChange(param, resolve) {
+  document.querySelector('.eventBlocker').classList.add('noEvents');
   // currentParam = param;
   closeOverlay();
   const nodesAnimArrayL = Array.from(document.querySelectorAll('.leftContainer > .anim'));
@@ -24,11 +25,10 @@ export default function handleChange(param, resolve) {
     lettersOut()
     animateOut(animOutSets, {stagger:.01, duration:.75}, resolve);
   })
-  // new Promise((resolve, reject) => { animateOut([nodesAnimArrayL, nodesAnimArrayR], {stagger:.01, duration:.5}, resolve); })
-      .then(() => { return new Promise((resolve, reject) => removeDomNodes([nodesAnimArrayL, nodesAnimArrayR, nodesDataArray], resolve))
-      })
-      .then(() => newRequest(param, resolve))
-      .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError
+  .then(() => { return new Promise((resolve, reject) => removeDomNodes([nodesAnimArrayL, nodesAnimArrayR, nodesDataArray], resolve))
+  })
+  .then(() => {newRequest(param, resolve)})
+  .then( () => {if(!resolve) return ; resolve('done with change request')} ); // tied to handleError
 }
 
 const infoOverlay = document.querySelector('.infoOverlay');

@@ -21,6 +21,7 @@ logo.addEventListener('click', function(e) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
+  if(document.querySelector('.eventBlocker').classList.contains('noEvents')) return;
   let submitValue = overlayInput.value;
   if (e.keyCode === 27) { // escape key
     closeOverlay();
@@ -28,10 +29,11 @@ function handleKeydown(e) {
   } else if (e.keyCode === 13) { // enter
     checkValue(submitValue)
   } else if (e.keyCode === 8) { // delete
-    if (submitValue.length === 0) closeOverlay();
+    if (submitValue.length === 1) closeOverlay();
   } else if (e.keyCode < 64 || e.keyCode >= 91) { // check if alphabetic
     return;
   } else if (e.keyCode) { // any other key
+    if(infoOverlay.classList.contains('infoevents')) closeInfo();
     handleSearchWindow()
   }
 }
@@ -60,14 +62,13 @@ function handleSearchWindow() {
 function toggleSearchOverlay() {
   if(!searchOverlay.classList.contains('searchFade')) {overlayInput.value = ''};
   searchOverlay.classList.toggle('searchFade');
-  document.querySelector('.rightContainer').classList.toggle('tilt');
 }
 
 function closeOverlay() {
-  document.querySelector('.rightContainer').classList.remove('tilt');
+  // document.querySelector('.rightContainer').classList.remove('tilt');
   if(searchOverlay.classList.contains('searchFade')) {
     overlayInput.blur();
-    document.body.click();
+    // document.body.click();
     searchOverlay.classList.remove('searchFade');
   }
 }
@@ -76,7 +77,7 @@ function closeOverlay() {
 
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
-import { compChangeGrid, changeElementColors, changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
+import { changeToBGColor, compChangeGrid, changeElementColors, changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
 import staggerAnimation from './staggerAnimation.js';
 const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
@@ -84,23 +85,31 @@ const currentSearch = document.querySelectorAll('.currentSearch');
 const currentSearchWord = document.querySelector('.currentSearchWord');
 const topRelatedTags = document.querySelector('.topRelatedTags');
 const mainRule = document.querySelector('.mainRule');
+const searchLetters = document.querySelector('.searchLetters');
 
 document.querySelector('.testButton').addEventListener('click', function(e) {
    changeElementColors(allAnimSets, {stagger:-.39, duration:.4});
 })
 
 compContainer.addEventListener('click', () => {
+  document.querySelector('.eventBlocker').classList.add('noEvents');
   new Promise(function(resolve, reject) {
     staggerAnimation(allAnimSets, 'compChangeGrid', 30, resolve );
-  }).then((resolve) => console.log('compChangeGrid done'))
+  }).then((resolve) => {
+    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    console.log('compChangeGrid done')
+  })
   randomColorRequest();
   setTimeout(function(){
     new Promise(function(resolve, reject) {
       staggerAnimation(allAnimSets, 'changeElementColors', 30, resolve );
-    }).then((resolve) => console.log('changeElementColors done'))
+    }).then((resolve) => {
+      console.log('changeElementColors done')
+    })
     changeBGColor(['.pageWrapper']);
     letterColors(currentSearch)
     letterColors(currentSearchWord)
+    changeToBGColor([searchLetters])
     changeColor([topRelatedTags]);
     changeColor(document.querySelectorAll('.author'));
     changeColor(document.querySelectorAll('li'));
@@ -137,10 +146,13 @@ closeInfoButton.addEventListener('click', closeInfo)
 
 function closeInfo() {
   lettersIn()
-
+  document.querySelector('.eventBlocker').classList.add('noEvents');
   new Promise(function(resolve, reject) {
     staggerAnimation(allAnimSets, 'gridOut', 10, resolve );
-  }).then((resolve) => console.log('gridOut done'))
+  }).then((resolve) => {
+    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    console.log('gridOut done')
+  })
 
   // gridOut(allAnimSets, {stagger:-.89, duration:.9})
 

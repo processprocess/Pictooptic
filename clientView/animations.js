@@ -172,7 +172,7 @@ export function changeElementColors(animContainerL, animContainerR, animData, re
   animContainerL = animContainerL.querySelector('.maskImage');
   animContainerR = animContainerR.querySelector('.maskImage');
   animData = animData.querySelector('.iconDataHolder > .iconDataImageMask');
-  let color = colorPallete[Math.floor(getRandomVal(0, colorPallete.length))];
+  let color = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
   TweenMax.to([animContainerL, animContainerR], .2, {
     backgroundColor: color,
     ease:Sine.easeInOut,
@@ -185,6 +185,10 @@ export function changeElementColors(animContainerL, animContainerR, animData, re
 
 export function changeColor(element) {
   TweenMax.to(element, .3, { color:colorPallete[4], ease:Sine.easeInOut, delay:0, })
+}
+
+export function changeToBGColor(element) {
+  TweenMax.to(element, .3, { color:colorPallete[0], ease:Sine.easeInOut, delay:0, })
 }
 
 export function changeBorderColor(element) {
@@ -220,7 +224,11 @@ export function letterColors(elements) {
 
 export function lettersIn() {
   let currentSearch = document.querySelectorAll('.currentSearch');
-  TweenMax.to(currentSearch, 1.5, {
+  TweenMax.set(currentSearch, {
+    opacity: 1,
+    ease:Sine.easeInOut
+  })
+  TweenMax.to(currentSearch, 2, {
     x: function(index, element) {
       return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 : windowSize.width/4 * -1
     },
@@ -229,6 +237,18 @@ export function lettersIn() {
 }
 
 /////////// move letters out ///////////
+
+let currentSearch = document.querySelectorAll('.currentSearch');
+TweenMax.set(currentSearch, {
+  x: function(index, element) {
+    const children = element.children;
+    let elementInnerWidth = 0;
+    for (var i = 0; i < children.length; i++) {
+      elementInnerWidth += children[i].offsetWidth;
+    }
+    return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + 200 : windowSize.width/4 * -1 - 200
+  },
+})
 
 export function lettersOut() {
   let currentSearch = document.querySelectorAll('.currentSearch');

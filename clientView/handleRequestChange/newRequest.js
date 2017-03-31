@@ -14,10 +14,14 @@ export default function newRequest(param, resolve) {
 
             new Promise(function(resolve, reject) {
               staggerAnimation(animSets, 'animateIn', 30, resolve );
-            }).then((resolve) => console.log('animateIn done'))
+              lettersIn()
+            }).then((resolve) => {
+              document.querySelector('.eventBlocker').classList.remove('noEvents');
+              console.log('animateIn done')
+            })
 
             // animateIn(animSets, {stagger:-1.46, duration:1.5})
-            lettersIn()
+
          })
          .catch(err => { handleError(err); console.log(err)})
          if (!resolve) return;
