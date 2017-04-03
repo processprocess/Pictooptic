@@ -13,14 +13,12 @@ export default function newRequest(param, resolve) {
             const animSets = generateAnimDomElements(cleanIconObjects);
 
             new Promise(function(resolve, reject) {
-              staggerAnimation(animSets, 'animateIn', 30, resolve );
-              lettersIn()
+              // staggerAnimation(animSets, 'animateIn', 30, resolve );
+              // lettersIn()
             }).then((resolve) => {
-              document.querySelector('.eventBlocker').classList.remove('noEvents');
-              console.log('animateIn done')
+              // document.querySelector('.eventBlocker').classList.remove('noEvents');
+              // console.log('animateIn done')
             })
-
-            // animateIn(animSets, {stagger:-1.46, duration:1.5})
 
          })
          .catch(err => { handleError(err); console.log(err)})

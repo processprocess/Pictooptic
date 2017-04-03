@@ -3,6 +3,31 @@
   width: extend-to-zoom;
 }*/
 
+canvas {
+  position: absolute;
+  z-index: 10000;
+}
+
+.testButton1 {
+  position:absolute;
+  width:25px;
+  height:25px;
+  background:grey;
+  top: 0%;
+  left: 0%;
+  z-index: 60000;
+}
+
+.testButton2 {
+  position:absolute;
+  width:25px;
+  height:25px;
+  background:grey;
+  top: 0%;
+  left: 10%;
+  z-index: 60000;
+}
+
 * {
   margin: 0;
   padding: 0;

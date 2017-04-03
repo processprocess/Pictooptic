@@ -10,7 +10,7 @@ import staggerAnimation from '../staggerAnimation.js';
 // export let currentParam = document.querySelectorAll('.currentSearch').textContent;
 
 export default function handleChange(param, resolve) {
-  document.querySelector('.eventBlocker').classList.add('noEvents');
+  // document.querySelector('.eventBlocker').classList.add('noEvents');
   // currentParam = param;
   closeOverlay();
   const nodesAnimArrayL = Array.from(document.querySelectorAll('.leftContainer > .anim'));

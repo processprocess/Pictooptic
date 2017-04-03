@@ -22,6 +22,7 @@
     "gsap": "^1.19.1",
     "npm": "^4.4.1",
     "oxford-dictionary-api": "^1.0.1",
+    "pixi.js": "^4.4.4",
     "superagent": "^2.3.0",
     "the-noun-project": "^2.0.1",
     "webpack": "^1.13.2",
