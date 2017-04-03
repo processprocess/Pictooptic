@@ -21,7 +21,7 @@ logo.addEventListener('click', function(e) {
 window.addEventListener('keydown', handleKeydown);
 
 function handleKeydown(e) {
-  if(document.querySelector('.eventBlocker').classList.contains('noEvents')) return;
+  // if(document.querySelector('.eventBlocker').classList.contains('noEvents')) return;
   let submitValue = overlayInput.value;
   if (e.keyCode === 27) { // escape key
     closeOverlay();
@@ -92,15 +92,15 @@ document.querySelector('.testButton').addEventListener('click', function(e) {
 })
 
 compContainer.addEventListener('click', () => {
-  document.querySelector('.eventBlocker').classList.add('noEvents');
+  // document.querySelector('.eventBlocker').classList.add('noEvents');
   new Promise(function(resolve, reject) {
     staggerAnimation(allAnimSets, 'compChangeGrid', 30, resolve );
   }).then((resolve) => {
-    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    // document.querySelector('.eventBlocker').classList.remove('noEvents');
     console.log('compChangeGrid done')
   })
   randomColorRequest();
-  setTimeout(function(){
+  // setTimeout(function(){
     new Promise(function(resolve, reject) {
       staggerAnimation(allAnimSets, 'changeElementColors', 30, resolve );
     }).then((resolve) => {
@@ -114,7 +114,7 @@ compContainer.addEventListener('click', () => {
     changeColor(document.querySelectorAll('.author'));
     changeColor(document.querySelectorAll('li'));
     changeBorderColor(mainRule);
-  }, 100 );
+  // }, 100 );
 })
 
 compContainer.addEventListener('touchstart', () => {
@@ -127,7 +127,7 @@ import { gridIn, gridOut } from './animations.js';
 const gridButton = document.querySelector('.gridButton')
 
 gridButton.addEventListener('click', () => {
-  document.querySelector('.eventBlocker').classList.add('noEvents');
+  // document.querySelector('.eventBlocker').classList.add('noEvents');
   lettersOut()
   setTimeout(function(){
     infoOverlay.classList.add('infoevents');
@@ -136,7 +136,7 @@ gridButton.addEventListener('click', () => {
     staggerAnimation(allAnimSets, 'gridIn', 10, resolve );
   }).then((resolve) => {
     searchOverlay.classList.remove('searchFade');
-    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    // document.querySelector('.eventBlocker').classList.remove('noEvents');
     console.log('gridIn done');
   })
 })
@@ -146,11 +146,11 @@ closeInfoButton.addEventListener('click', closeInfo)
 
 function closeInfo() {
   lettersIn()
-  document.querySelector('.eventBlocker').classList.add('noEvents');
+  // document.querySelector('.eventBlocker').classList.add('noEvents');
   new Promise(function(resolve, reject) {
     staggerAnimation(allAnimSets, 'gridOut', 10, resolve );
   }).then((resolve) => {
-    document.querySelector('.eventBlocker').classList.remove('noEvents');
+    // document.querySelector('.eventBlocker').classList.remove('noEvents');
     console.log('gridOut done')
   })
 
