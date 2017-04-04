@@ -7,7 +7,7 @@ import getRandomVal from './getRandomVal.js'
 
 /////////// random search ///////////
 
-handleChange('randomSample') // for debugging
+// handleChange('randomSample') // for debugging
 
 // const logo = document.querySelector('.logo');
 //

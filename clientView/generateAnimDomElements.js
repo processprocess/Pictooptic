@@ -42,7 +42,7 @@ function setUp() {
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
   bgCover = new PIXI.Graphics();
-  bgCover.beginFill(0xcccccc, 1);
+  bgCover.beginFill(0xffffff, 1);
   bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
   stage.addChild(bgCover);
 
@@ -59,7 +59,6 @@ function setUp() {
 setUp()
 
 /////////// parse Json ///////////
-
 export default function generateAnimDomElements (iconData, resolve) {
 
   // console.log(iconData[0].term);
@@ -70,10 +69,9 @@ export default function generateAnimDomElements (iconData, resolve) {
     let newurl = url.replace('https', 'http')
     loader.add(`item${index}`, newurl)
     if(index === iconData.length - 1){
-      allSets.forEach(set => {
-        animateOut(set);
-      })
-      loader.load(generateElements)
+      console.log('doin it');
+        new Promise(function(resolve, reject) { animateOut(allSets, {duration:1, stagger:0}, resolve) })
+        .then(resolveData => loader.load(generateElements))
     }
     // put rest of dom gen here
   })
@@ -91,15 +89,18 @@ function loadProgressHandler(loader, resource) {
 /////////// generate animItems ///////////
 
 function generateElements(loader, resources){
+
   destroyElements()
+
   allSets = []
+
   for( let i = 0 ; i < 50 ; i++){
 
     var ogTexture = eval(`resources.item${i}.texture`);
     var width  = ogTexture.width;
     var height = ogTexture.height;
 
-    for( let i = 0 ; i < 1 ; i++){
+    for( let i = 0 ; i < 2 ; i++){
 
       var renderTarget = new PIXI.CanvasRenderTarget(width, height);
       PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
@@ -124,21 +125,31 @@ function generateElements(loader, resources){
 
       /////////// set values ////////////
 
-      TweenMax.set(animL, { pixi: {
+      TweenMax.set(animL, {
+        pixi: {
           anchor: 0.5,
           scaleX: 0,
           scaleY: 0,
-          x: window.innerWidth/2,
+          x: window.innerWidth/2 + animL.width/2,
           y: window.innerHeight/2,
-      }});
+        },
+        colorProps: {
+          tint: 0x000000,
+        },
+      });
 
-      TweenMax.set(animR, { pixi: {
+      TweenMax.set(animR, {
+        pixi: {
           anchor: 0.5,
           scaleX: 0,
           scaleY: 0,
-          x: window.innerWidth/2,
+          x: window.innerWidth/2 - animR.width/2,
           y: window.innerHeight/2,
-      }});
+        },
+        colorProps: {
+          tint: 0x000000,
+        },
+      });
 
       /////////// set events ////////////
 
@@ -172,17 +183,21 @@ export function randomLocaiton(elements, options) {
   let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
   let tl = new TimelineLite( {onComplete:()=>console.log('doneanim')} );
 
+  // console.log(window.innerWidth);
+
   elements.forEach((element, i) => {
     let animL = element[0]
     let animR = element[1]
-    let xMin = animL.width/2 + 50;
-    let xMax = renderer.view.width/2 + 50;
-    let yMin = animL.height/2 + 50;
-    let yMax = renderer.view.height - animL.width/2 -75;
+
+    let xMin = animL.width/2 + window.innerWidth/4;
+    let xMax = window.innerWidth/2 + 50;
+
+    let yMin = window.innerHeight/5.5 + 50;
+    let yMax = window.innerHeight/1.50 + 50;
 
     let endX = randomInt(xMin, xMax);
     let endY = randomInt(yMin, yMax);
-    let scale = ((endX - xMin)) / (xMax - xMin)
+    let scale = ((endX - xMin)/.7) / (xMax - xMin)
 
     tl.add(
       TweenLite.to(animL, 1, {
@@ -253,6 +268,47 @@ export function changeElementColor(elements, options) {
   return tl;
 }
 
+///////////// animateOut ////////////
+
+export function animateOut(elements, options, resolve) {
+
+  TweenMax.to(bgCover, 0.5, {colorProps: {
+      tint: 0xffffff, format:"number"
+    }
+  });
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite( {onComplete:resolve} );
+
+  elements.forEach((element, i) => {
+    let animL = element[0]
+    let animR = element[1]
+
+    tl.add(
+
+      TweenLite.to(animL, duration, { pixi: {
+        x: window.innerWidth/2 + animL.width,
+        y: window.innerHeight/2,
+      },
+        ease: Power1.easeInOut,
+      }, stagger * i),
+
+      TweenLite.to(animR, duration, { pixi: {
+        x: window.innerWidth/2 - animR.width,
+        y: window.innerHeight/2,
+      },
+        ease: Power1.easeInOut,
+      }, 0)
+
+    )
+
+  })
+  return tl;
+}
+
+
 ///////////// shuffle all elements ////////////
 
 function shuffle() {
@@ -262,58 +318,17 @@ function shuffle() {
   changeElementColor(allSets, {duration:1, stagger:0})
 }
 
-///////////// animateOut ////////////
-
-function animateOut(elements) {
-  let animL = elements[0];
-  let animR = elements[1];
-
-  TweenLite.to(animL, 1, { pixi: {
-    x: window.innerWidth/2 + animL.width,
-    y: window.innerHeight/2,
-  },
-    ease: Power1.easeInOut,
-  });
-
-  TweenLite.to(animR, 1, { pixi: {
-    x: window.innerWidth/2 - animR.width,
-    y: window.innerHeight/2,
-  },
-    ease: Power1.easeInOut,
-  });
-
-}
-
 ///////////// random int ////////////
 
 function randomInt(min, max) {
   return Math.random() * (max - min) + min;
-  // return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-///////////// logo button ////////////
-
-const logo = document.querySelector('.logo');
-logo.addEventListener('click', function(e) {
-  newRequest('randomSample');
-})
-
-///////////// destroy elements ////////////
-
-function destroyElements() {
-  allSets.forEach((set, index) => {
-    stage.removeChild(set[0])
-    stage.removeChild(set[1])
-    set[0].destroy(true)
-    set[1].destroy(true)
-  })
 }
 
 ///////////// test buttons ////////////
 
 let testVar2 = document.querySelector('.testButton2');
 testVar2.addEventListener('click', function(e) {
-  randomLocaiton(allSets, {duration:1, stagger:0})
+  animateOut(allSets, {duration:1, stagger:0})
 })
 
 let testVar1 = document.querySelector('.testButton1');
@@ -338,3 +353,23 @@ window.addEventListener('resize', function(e) {
   shuffle();
 
 })
+
+///////////// logo button ////////////
+
+const logo = document.querySelector('.logo');
+logo.addEventListener('click', function(e) {
+  newRequest('randomSample');
+})
+newRequest('randomSample');
+
+///////////// destroy elements ////////////
+
+function destroyElements() {
+  allSets.forEach((set, index) => {
+    stage.removeChild(set[0])
+    stage.removeChild(set[1])
+    set[0].destroy(true)
+    set[1].destroy(true)
+  })
+}
+
