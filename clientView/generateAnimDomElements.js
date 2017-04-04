@@ -1,402 +1,390 @@
 import "gsap";
+import "pixi.js";
+import { colorPallete } from './handleRequestChange/newRequest.js'
+import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
-import './libs/PixiPlugin.js';
 import { changeLocation } from './animations.js';
 import { currentParam } from './handleRequestChange/handleChange.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import getRandomVal from './getRandomVal.js';
-import "pixi.js";
-
-const leftContainer = document.querySelector('.leftContainer');
-const rightContainer = document.querySelector('.rightContainer');
-const compContainer = document.querySelector('.compContainer');
-const nounDataWrapper = document.querySelector('.nounDataWrapper');
-const currentSearch = document.querySelectorAll('.currentSearch');
-const currentSearchWord = document.querySelector('.currentSearchWord');
-const topRelatedTags = document.querySelector('.topRelatedTags');
-const mainRule = document.querySelector('.mainRule');
+import './libs/PixiPlugin.js';
+import newRequest from './handleRequestChange/newRequest.js';
 
 export let allAnimSets = [];
 
-var renderer;
-var leftBox;
-var rightBox;
-var bgCover;
-var filter;
-var allSets = [];
+let leftBox;
+let rightBox;
+let bgCover;
+let filter;
+let allSets = [];
+let loader;
+let stage;
+let renderer;
+
+/////////// set up pixi ///////////
+
+function setUp() {
+  renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
+    view: document.querySelector("canvas"),
+    antialias: true,
+    transparent: true,
+    resolution: 1
+  });
+
+  loader = new PIXI.loaders.Loader()
+  stage = new PIXI.Container();
+
+  stage.interactive = true;
+  stage.on('click', function(e) {
+    shuffle()
+  });
+
+  TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
+
+  bgCover = new PIXI.Graphics();
+  bgCover.beginFill(0xcccccc, 1);
+  bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
+  stage.addChild(bgCover);
+
+  leftBox = new PIXI.Graphics();
+  leftBox.beginFill(0xeeeeee, 1);
+  leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
+  stage.addChild(leftBox);
+
+  rightBox = new PIXI.Graphics();
+  rightBox.beginFill(0xeeffff, 1);
+  rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
+  stage.addChild(rightBox);
+}
+setUp()
+
+/////////// parse Json ///////////
 
 export default function generateAnimDomElements (iconData, resolve) {
 
-  // console.log(PixiPlugin);
+  // console.log(iconData[0].term);
 
-  // console.log(iconData);
-
-  // var loader = new PIXI.loaders.Loader()
-  //   .add("plant", 'https://d30y9cdsu7xlg0.cloudfront.net/png/6741-200.png')
-  //   .load(init);
-  //
-  //   function init(loader, resources) {
-  //     console.log();
-  //   }
-
-  let options = { crossOrigin: true }
-
-  var loader = new PIXI.loaders.Loader(options)
-
-  // // iconData.forEach((data, index, options) => {
-  //   let url = 'https://d30y9cdsu7xlg0.cloudfront.net/png/60202-200.png'
-  //   // let url = data.previewURL
-  //   loader.add(`item1`, url)
-  //   // if(index === iconData.length - 1){
-  //     loader.load(init)
-  //   // }
-  // // })
-
-  iconData.forEach((data, index, options) => {
-    // let url = 'https://d30y9cdsu7xlg0.cloudfront.net/png/60202-200.png'
+  loader.reset(true)
+  iconData.forEach((data, index) => {
     let url = data.previewURL
-    loader.add(`item${index}`, url)
+    let newurl = url.replace('https', 'http')
+    loader.add(`item${index}`, newurl)
     if(index === iconData.length - 1){
-      loader.load(init)
+      allSets.forEach(set => {
+        animateOut(set);
+      })
+      loader.load(generateElements)
     }
+    // put rest of dom gen here
   })
 
-  function init(loader, resources){
+}
 
-    renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
-      view: document.querySelector("canvas"),
-      antialias: true,
-      transparent: true,
-      resolution: 1
-    });
-    // renderer.backgroundColor = 0x000000;
+/////////// custom loader ///////////
 
-    var stage = new PIXI.Container();
+loader.on("progress", loadProgressHandler)
+let progress = document.querySelector('.progress')
+function loadProgressHandler(loader, resource) {
+  progress.textContent = loader.progress + "%"
+}
 
-    bgCover = new PIXI.Graphics();
-    // bgCover.beginFill(0x000000, 1);
-    // bgCover.beginFill(0xffffff, 1);
-    bgCover.beginFill(0xcccccc, 1);
-    bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
-    stage.addChild(bgCover);
+/////////// generate animItems ///////////
 
-    leftBox = new PIXI.Graphics();
-    leftBox.beginFill(0xeeeeee, 1);
-    leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
-    stage.addChild(leftBox);
-
-    rightBox = new PIXI.Graphics();
-    rightBox.beginFill(0xeeffff, 1);
-    rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
-    stage.addChild(rightBox);
-
-    for( let i = 0 ; i < iconData.length ; i++){
+function generateElements(loader, resources){
+  destroyElements()
+  allSets = []
+  for( let i = 0 ; i < 50 ; i++){
 
     var ogTexture = eval(`resources.item${i}.texture`);
     var width  = ogTexture.width;
     var height = ogTexture.height;
 
-    var renderTarget = new PIXI.CanvasRenderTarget(width, height);
-    PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
+    for( let i = 0 ; i < 3 ; i++){
 
-    var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
-    var lightSprite = new PIXI.Sprite(whiteTexture);
+      var renderTarget = new PIXI.CanvasRenderTarget(width, height);
+      PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
 
-    renderTarget.destroy();
+      var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
+      var lightSprite = new PIXI.Sprite(whiteTexture);
 
-    let plantL = new PIXI.Sprite(whiteTexture);
-    stage.addChild(plantL);
-    let plantR = new PIXI.Sprite(whiteTexture);
-    stage.addChild(plantR);
+      renderTarget.destroy();
 
-    plantL.mask = leftBox;
-    plantL.name = 'plantL';
+      let animL = new PIXI.Sprite(whiteTexture);
+      stage.addChild(animL);
+      let animR = new PIXI.Sprite(whiteTexture);
+      stage.addChild(animR);
 
-    plantR.mask = rightBox;
-    plantR.name = 'plantR';
+      animL.mask = leftBox;
+      animL.name = 'animL';
 
-    allSets.push([plantL, plantR]);
+      animR.mask = rightBox;
+      animR.name = 'animR';
 
-     /////////// set values ////////////
+      allSets.push([animL, animR]);
 
-    TweenMax.set(plantL, { pixi: {
-        anchor: 0.5,
-        scaleX: 0,
-        scaleY: 0,
-        x: window.innerWidth/2,
-        y: window.innerHeight/2,
-    }});
+      /////////// set values ////////////
 
-    TweenMax.set(plantR, { pixi: {
-        anchor: 0.5,
-        scaleX: 0,
-        scaleY: 0,
-        x: window.innerWidth/2,
-        y: window.innerHeight/2,
-    }});
-  //
-  // ///////////// blast out ////////////
-  //
-    function blastOut(elements) {
-      let plantL = elements[0];
-      let plantR = elements[1];
-      let xMin = elements[0].width/2 + 100;
-      let xMax = renderer.view.width/2 - 100;
-      let endX = getRandomVal(xMin, xMax);
-      let yMin = elements[0].height/2 + 100;
-      let yMax = renderer.view.height - elements[0].width/2 -100;
-      let endY = getRandomVal(yMin, yMax);
-      let scale = getRandomVal(.03, 1);
-
-      TweenLite.to(plantL, 1, { pixi: {
-        x: endX,
-        y: endY,
-        scale: scale,
+      TweenMax.set(animL, { pixi: {
+          anchor: 0.5,
+          scaleX: 0,
+          scaleY: 0,
+          x: window.innerWidth/2,
+          y: window.innerHeight/2,
       }});
 
-      TweenLite.to(plantR, 1, { pixi: {
-        x: renderer.view.width - endX,
-        y: endY,
-        scaleX: scale * -1,
-        scaleY: scale,
+      TweenMax.set(animR, { pixi: {
+          anchor: 0.5,
+          scaleX: 0,
+          scaleY: 0,
+          x: window.innerWidth/2,
+          y: window.innerHeight/2,
       }});
 
+      /////////// set events ////////////
+
+      animL.interactive = true;
+      animL.on('mouseover', function(e) {
+        randomLocaiton([animL, animR])
+      });
+
+      animR.interactive = true;
+      animR.on('mouseover', function(e) {
+        randomLocaiton([animL, animR])
+      });
     }
-    blastOut([plantL, plantR])
-
-    plantL.interactive = true;
-    plantL.on('mouseover', function(e) {
-      randomLocaiton([plantL, plantR])
-    });
-    plantR.interactive = true;
-    plantR.on('mouseover', function(e) {
-      randomLocaiton([plantL, plantR])
-    });
 
   }
 
-    TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
+  /////////// animate in ////////////
 
+  allSets.forEach(set => {
+    randomLocaiton(set);
+  })
 
-    // console.log(resources);
-  }
+}
 
+///////////// random location  ////////////
 
+function randomLocaiton(elements) {
+  let animL = elements[0]
+  let animR = elements[1]
+  let xMin = elements[0].width/2 + 50;
+  let xMax = renderer.view.width/2 + 50;
+  let endX = randomInt(xMin, xMax);
+  let yMin = elements[0].height/2 + 50;
+  let yMax = renderer.view.height - elements[0].width/2 -75;
+  let endY = randomInt(yMin, yMax);
+  let scale = ((endX - xMin)) / (xMax - xMin)
 
+  TweenLite.to(animL, 1, {
+    pixi: {
+      x:(index, element) => {
+        return endX
+      },
+      y: endY,
+      scale: scale,
+    },
+    ease: Power1.easeInOut,
+    // onComplete: () => console.log('done'),
+  });
 
+  TweenLite.to(animR, 1, {
+    pixi: {
+      x: () => renderer.view.width - endX,
+      y: endY,
+      scaleX: ()=> scale*-1,
+      scaleY: scale,
+    },
+    ease: Power1.easeInOut,
+    // onComplete: () => console.log('done'),
+  });
 
-  ///////////// random location and color ////////////
+}
 
-  function randomLocaiton(elements) {
-    let plantL = elements[0]
-    let plantR = elements[1]
-    // let scale = 1;
-    // let scale = randomInt(.5, 1);
-    let xMin = elements[0].width/2 + 50;
+///////////// random location timeline  ////////////
+
+export function randomLocaitonTimeline(elements, options) {
+
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite( {onComplete:()=>console.log('doneanim')} );
+
+  elements.forEach((element, i) => {
+    let animL = element[0]
+    let animR = element[1]
+    let xMin = animL.width/2 + 50;
     let xMax = renderer.view.width/2 + 50;
+    let yMin = animL.height/2 + 50;
+    let yMax = renderer.view.height - animL.width/2 -75;
+
     let endX = randomInt(xMin, xMax);
-    let yMin = elements[0].height/2 + 50;
-    let yMax = renderer.view.height - elements[0].width/2 -75;
     let endY = randomInt(yMin, yMax);
-    let rotation = randomInt(0, 4);
     let scale = ((endX - xMin)) / (xMax - xMin)
 
-    TweenLite.to(plantL, 1, {
-      pixi: {
-        x:(index, element) => {
-          return endX
+    tl.add(
+      TweenLite.to(animL, 1, {
+        pixi: {
+          x:(index, element) => {
+            return endX
+          },
+          y: endY,
+          scale: scale,
         },
-        y: endY,
-        scale: scale,
-        rotation: ()=>rotation*-1,
-      },
-      ease: Power1.easeInOut,
-      // onComplete: () => console.log('done'),
-    });
+        ease: Power1.easeInOut,
 
-    TweenLite.to(plantR, 1, {
-      pixi: {
-        x: () => renderer.view.width - endX,
-        y: endY,
-        scaleX: ()=> scale*-1,
-        scaleY: scale,
-        rotation: rotation,
-      },
-      ease: Power1.easeInOut,
-      // onComplete: () => console.log('done'),
-    });
+        // onComplete: () => console.log('done'),
+      }, stagger * i),
 
-  }
+      TweenLite.to(animR, 1, {
+        pixi: {
+          x: () => renderer.view.width - endX,
+          y: endY,
+          scaleX: ()=> scale*-1,
+          scaleY: scale,
+        },
+        ease: Power1.easeInOut,
+        // onComplete: () => console.log('done'),
+      }, 0)
+    )
 
-  ///////////// changeBG color ////////////
-
-  function changeBGColor() {
-    TweenMax.to(bgCover, 0.5, {colorProps: {
-        tint: Math.random() * 0xFFFFFF, format:"number"
-      }
-    });
-  }
-
-  ///////////// change element color ////////////
-
-  function changeElementColor(elements) {
-    let plantL = elements[0];
-    let plantR = elements[1];
-    let tint = Math.random() * 0xFFFFFF;
-
-    TweenMax.to(plantL, 0.5, {colorProps: {
-        tint: tint, format:"number",
-      },
-    });
-    TweenMax.to(plantR, 0.5, {colorProps: {
-        tint: tint, format:"number",
-      }
-    });
-
-  }
-
-  ///////////// animateOut ////////////
-
-  function animateOut(elements) {
-    let plantL = elements[0];
-    let plantR = elements[1];
-
-    TweenLite.to(plantL, 1, { pixi: {
-      x: window.innerWidth/2 + plantL.width,
-      y: window.innerHeight/2,
-    },
-      ease: Power1.easeInOut,
-    });
-
-    TweenLite.to(plantR, 1, { pixi: {
-      x: window.innerWidth/2 - plantR.width,
-      y: window.innerHeight/2,
-    },
-      ease: Power1.easeInOut,
-    });
-
-  }
-
-  ///////////// random int ////////////
-
-  function randomInt(min, max) {
-    return Math.random() * (max - min) + min;
-    // return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  ///////////// test buttons ////////////
-
-  let testVar1 = document.querySelector('.testButton1');
-  testVar1.addEventListener('click', function(e) {
-    // allSets
-    console.log(allSets);
-    changeBGColor();
-    allSets.forEach(set => {
-      randomLocaiton(set);
-      changeElementColor(set);
-    })
-  })
-
-  let testVar2 = document.querySelector('.testButton2');
-  testVar2.addEventListener('click', function(e) {
-    // changeBGColor();
-    allSets.forEach(set => {
-      animateOut(set);
-      // randomLocaiton(set);
-      // changeElementColor(set);
-    })
-  })
-
-  ///////////// resizing ////////////
-
-  window.addEventListener('resize', function(e) {
-
-    renderer.resize(window.innerWidth, window.innerHeight);
-    leftBox.width = window.innerWidth/2;
-    leftBox.height = window.innerHeight;
-    rightBox.width = window.innerWidth/2;
-    rightBox.height = window.innerHeight;
-
-    allSets.forEach(set => {
-      randomLocaiton(set);
-      changeElementColor(set);
-    })
+    // tl.to([animL, animR], duration, {
+    //     x: function(index, element) {
+    //       return (element.name === 'animR') ? renderer.view.width - endX : endX;
+    //     },
+    //     y: endY,
+    //     scaleX: function(index, element) {
+    //       return (element.name === 'animR') ? scale * -1 : scale;
+    //     },
+    //     scaleY: scale,
+    //     ease:Sine.easeInOut
+    //   }, stagger * i);
 
   })
+  return tl;
+}
 
-
-
-
-
-
-
-  // let term = iconData[0].term;
-  // let spanText = '';
-  // for(let i = 0 ; i < term.length ; i++) {
-  //   spanText += `<span>${term[i]}</span>`
-  // }
-  // currentSearchWord.innerHTML = spanText;
-  // currentSearchWord.setAttribute('style', 'color:black');
-  //
-  // currentSearch.forEach(element => {
-  //   element.innerHTML = spanText;
-  //   element.setAttribute('style', 'color:black');
+let testVar2 = document.querySelector('.testButton2');
+testVar2.addEventListener('click', function(e) {
+  randomLocaitonTimeline(allSets, {duration:1, stagger:0})
+  // allSets.forEach(set => {
+  //   animateOut(set);
   // })
-  //
-  // topRelatedTags.setAttribute('style', 'color:black');
-  // mainRule.setAttribute('style', 'border-color:black');
-  //
-  // iconData.forEach((icon, index) => {
-  //   // ICON ANIM
-  //   let imageURL = icon.previewURL;
-  //   let animContainerL = document.createElement('div');
-  //   let animContainerR = document.createElement('div');
-  //   animContainerL.classList.add('animContainerL');
-  //   animContainerL.classList.add('anim');
-  //   animContainerR.classList.add('animContainerR');
-  //   animContainerR.classList.add('anim');
-  //   animContainerL.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
-  //   animContainerR.innerHTML = `<div class="maskImage" style="-webkit-mask-image: url('${imageURL}');"> </div>`;
-  //   // //  animContainerL.innerHTML = `<img src=${imageURL}>`;
-  //   // //  animContainerR.innerHTML = `<img src=${imageURL}>`;
-  //   leftContainer.appendChild(animContainerL);
-  //   rightContainer.appendChild(animContainerR);
-  //   animContainerL.addEventListener('mouseover',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9}); })
-  //   animContainerR.addEventListener('mouseover',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9}); })
-  //
-  //   // ICON DATA
-  //   let iconDataHolder = document.createElement('div');
-  //   iconDataHolder.classList.add('iconDataHolder');
-  //   let iconDataImageMask = document.createElement('div');
-  //   iconDataHolder.appendChild(iconDataImageMask);
-  //   iconDataImageMask.classList.add('iconDataImageMask');
-  //   iconDataImageMask.setAttribute('style', `-webkit-mask-image: url('${imageURL}'); -webkit-mask-size: 100% 100%;`);
-  //   iconDataImageMask.addEventListener('click',()=> { changeLocation([[animContainerL, animContainerR]], {stagger:-.89, duration:.9});  })
-  //   let iconDataAuthor = document.createElement('p');
-  //   iconDataAuthor.classList.add('author');
-  //   iconDataHolder.appendChild(iconDataAuthor);
-  //   iconDataAuthor.textContent = `@${icon.user}`;
-  //   iconDataAuthor.addEventListener('click', function(e) {
-  //     handleChange(this.textContent);
-  //   })
-  //   let iconTags = document.createElement('ul');
-  //   iconDataHolder.append(iconTags);
-  //   for(let i=1 ; i <= 3 ; i++) {
-  //     if(!icon.tags[i]) return
-  //     let tag = document.createElement('li');
-  //     tag.classList.add('iconTag');
-  //     tag.textContent = `${icon.tags[i].slug}`;
-  //     iconTags.appendChild(tag);
-  //     tag.addEventListener('click', function(e) {
-  //       handleChange(this.textContent);
-  //     })
-  //   }
-  //
-  //   nounDataWrapper.appendChild(iconDataHolder);
-  //   allAnimSets.push([animContainerL, animContainerR, iconDataHolder])
-  //
-  // })
-  //
-  // return allAnimSets;
-  // resolve(allAnimSets);
+})
+
+
+
+///////////// changeBG color ////////////
+
+function changeBGColor() {
+  TweenMax.to(bgCover, 0.5, {colorProps: {
+      tint: colorPallete[0], format:"number"
+    }
+  });
+}
+
+///////////// change element color ////////////
+
+function changeElementColor(elements) {
+  let animL = elements[0];
+  let animR = elements[1];
+  let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
+
+  TweenMax.to(animL, 0.5, {colorProps: {
+      tint: tint, format:"number",
+    },
+  });
+
+  TweenMax.to(animR, 0.5, {colorProps: {
+      tint: tint, format:"number",
+    }
+  });
+
+}
+
+///////////// shuffle all elements ////////////
+
+function shuffle() {
+  randomColorRequest();
+  changeBGColor();
+  // randomLocaitonTimeline(allSets, 30)
+  allSets.forEach(set => {
+    randomLocaiton(set);
+    // changeElementColor(set);
+  })
+}
+
+///////////// animateOut ////////////
+
+function animateOut(elements) {
+  let animL = elements[0];
+  let animR = elements[1];
+
+  TweenLite.to(animL, 1, { pixi: {
+    x: window.innerWidth/2 + animL.width,
+    y: window.innerHeight/2,
+  },
+    ease: Power1.easeInOut,
+  });
+
+  TweenLite.to(animR, 1, { pixi: {
+    x: window.innerWidth/2 - animR.width,
+    y: window.innerHeight/2,
+  },
+    ease: Power1.easeInOut,
+  });
+
+}
+
+///////////// random int ////////////
+
+function randomInt(min, max) {
+  return Math.random() * (max - min) + min;
+  // return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+///////////// test buttons ////////////
+
+let testVar1 = document.querySelector('.testButton1');
+testVar1.addEventListener('click', function(e) {
+  console.log(loader);
+  console.log(stage);
+  console.log(allSets);
+})
+
+
+
+///////////// window resize ////////////
+
+window.addEventListener('resize', function(e) {
+
+  renderer.resize(window.innerWidth, window.innerHeight);
+  leftBox.width = window.innerWidth/2;
+  leftBox.height = window.innerHeight;
+  rightBox.width = window.innerWidth/2;
+  rightBox.height = window.innerHeight;
+  bgCover.width = window.innerWidth;
+  bgCover.height = window.innerHeight;
+
+  shuffle();
+
+})
+
+///////////// logo button ////////////
+
+const logo = document.querySelector('.logo');
+logo.addEventListener('click', function(e) {
+
+  newRequest('randomSample');
+
+
+})
+
+function destroyElements() {
+  allSets.forEach((set, index) => {
+    stage.removeChild(set[0])
+    stage.removeChild(set[1])
+    set[0].destroy(true)
+    set[1].destroy(true)
+  })
 }

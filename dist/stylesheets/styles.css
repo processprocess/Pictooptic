@@ -5,7 +5,7 @@
 
 canvas {
   position: absolute;
-  z-index: 10000;
+  z-index: 1000;
 }
 
 .testButton1 {
@@ -26,6 +26,16 @@ canvas {
   top: 0%;
   left: 10%;
   z-index: 60000;
+}
+
+.progress {
+  position:absolute;
+  /*width:25px;
+  height:25px;*/
+  top: 0%;
+  left: 5%;
+  z-index: 60000;
+  color: grey;
 }
 
 * {

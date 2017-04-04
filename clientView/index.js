@@ -9,12 +9,12 @@ import getRandomVal from './getRandomVal.js'
 
 handleChange('randomSample') // for debugging
 
-const logo = document.querySelector('.logo');
-
-logo.addEventListener('click', function(e) {
-  if(infoOverlay.classList.contains('infoevents')) closeInfo();
-  handleChange('randomSample');
-})
+// const logo = document.querySelector('.logo');
+//
+// logo.addEventListener('click', function(e) {
+//   // if(infoOverlay.classList.contains('infoevents')) closeInfo();
+//   handleChange('randomSample');
+// })
 
 /////////// handle key presses ///////////
 
@@ -79,7 +79,7 @@ import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import { allAnimSets } from './generateAnimDomElements.js';
 import { changeToBGColor, compChangeGrid, changeElementColors, changeBGColor, changeColor, changeBorderColor, letterColors, lettersIn, lettersOut } from './animations.js';
 import staggerAnimation from './staggerAnimation.js';
-const compContainer = document.querySelector('.compContainer');
+// const compContainer = document.querySelector('.compContainer');
 const infoOverlay = document.querySelector('.infoOverlay');
 const currentSearch = document.querySelectorAll('.currentSearch');
 const currentSearchWord = document.querySelector('.currentSearchWord');
@@ -87,38 +87,38 @@ const topRelatedTags = document.querySelector('.topRelatedTags');
 const mainRule = document.querySelector('.mainRule');
 const searchLetters = document.querySelector('.searchLetters');
 
-document.querySelector('.testButton').addEventListener('click', function(e) {
-   changeElementColors(allAnimSets, {stagger:-.39, duration:.4});
-})
+// document.querySelector('.testButton').addEventListener('click', function(e) {
+//    changeElementColors(allAnimSets, {stagger:-.39, duration:.4});
+// })
 
-compContainer.addEventListener('click', () => {
-  // document.querySelector('.eventBlocker').classList.add('noEvents');
-  new Promise(function(resolve, reject) {
-    staggerAnimation(allAnimSets, 'compChangeGrid', 30, resolve );
-  }).then((resolve) => {
-    // document.querySelector('.eventBlocker').classList.remove('noEvents');
-    console.log('compChangeGrid done')
-  })
-  randomColorRequest();
-  // setTimeout(function(){
-    new Promise(function(resolve, reject) {
-      staggerAnimation(allAnimSets, 'changeElementColors', 30, resolve );
-    }).then((resolve) => {
-      console.log('changeElementColors done')
-    })
-    changeBGColor(['.pageWrapper']);
-    letterColors(currentSearch)
-    letterColors(currentSearchWord)
-    changeToBGColor([searchLetters])
-    changeColor([topRelatedTags]);
-    changeColor(document.querySelectorAll('.author'));
-    changeColor(document.querySelectorAll('li'));
-    changeBorderColor(mainRule);
-  // }, 100 );
-})
+// compContainer.addEventListener('click', () => {
+//   // document.querySelector('.eventBlocker').classList.add('noEvents');
+//   new Promise(function(resolve, reject) {
+//     staggerAnimation(allAnimSets, 'compChangeGrid', 30, resolve );
+//   }).then((resolve) => {
+//     // document.querySelector('.eventBlocker').classList.remove('noEvents');
+//     console.log('compChangeGrid done')
+//   })
+//   randomColorRequest();
+//   // setTimeout(function(){
+//     new Promise(function(resolve, reject) {
+//       staggerAnimation(allAnimSets, 'changeElementColors', 30, resolve );
+//     }).then((resolve) => {
+//       console.log('changeElementColors done')
+//     })
+//     changeBGColor(['.pageWrapper']);
+//     letterColors(currentSearch)
+//     letterColors(currentSearchWord)
+//     changeToBGColor([searchLetters])
+//     changeColor([topRelatedTags]);
+//     changeColor(document.querySelectorAll('.author'));
+//     changeColor(document.querySelectorAll('li'));
+//     changeBorderColor(mainRule);
+//   // }, 100 );
+// })
 
-compContainer.addEventListener('touchstart', () => {
-})
+// compContainer.addEventListener('touchstart', () => {
+// })
 
 /////////// info grid ///////////
 

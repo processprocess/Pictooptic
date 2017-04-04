@@ -1,16 +1,22 @@
 import request from 'superagent';
-import generateAnimDomElements from '../generateAnimDomElements.js';
+import generateAnimDomElements, { updateElements } from '../generateAnimDomElements.js';
 import handleError from './handleError.js';
 import { lettersIn, animateIn } from '../animations.js';
 import staggerAnimation from '../staggerAnimation.js';
 
 /////////// handle request ///////////
 
+// let turns = 0
 export default function newRequest(param, resolve) {
   request.get(`/api/words/${param}`)
          .then((data) => {
             const cleanIconObjects = data.body;
-            const animSets = generateAnimDomElements(cleanIconObjects);
+            // if (turns > 0) {
+            //   updateElements(cleanIconObjects)
+            // } else {
+              generateAnimDomElements(cleanIconObjects);
+            // }
+            // turns++
 
             new Promise(function(resolve, reject) {
               // staggerAnimation(animSets, 'animateIn', 30, resolve );
