@@ -198,7 +198,7 @@ export function randomLocaiton(elements, options) {
 
     let endX = randomInt(xMin, xMax);
     let endY = randomInt(yMin, yMax);
-    let scale = ((endX - xMin)/.7) / (xMax - xMin)
+    let scale = ((endX - xMin)) / (xMax - xMin)
 
     tl.add(
       TweenLite.to(animL, 1, {
