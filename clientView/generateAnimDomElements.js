@@ -99,7 +99,7 @@ function generateElements(loader, resources){
     var width  = ogTexture.width;
     var height = ogTexture.height;
 
-    for( let i = 0 ; i < 3 ; i++){
+    for( let i = 0 ; i < 1 ; i++){
 
       var renderTarget = new PIXI.CanvasRenderTarget(width, height);
       PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
@@ -144,12 +144,12 @@ function generateElements(loader, resources){
 
       animL.interactive = true;
       animL.on('mouseover', function(e) {
-        randomLocaiton([animL, animR])
+        randomLocaiton([[animL, animR]], {duration:1, stagger:0})
       });
 
       animR.interactive = true;
       animR.on('mouseover', function(e) {
-        randomLocaiton([animL, animR])
+        randomLocaiton([[animL, animR]], {duration:1, stagger:0})
       });
     }
 
@@ -158,52 +158,14 @@ function generateElements(loader, resources){
   /////////// animate in ////////////
 
   allSets.forEach(set => {
-    randomLocaiton(set);
+    randomLocaiton(allSets, {duration:1, stagger:0})
   })
 
 }
 
 ///////////// random location  ////////////
 
-function randomLocaiton(elements) {
-  let animL = elements[0]
-  let animR = elements[1]
-  let xMin = elements[0].width/2 + 50;
-  let xMax = renderer.view.width/2 + 50;
-  let endX = randomInt(xMin, xMax);
-  let yMin = elements[0].height/2 + 50;
-  let yMax = renderer.view.height - elements[0].width/2 -75;
-  let endY = randomInt(yMin, yMax);
-  let scale = ((endX - xMin)) / (xMax - xMin)
-
-  TweenLite.to(animL, 1, {
-    pixi: {
-      x:(index, element) => {
-        return endX
-      },
-      y: endY,
-      scale: scale,
-    },
-    ease: Power1.easeInOut,
-    // onComplete: () => console.log('done'),
-  });
-
-  TweenLite.to(animR, 1, {
-    pixi: {
-      x: () => renderer.view.width - endX,
-      y: endY,
-      scaleX: ()=> scale*-1,
-      scaleY: scale,
-    },
-    ease: Power1.easeInOut,
-    // onComplete: () => console.log('done'),
-  });
-
-}
-
-///////////// random location timeline  ////////////
-
-export function randomLocaitonTimeline(elements, options) {
+export function randomLocaiton(elements, options) {
 
   options = options || {};
   let duration = options.duration || 0.2;
@@ -232,8 +194,6 @@ export function randomLocaitonTimeline(elements, options) {
           scale: scale,
         },
         ease: Power1.easeInOut,
-
-        // onComplete: () => console.log('done'),
       }, stagger * i),
 
       TweenLite.to(animR, 1, {
@@ -244,34 +204,12 @@ export function randomLocaitonTimeline(elements, options) {
           scaleY: scale,
         },
         ease: Power1.easeInOut,
-        // onComplete: () => console.log('done'),
       }, 0)
     )
-
-    // tl.to([animL, animR], duration, {
-    //     x: function(index, element) {
-    //       return (element.name === 'animR') ? renderer.view.width - endX : endX;
-    //     },
-    //     y: endY,
-    //     scaleX: function(index, element) {
-    //       return (element.name === 'animR') ? scale * -1 : scale;
-    //     },
-    //     scaleY: scale,
-    //     ease:Sine.easeInOut
-    //   }, stagger * i);
 
   })
   return tl;
 }
-
-let testVar2 = document.querySelector('.testButton2');
-testVar2.addEventListener('click', function(e) {
-  randomLocaitonTimeline(allSets, {duration:1, stagger:0})
-  // allSets.forEach(set => {
-  //   animateOut(set);
-  // })
-})
-
 
 
 ///////////// changeBG color ////////////
@@ -285,21 +223,34 @@ function changeBGColor() {
 
 ///////////// change element color ////////////
 
-function changeElementColor(elements) {
-  let animL = elements[0];
-  let animR = elements[1];
-  let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
+export function changeElementColor(elements, options) {
 
-  TweenMax.to(animL, 0.5, {colorProps: {
-      tint: tint, format:"number",
-    },
-  });
+  options = options || {};
+  let duration = options.duration || 0.2;
+  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+  let tl = new TimelineLite( {onComplete:()=>console.log('donecolor')} );
 
-  TweenMax.to(animR, 0.5, {colorProps: {
-      tint: tint, format:"number",
-    }
-  });
+  elements.forEach((element, i) => {
+    let animL = element[0]
+    let animR = element[1]
+    let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
 
+    tl.add(
+
+      TweenMax.to(animL, duration, {colorProps: {
+          tint: tint, format:"number",
+        },
+      }, stagger * i),
+
+      TweenMax.to(animR, duration, {colorProps: {
+          tint: tint, format:"number",
+        }
+      }, 0)
+
+    )
+
+  })
+  return tl;
 }
 
 ///////////// shuffle all elements ////////////
@@ -307,11 +258,8 @@ function changeElementColor(elements) {
 function shuffle() {
   randomColorRequest();
   changeBGColor();
-  // randomLocaitonTimeline(allSets, 30)
-  allSets.forEach(set => {
-    randomLocaiton(set);
-    // changeElementColor(set);
-  })
+  randomLocaiton(allSets, {duration:1, stagger:0})
+  changeElementColor(allSets, {duration:1, stagger:0})
 }
 
 ///////////// animateOut ////////////
@@ -343,7 +291,30 @@ function randomInt(min, max) {
   // return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+///////////// logo button ////////////
+
+const logo = document.querySelector('.logo');
+logo.addEventListener('click', function(e) {
+  newRequest('randomSample');
+})
+
+///////////// destroy elements ////////////
+
+function destroyElements() {
+  allSets.forEach((set, index) => {
+    stage.removeChild(set[0])
+    stage.removeChild(set[1])
+    set[0].destroy(true)
+    set[1].destroy(true)
+  })
+}
+
 ///////////// test buttons ////////////
+
+let testVar2 = document.querySelector('.testButton2');
+testVar2.addEventListener('click', function(e) {
+  randomLocaiton(allSets, {duration:1, stagger:0})
+})
 
 let testVar1 = document.querySelector('.testButton1');
 testVar1.addEventListener('click', function(e) {
@@ -351,8 +322,6 @@ testVar1.addEventListener('click', function(e) {
   console.log(stage);
   console.log(allSets);
 })
-
-
 
 ///////////// window resize ////////////
 
@@ -369,22 +338,3 @@ window.addEventListener('resize', function(e) {
   shuffle();
 
 })
-
-///////////// logo button ////////////
-
-const logo = document.querySelector('.logo');
-logo.addEventListener('click', function(e) {
-
-  newRequest('randomSample');
-
-
-})
-
-function destroyElements() {
-  allSets.forEach((set, index) => {
-    stage.removeChild(set[0])
-    stage.removeChild(set[1])
-    set[0].destroy(true)
-    set[1].destroy(true)
-  })
-}
