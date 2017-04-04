@@ -60,7 +60,8 @@ setUp()
 
 /////////// parse Json ///////////
 export default function generateAnimDomElements (iconData, resolve) {
-
+  // let searchTerm = document.querySelector('.searchTerm')
+  // searchTerm.textContent = (iconData[0].term).charAt(0).toUpperCase() + iconData[0].term.slice(1)
   // console.log(iconData[0].term);
 
   loader.reset(true)
@@ -100,7 +101,7 @@ function generateElements(loader, resources){
     var width  = ogTexture.width;
     var height = ogTexture.height;
 
-    for( let i = 0 ; i < 2 ; i++){
+    for( let i = 0 ; i < 4 ; i++){
 
       var renderTarget = new PIXI.CanvasRenderTarget(width, height);
       PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
@@ -326,17 +327,17 @@ function randomInt(min, max) {
 
 ///////////// test buttons ////////////
 
-let testVar2 = document.querySelector('.testButton2');
-testVar2.addEventListener('click', function(e) {
-  animateOut(allSets, {duration:1, stagger:0})
-})
-
-let testVar1 = document.querySelector('.testButton1');
-testVar1.addEventListener('click', function(e) {
-  console.log(loader);
-  console.log(stage);
-  console.log(allSets);
-})
+// let testVar2 = document.querySelector('.testButton2');
+// testVar2.addEventListener('click', function(e) {
+//   animateOut(allSets, {duration:1, stagger:0})
+// })
+//
+// let testVar1 = document.querySelector('.testButton1');
+// testVar1.addEventListener('click', function(e) {
+//   console.log(loader);
+//   console.log(stage);
+//   console.log(allSets);
+// })
 
 ///////////// window resize ////////////
 
