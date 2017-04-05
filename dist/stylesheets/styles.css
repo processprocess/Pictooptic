@@ -3,10 +3,154 @@
   width: extend-to-zoom;
 }*/
 
+* {
+  font-family: sans-serif;
+  list-style: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 canvas {
   position: absolute;
-  z-index: 1000;
+  z-index: 10;
 }
+
+/* --------- navigation --------- */
+
+
+
+.item {
+  transition: all .3s;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #000;
+  border:none;
+  background: #fff;
+  cursor: pointer;
+  z-index: 90000;
+}
+
+ .item.logo {
+   position: absolute;
+}
+
+.item.search {
+  position: absolute;
+  top: 0;
+  left:100px;
+}
+
+.item.info {
+  position: absolute;
+  top: 50px;
+  left: 0;
+}
+
+.item.related {
+  position: absolute;
+  top: 0px;
+  left: 300px;
+}
+
+.hovering {
+  cursor: pointer;
+  color: #fff;
+  background: #000;
+  opacity: 1;
+}
+/*.searchHint,*/
+.searchInput {
+  transition: all .15s;
+  position: absolute;
+  text-align: left;
+  font-size:1.25em;
+  /*width:100px;*/
+  /*left:100px;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*height: 50px;*/
+  outline:0;
+  border:none;
+  text-indent: .75em;
+  cursor: text;
+  z-index: 1000000;
+  /*background: white;*/
+}
+
+.searchInput {
+/*.searchInput:focus {*/
+  width:200px;
+  box-shadow: inset 0px 0px 0px 9px black;
+}
+
+.searchHint {
+  color:#888;
+  text-indent: .75em;
+  font-size:1.25em;
+  text-align: left;
+  position: relative;
+  width:200px;
+}
+
+.inputWrapper {
+  left:100px;
+  position: absolute;
+}
+
+.searchMenu {
+  width: 200px;
+  /*color:#888;*/
+  /*text-indent: .75em;*/
+  /*font-size:1em;*/
+  /*border: thin black solid;*/
+  /*text-align: left;*/
+  position: relative;
+}
+
+.searchSuggestion {
+  position: relative;
+  background: black;
+  color:#fff;
+  text-indent: .75em;
+  font-size:1em;
+  text-align: left;
+  padding: 10px 0;
+
+  /*position: absolute;*/
+  border: thin black solid;
+}
+
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; }
+input:focus::-moz-placeholder { color:transparent; }
+input:focus:-ms-input-placeholder { color:transparent; }
+
+.notVisible {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+/*button.search{
+  transition: all .1s ease-in-out;
+  position: absolute;
+  z-index: 3000;
+  top: 0;
+  left: 100px;
+  width:100px;
+  height:50px;
+  background: white;
+  opacity: 0;
+}
+
+button.search:hover {
+  color: white;
+  background: black;
+}*/
 
 .testButton1 {
   position:absolute;
@@ -32,8 +176,8 @@ canvas {
   position:absolute;
   /*width:25px;
   height:25px;*/
-  top: 0%;
-  left: 5%;
+  bottom: 0;
+  left: 0;
   z-index: 60000;
   color: grey;
 }
@@ -162,20 +306,20 @@ body {
 
 /* --------- buttons --------- */
 
-button {
+/*button {
   transition: opacity .3s ease-in-out;
   opacity: .1;
 }
 
 button:hover {
   opacity: 1;
-}
+}*/
 
-.buttonContainer {
+/*.buttonContainer {
   width: 100%;
-}
+}*/
 
-.searchButton {
+/*.searchButton {
   top: 61px;
   left: 7px;
   position: absolute;
@@ -184,30 +328,28 @@ button:hover {
   z-index: 1000;
   display: inline;
   margin: 0 auto;
-  /*border: thin black solid;*/
-  /*display: none;*/
 }
 
 .searchButton img {
   margin: 0 auto;
   width: 20px;
   display: inline;
-}
+}*/
 
-.closeButton {
+/*.closeButton {
   position: absolute;
   top: 60px;
   left: 5px;
   width: 40px;
   height: 40px;
   z-index: 1000;
-}
+}*/
 
-.closeButton img {
+/*.closeButton img {
   width: 18px;
-}
+}*/
 
-.gridButton {
+/*.gridButton {
   top: 100px;
   left: 7px;
   position: absolute;
@@ -216,15 +358,13 @@ button:hover {
   z-index: 1000;
   display: inline;
   margin: 0 auto;
-  /*border: thin black solid;*/
-  /*display: none;*/
-}
+}*/
 
-.gridButton img {
+/*.gridButton img {
   margin: 0 auto;
   width: 20px;
   display: inline;
-}
+}*/
 
 /* --------- search overlay --------- */
 
@@ -326,18 +466,6 @@ button:hover {
     0% {opacity: 1; }
     50% {opacity: .5; }
     100% {opacity: 1; }
-}
-
-button.logo{
-  position: absolute;
-  z-index: 3000;
-  top: 24px;
-  left: 15px;
-}
-
-.logo img {
-  height: 26px;
-  /*width:120px;*/
 }
 
 button.noun-project {

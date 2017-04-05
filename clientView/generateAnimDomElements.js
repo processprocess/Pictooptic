@@ -59,6 +59,7 @@ function setUp() {
 setUp()
 
 /////////// parse Json ///////////
+
 export default function generateAnimDomElements (iconData, resolve) {
   // let searchTerm = document.querySelector('.searchTerm')
   // searchTerm.textContent = (iconData[0].term).charAt(0).toUpperCase() + iconData[0].term.slice(1)
@@ -70,9 +71,7 @@ export default function generateAnimDomElements (iconData, resolve) {
     let newurl = url.replace('https', 'http')
     loader.add(`item${index}`, newurl)
     if(index === iconData.length - 1){
-      console.log('doin it');
-        new Promise(function(resolve, reject) { animateOut(allSets, {duration:1, stagger:0}, resolve) })
-        .then(resolveData => loader.load(generateElements))
+      resolve();
     }
     // put rest of dom gen here
   })
@@ -90,11 +89,6 @@ function loadProgressHandler(loader, resource) {
 /////////// generate animItems ///////////
 
 function generateElements(loader, resources){
-
-  destroyElements()
-
-  allSets = []
-
   for( let i = 0 ; i < 50 ; i++){
 
     var ogTexture = eval(`resources.item${i}.texture`);
@@ -169,22 +163,18 @@ function generateElements(loader, resources){
 
   /////////// animate in ////////////
 
-  allSets.forEach(set => {
-    randomLocaiton(allSets, {duration:1, stagger:0})
-  })
+  randomLocaiton(allSets, {duration:1, stagger:0})
 
 }
 
 ///////////// random location  ////////////
 
-export function randomLocaiton(elements, options) {
+export function randomLocaiton(elements, options, resolve) {
 
   options = options || {};
   let duration = options.duration || 0.2;
   let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-  let tl = new TimelineLite( {onComplete:()=>console.log('doneanim')} );
-
-  // console.log(window.innerWidth);
+  let tl = new TimelineLite( {onComplete:resolve} );
 
   elements.forEach((element, i) => {
     let animL = element[0]
@@ -244,7 +234,7 @@ export function changeElementColor(elements, options) {
   options = options || {};
   let duration = options.duration || 0.2;
   let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-  let tl = new TimelineLite( {onComplete:()=>console.log('donecolor')} );
+  let tl = new TimelineLite( {} );
 
   elements.forEach((element, i) => {
     let animL = element[0]
@@ -272,6 +262,8 @@ export function changeElementColor(elements, options) {
 ///////////// animateOut ////////////
 
 export function animateOut(elements, options, resolve) {
+
+  if(elements.length === 0) resolve()
 
   TweenMax.to(bgCover, 0.5, {colorProps: {
       tint: 0xffffff, format:"number"
@@ -325,20 +317,6 @@ function randomInt(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-///////////// test buttons ////////////
-
-// let testVar2 = document.querySelector('.testButton2');
-// testVar2.addEventListener('click', function(e) {
-//   animateOut(allSets, {duration:1, stagger:0})
-// })
-//
-// let testVar1 = document.querySelector('.testButton1');
-// testVar1.addEventListener('click', function(e) {
-//   console.log(loader);
-//   console.log(stage);
-//   console.log(allSets);
-// })
-
 ///////////// window resize ////////////
 
 window.addEventListener('resize', function(e) {
@@ -359,18 +337,40 @@ window.addEventListener('resize', function(e) {
 
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', function(e) {
-  newRequest('randomSample');
+  handleChangeFlow('randomSample')
 })
-newRequest('randomSample');
+
+///////////// new request ////////////
+
+export function handleChangeFlow(param) {
+  new Promise((resolve, reject) => { animateOut(allSets, {duration:1, stagger:0}, resolve)
+  })
+  .then((newDataFour) => { return new Promise((resolve, reject) => { destroyElements(allSets, resolve) })
+  })
+  .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
+  })
+  .then((iconDataTwo) => { return new Promise((resolve, reject) => { generateAnimDomElements(iconDataTwo, resolve) })
+  })
+  .then((iconDataFive) => { return new Promise((resolve, reject) => { loader.load(generateElements); })
+  })
+  .then((resolveData) => { console.log('done with gen dom')})
+}
+handleChangeFlow('randomSample')
 
 ///////////// destroy elements ////////////
 
-function destroyElements() {
-  allSets.forEach((set, index) => {
+function destroyElements(setsToDestroy, resolve) {
+  let setsDestroyed = 0;
+  if(setsToDestroy.length === 0) resolve()
+  setsToDestroy.forEach((set, index) => {
     stage.removeChild(set[0])
     stage.removeChild(set[1])
     set[0].destroy(true)
     set[1].destroy(true)
+    setsDestroyed++
+    if(setsToDestroy.length === setsDestroyed) {
+      allSets = [];
+      resolve();
+    }
   })
 }
-

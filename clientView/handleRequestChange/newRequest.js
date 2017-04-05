@@ -6,30 +6,14 @@ import staggerAnimation from '../staggerAnimation.js';
 
 /////////// handle request ///////////
 
-// let turns = 0
 export default function newRequest(param, resolve) {
   request.get(`/api/words/${param}`)
-         .then((data) => {
-            const cleanIconObjects = data.body;
-            // if (turns > 0) {
-            //   updateElements(cleanIconObjects)
-            // } else {
-              generateAnimDomElements(cleanIconObjects);
-            // }
-            // turns++
-
-            new Promise(function(resolve, reject) {
-              // staggerAnimation(animSets, 'animateIn', 30, resolve );
-              // lettersIn()
-            }).then((resolve) => {
-              // document.querySelector('.eventBlocker').classList.remove('noEvents');
-              // console.log('animateIn done')
-            })
-
+         .then(data => {
+            let cleanIconObjects = data.body;
+            resolve(cleanIconObjects);
          })
          .catch(err => { handleError(err); console.log(err)})
          if (!resolve) return;
-         resolve('donewithRequest');
 }
 
 /////////// new Color Request ///////////
