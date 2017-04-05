@@ -1,18 +1,18 @@
-const Word = require('../models/Word');
+const Icon = require('../models/Icon');
 const NounProjectApi = require('../services/NounProjectApi');
 const sampleNouns = require('../json/sampleNouns.json');
 
 const sampleLength = sampleNouns.length;
 
-class WordController {
+class IconController {
   static show(req, res) {
-    const word = req.params.param;
-    if (word === 'randomSample') {
+    const icon = req.params.param;
+    if (icon === 'randomSample') {
       console.log('randomSample');
       const randomVal = Math.floor(Math.random() * ((sampleLength + 1) - 0)) + 0;
       const randomSample = sampleNouns[randomVal];
-      const words = randomSample.map(wordData => new Word(wordData));
-      res.status(200).json(words);
+      const icons = randomSample.map(iconData => new Icon(iconData));
+      res.status(200).json(icons);
     } else {
       console.log('server hit');
       NounProjectApi.fetchIcons(req.params.param)
@@ -20,8 +20,8 @@ class WordController {
         // res.status(200).json(data); return // for debugging
         // const topTags = WordController.topTags(words); // future dev
         // res.status(200).json({ words: words, definition: definition, topTags: topTags); // future dev
-        const words = data.map(wordData => new Word(wordData));
-        res.status(200).json(words);
+        const icons = data.map(iconData => new Icon(iconData));
+        res.status(200).json(icons);
       })
       .catch(err => { res.status(404).send({ err }); })
     }
@@ -32,4 +32,4 @@ class WordController {
   // }
 }
 
-module.exports = WordController;
+module.exports = IconController;

@@ -1,4 +1,4 @@
-class Word {
+class Icon {
   constructor({ preview_url, uploader, date_uploaded, collections, id, tags, term }) {
     this.previewURL = preview_url;
     this.user = uploader.username;
@@ -12,6 +12,4 @@ class Word {
   }
 }
 
-// Word rename
-
-module.exports = Word;
+module.exports = Icon;

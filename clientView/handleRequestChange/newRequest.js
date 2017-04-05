@@ -7,7 +7,8 @@ import staggerAnimation from '../staggerAnimation.js';
 /////////// handle request ///////////
 
 export default function newRequest(param, resolve) {
-  request.get(`/api/words/${param}`)
+  request.get(`/api/icons/${param}`)
+  // request.get(`/api/words/${param}`)
          .then(data => {
             let cleanIconObjects = data.body;
             resolve(cleanIconObjects);
