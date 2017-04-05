@@ -4,12 +4,12 @@ import { allAnimSets } from './generateAnimDomElements.js';
 export let windowSize = {};
 export let responsiveScale;
 
-const pageWrapper = document.querySelector('.pageWrapper')
+// const pageWrapper = document.querySelector('.pageWrapper')
 
 windowSize.width = window.innerWidth;
 windowSize.height = window.innerHeight;
 window.onload = function() {  // set page wrapper at start
-  document.querySelector('.pageWrapper').style.height = window.innerHeight + 'px';
+  // document.querySelector('.pageWrapper').style.height = window.innerHeight + 'px';
 };
 setResponsiveScale();
 
@@ -18,8 +18,8 @@ document.addEventListener('gesturestart', function (e) { // dissable pinch re-si
 });
 
 export default function handleWindowResize() {
-  pageWrapper.style.width = windowSize.width + 'px';
-  pageWrapper.style.height = windowSize.height + 'px';
+  // pageWrapper.style.width = windowSize.width + 'px';
+  // pageWrapper.style.height = windowSize.height + 'px';
   changeLocation(allAnimSets, {stagger:-.89, duration:.9});
   scale(allAnimSets, {stagger:-.199, duration:.2});
 }

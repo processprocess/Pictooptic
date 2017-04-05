@@ -238,32 +238,32 @@ export function lettersIn() {
 
 /////////// move letters out ///////////
 
-let currentSearch = document.querySelectorAll('.currentSearch');
-TweenMax.set(currentSearch, {
-  x: function(index, element) {
-    const children = element.children;
-    let elementInnerWidth = 0;
-    for (var i = 0; i < children.length; i++) {
-      elementInnerWidth += children[i].offsetWidth;
-    }
-    return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + 200 : windowSize.width/4 * -1 - 200
-  },
-})
-
-export function lettersOut() {
-  let currentSearch = document.querySelectorAll('.currentSearch');
-  TweenMax.to(currentSearch, 1.5, {
-    x: function(index, element) {
-      const children = element.children;
-      let elementInnerWidth = 0;
-      for (var i = 0; i < children.length; i++) {
-        elementInnerWidth += children[i].offsetWidth;
-      }
-      return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + elementInnerWidth : windowSize.width/4 * -1 - elementInnerWidth
-    },
-    ease:Sine.easeInOut
-  })
-}
+// let currentSearch = document.querySelectorAll('.currentSearch');
+// TweenMax.set(currentSearch, {
+//   x: function(index, element) {
+//     const children = element.children;
+//     let elementInnerWidth = 0;
+//     for (var i = 0; i < children.length; i++) {
+//       elementInnerWidth += children[i].offsetWidth;
+//     }
+//     return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + 200 : windowSize.width/4 * -1 - 200
+//   },
+// })
+//
+// export function lettersOut() {
+//   let currentSearch = document.querySelectorAll('.currentSearch');
+//   TweenMax.to(currentSearch, 1.5, {
+//     x: function(index, element) {
+//       const children = element.children;
+//       let elementInnerWidth = 0;
+//       for (var i = 0; i < children.length; i++) {
+//         elementInnerWidth += children[i].offsetWidth;
+//       }
+//       return element.offsetParent.classList.contains('leftContainer') ? windowSize.width/4 + elementInnerWidth : windowSize.width/4 * -1 - elementInnerWidth
+//     },
+//     ease:Sine.easeInOut
+//   })
+// }
 
 /////////// grid in ///////////
 

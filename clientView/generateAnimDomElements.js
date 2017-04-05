@@ -61,10 +61,6 @@ setUp()
 /////////// parse Json ///////////
 
 export default function generateAnimDomElements (iconData, resolve) {
-  // let searchTerm = document.querySelector('.searchTerm')
-  // searchTerm.textContent = (iconData[0].term).charAt(0).toUpperCase() + iconData[0].term.slice(1)
-  // console.log(iconData[0].term);
-
   loader.reset(true)
   iconData.forEach((data, index) => {
     let url = data.previewURL
@@ -73,9 +69,7 @@ export default function generateAnimDomElements (iconData, resolve) {
     if(index === iconData.length - 1){
       resolve();
     }
-    // put rest of dom gen here
   })
-
 }
 
 /////////// custom loader ///////////
@@ -148,15 +142,16 @@ function generateElements(loader, resources){
 
       /////////// set events ////////////
 
-      animL.interactive = true;
-      animL.on('mouseover', function(e) {
-        randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      });
+      // animL.interactive = true;
+      // animL.on('mouseover', function(e) {
+      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+      // });
+      //
+      // animR.interactive = true;
+      // animR.on('mouseover', function(e) {
+      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+      // });
 
-      animR.interactive = true;
-      animR.on('mouseover', function(e) {
-        randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      });
     }
 
   }
@@ -349,7 +344,11 @@ export function handleChangeFlow(param) {
   })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
-  .then((iconDataTwo) => { return new Promise((resolve, reject) => { generateAnimDomElements(iconDataTwo, resolve) })
+  .then((cleanIconData) => { return new Promise((resolve, reject) => {
+    relatedTagsDom(cleanIconData.topTags)
+    searchTermDom(cleanIconData.icons[0].term)
+    generateAnimDomElements(cleanIconData.icons, resolve)
+  })
   })
   .then((iconDataFive) => { return new Promise((resolve, reject) => { loader.load(generateElements); })
   })
@@ -374,3 +373,35 @@ function destroyElements(setsToDestroy, resolve) {
     }
   })
 }
+
+/////////// related tags ///////////
+
+let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
+function relatedTagsDom(tags) {
+  while (relatedTagsMenu.firstChild) {
+    relatedTagsMenu.removeChild(relatedTagsMenu.firstChild);
+  }
+  for (let i = 0 ; i < 5; i++) {
+    let tagItem = document.createElement('li');
+    tagItem.textContent = tags[i][0]
+    tagItem.addEventListener('click', function(e) {
+      handleChangeFlow(tagItem.textContent)
+    })
+    relatedTagsMenu.append(tagItem)
+  }
+}
+
+/////////// search term ///////////
+
+let searchTerm = document.querySelector('.searchTerm');
+function searchTermDom(term) {
+  console.log(term)
+  searchTerm.innerHTML = '';
+  searchTerm.innerHTML = term;
+}
+
+// let searchTerm = cleanData.icons[0].term;
+// console.log(searchTerm)
+// let searchTerm = document.querySelector('.searchTerm')
+// searchTerm.textContent = (iconData[0].term).charAt(0).toUpperCase() + iconData[0].term.slice(1)
+// console.log(iconData[0].term);

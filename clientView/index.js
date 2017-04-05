@@ -2,9 +2,14 @@ console.clear()
 import { handleChangeFlow } from './generateAnimDomElements.js';
 import { substringMatcher } from './typeahead.js'
 
-
-
-
+let related = document.querySelector('.related');
+let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
+related.addEventListener('mouseover', function(e) {
+  relatedTagsMenu.classList.remove('notVisible')
+})
+related.addEventListener('mouseout', function(e) {
+  relatedTagsMenu.classList.add('notVisible')
+})
 
 /////////// handle navigation ///////////
 
