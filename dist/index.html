@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <title>RORSHOCK</title>
+    <title>Picto-optic</title>
     <link rel="stylesheet" href="/stylesheets/appendix.css" media="screen">
+    <link rel="stylesheet" href="/stylesheets/intro.css" media="screen">
     <link rel="stylesheet" href="/stylesheets/errorStyles.css" media="screen">
     <link rel="stylesheet" href="/stylesheets/defaultOverrides.css" media="screen">
     <link rel="stylesheet" href="/stylesheets/styles.css" media="screen">
@@ -16,24 +17,32 @@
 
     <canvas></canvas>
 
+    <!-- <div class="introWrapper">What do you see <br> In a symbol?</div> -->
+    <!-- <div class="introWrapper">Type any word. <br> Then press enter.</div> -->
+
+    <div class="loadingWrapper">
+      <div class="loadingLogo"><img src="images/logo.png"></img></div>
+    </div>
+
     <div class="nav">
 
-      <div class='logo'><img src="images/logo.png"></div>
+      <div class="logo"><img src="images/logo.png"></div>
 
       <div class="inputWrapper">
-        <input class='typeahead' type="text"></input>
+        <input class="searchInput" type="text"></input>
+        <!-- <input class="typeahead" type="text"></input> -->
       </div>
 
-      <div class='related'>related tags
-        <ul class ='relatedTagsMenu notVisible'></ul>
+      <div class="related">related tags
+        <ul class ="relatedTagsMenu notVisible"></ul>
       </div>
 
     </div>
 
-    <div class='searchTerm'>searchTerm</div>
+    <div class="searchTerm">.</div>
 
-    <div class='appendix notVisible'>
-      <div class='iconHolder'>
+    <div class="appendix notVisible">
+      <div class="iconHolder">
       </div>
     </div>
 

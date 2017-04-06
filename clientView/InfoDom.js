@@ -1,4 +1,4 @@
-import { handleChangeFlow } from './generateAnimDomElements.js'
+import { controlFlow } from './generateAnimDomElements.js'
 
 class InfoDom {
   static searchTermDom(term) {
@@ -15,7 +15,7 @@ class InfoDom {
       let tagItem = document.createElement('li');
       tagItem.textContent = tags[i][0];
       tagItem.addEventListener('click', function(e) {
-        handleChangeFlow(tagItem.textContent);
+        controlFlow(tagItem.textContent);
       })
       relatedTagsMenu.append(tagItem);
     }
@@ -52,6 +52,7 @@ class InfoDom {
   static showAppendix() {
     let appendix = document.querySelector('.appendix');
     appendix.classList.toggle('notVisible')
+    console.log('test');
   }
 }
 

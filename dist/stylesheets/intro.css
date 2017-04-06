@@ -1,0 +1,36 @@
+
+/*/////////// intro ///////////*/
+
+.introWrapper {
+  color: black;
+  position: absolute;
+  width: 50%;
+  height: 47%;
+  right: 0;
+  bottom: 0;
+  line-height: 1.5em;
+  font-size: 1.5em;
+}
+
+/*/////////// loading ///////////*/
+
+.loadingWrapper {
+  transition: all .5s;
+  position:absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.loadingLogo {
+  height: 100%;
+}
+
+.loadingLogo img {
+  position: relative;
+  height:100px;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+}

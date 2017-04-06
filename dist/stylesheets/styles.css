@@ -130,12 +130,12 @@ input:focus:-ms-input-placeholder { color:transparent; }
   position: absolute;
   text-align: left;
   font-size:4em;
-  z-index: 100;
   top:60px;
   margin-left: 20px;
+  z-index: 1;
 }
 
-/*//////// hide menus ////////*/
+/*//////// hide elements ////////*/
 
 .notVisible {
   opacity: 0;

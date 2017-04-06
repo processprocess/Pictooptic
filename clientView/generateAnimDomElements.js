@@ -48,12 +48,12 @@ function setUp() {
   stage.addChild(bgCover);
 
   leftBox = new PIXI.Graphics();
-  leftBox.beginFill(0xeeeeee, 1);
+  leftBox.beginFill(0xffffff, 1);
   leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
-  rightBox.beginFill(0xeeffff, 1);
+  rightBox.beginFill(0xffffff, 1);
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
 }
@@ -68,9 +68,86 @@ export default function generateAnimDomElements (iconData, resolve) {
     let newurl = url.replace('https', 'http')
     loader.add(`item${index}`, newurl)
     if(index === iconData.length - 1){
-      resolve();
+      loader.load(generateElements);
     }
   })
+
+  function generateElements(loader, resources){
+    let elementCount = iconData.length
+
+    for( let i = 0 ; i < elementCount ; i++){
+
+      var ogTexture = eval(`resources.item${i}.texture`);
+      var width  = ogTexture.width;
+      var height = ogTexture.height;
+
+      for( let i = 0 ; i < 2 ; i++){
+
+        var renderTarget = new PIXI.CanvasRenderTarget(width, height);
+        PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
+
+        var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
+        var lightSprite = new PIXI.Sprite(whiteTexture);
+
+        renderTarget.destroy();
+
+        let animL = new PIXI.Sprite(whiteTexture);
+        stage.addChild(animL);
+        let animR = new PIXI.Sprite(whiteTexture);
+        stage.addChild(animR);
+
+        animL.mask = leftBox;
+        animL.name = 'animL';
+
+        animR.mask = rightBox;
+        animR.name = 'animR';
+
+        allSets.push([animL, animR]);
+
+        /////////// set values ////////////
+
+        TweenMax.set(animL, {
+          pixi: {
+            anchor: 0.5,
+            scaleX: 0,
+            scaleY: 0,
+            x: window.innerWidth/2 + animL.width/2,
+            y: window.innerHeight/2,
+          },
+          colorProps: {
+            tint: 0x000000,
+          },
+        });
+
+        TweenMax.set(animR, {
+          pixi: {
+            anchor: 0.5,
+            scaleX: 0,
+            scaleY: 0,
+            x: window.innerWidth/2 - animR.width/2,
+            y: window.innerHeight/2,
+          },
+          colorProps: {
+            tint: 0x000000,
+          },
+        });
+
+        /////////// set events ////////////
+
+        // animL.interactive = true;
+        // animL.on('mouseover', function(e) {
+        //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+        // });
+        //
+        // animR.interactive = true;
+        // animR.on('mouseover', function(e) {
+        //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+        // });
+
+      }
+    }
+    resolve()
+  }
 }
 
 /////////// custom loader ///////////
@@ -79,88 +156,6 @@ loader.on("progress", loadProgressHandler)
 let progress = document.querySelector('.progress')
 function loadProgressHandler(loader, resource) {
   progress.textContent = loader.progress + "%"
-}
-
-/////////// generate animItems ///////////
-
-function generateElements(loader, resources){
-  for( let i = 0 ; i < 50 ; i++){
-
-    var ogTexture = eval(`resources.item${i}.texture`);
-    var width  = ogTexture.width;
-    var height = ogTexture.height;
-
-    for( let i = 0 ; i < 4 ; i++){
-
-      var renderTarget = new PIXI.CanvasRenderTarget(width, height);
-      PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
-
-      var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
-      var lightSprite = new PIXI.Sprite(whiteTexture);
-
-      renderTarget.destroy();
-
-      let animL = new PIXI.Sprite(whiteTexture);
-      stage.addChild(animL);
-      let animR = new PIXI.Sprite(whiteTexture);
-      stage.addChild(animR);
-
-      animL.mask = leftBox;
-      animL.name = 'animL';
-
-      animR.mask = rightBox;
-      animR.name = 'animR';
-
-      allSets.push([animL, animR]);
-
-      /////////// set values ////////////
-
-      TweenMax.set(animL, {
-        pixi: {
-          anchor: 0.5,
-          scaleX: 0,
-          scaleY: 0,
-          x: window.innerWidth/2 + animL.width/2,
-          y: window.innerHeight/2,
-        },
-        colorProps: {
-          tint: 0x000000,
-        },
-      });
-
-      TweenMax.set(animR, {
-        pixi: {
-          anchor: 0.5,
-          scaleX: 0,
-          scaleY: 0,
-          x: window.innerWidth/2 - animR.width/2,
-          y: window.innerHeight/2,
-        },
-        colorProps: {
-          tint: 0x000000,
-        },
-      });
-
-      /////////// set events ////////////
-
-      // animL.interactive = true;
-      // animL.on('mouseover', function(e) {
-      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      // });
-      //
-      // animR.interactive = true;
-      // animR.on('mouseover', function(e) {
-      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      // });
-
-    }
-
-  }
-
-  /////////// animate in ////////////
-
-  randomLocaiton(allSets, {duration:1, stagger:0})
-
 }
 
 ///////////// random location  ////////////
@@ -187,7 +182,7 @@ export function randomLocaiton(elements, options, resolve) {
     let scale = ((endX - xMin)) / (xMax - xMin)
 
     tl.add(
-      TweenLite.to(animL, 1, {
+      TweenLite.to(animL, duration, {
         pixi: {
           x:(index, element) => {
             return endX
@@ -198,7 +193,7 @@ export function randomLocaiton(elements, options, resolve) {
         ease: Power1.easeInOut,
       }, stagger * i),
 
-      TweenLite.to(animR, 1, {
+      TweenLite.to(animR, duration, {
         pixi: {
           x: () => renderer.view.width - endX,
           y: endY,
@@ -329,34 +324,33 @@ window.addEventListener('resize', function(e) {
 
 })
 
-///////////// logo button ////////////
+///////////// control flow ////////////
 
-const logo = document.querySelector('.logo');
-logo.addEventListener('click', function(e) {
-  handleChangeFlow('randomSample')
-})
+let loadingWrapper = document.querySelector('.loadingWrapper')
 
-///////////// new request ////////////
-
-export function handleChangeFlow(param) {
+export function controlFlow(param) {
   new Promise((resolve, reject) => { animateOut(allSets, {duration:1, stagger:0}, resolve)
   })
-  .then((newDataFour) => { return new Promise((resolve, reject) => { destroyElements(allSets, resolve) })
+  .then((newDataFour) => { return new Promise((resolve, reject) => {
+    destroyElements(allSets, resolve);
+    loadingWrapper.classList.remove('notVisible');
+    })
   })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
     InfoDom.relatedTagsDom(cleanIconData.topTags);
-    InfoDom.searchTermDom(cleanIconData.icons[0].term)
-    InfoDom.generateAppendix(cleanIconData)
+    InfoDom.searchTermDom(cleanIconData.icons[0].term);
+    InfoDom.generateAppendix(cleanIconData);
     generateAnimDomElements(cleanIconData.icons, resolve);
+    })
   })
+  .then((resolveData) => {
+    loadingWrapper.classList.add('notVisible');
+    console.log('done with gen dom')
+    randomLocaiton(allSets, {duration:1, stagger:.5})
   })
-  .then((iconDataFive) => { return new Promise((resolve, reject) => { loader.load(generateElements); })
-  })
-  .then((resolveData) => { console.log('done with gen dom')})
 }
-handleChangeFlow('randomSample')
 
 ///////////// destroy elements ////////////
 
@@ -376,28 +370,4 @@ function destroyElements(setsToDestroy, resolve) {
   })
 }
 
-/////////// related tags ///////////
-
-// function relatedTagsDom(tags) {
-//   let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
-//   while (relatedTagsMenu.firstChild) {
-//     relatedTagsMenu.removeChild(relatedTagsMenu.firstChild);
-//   }
-//   for (let i = 0 ; i < 5; i++) {
-//     let tagItem = document.createElement('li');
-//     tagItem.textContent = tags[i][0]
-//     tagItem.addEventListener('click', function(e) {
-//       handleChangeFlow(tagItem.textContent)
-//     })
-//     relatedTagsMenu.append(tagItem)
-//   }
-// }
-
-/////////// search term ///////////
-
-// let searchTerm = document.querySelector('.searchTerm');
-// function searchTermDom(term) {
-//   console.log(term)
-//   searchTerm.innerHTML = '';
-//   searchTerm.innerHTML = term;
-// }
+// controlFlow('randomSample')
