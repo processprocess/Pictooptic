@@ -9,6 +9,7 @@ import handleChange from './handleRequestChange/handleChange.js';
 import getRandomVal from './getRandomVal.js';
 import './libs/PixiPlugin.js';
 import newRequest from './handleRequestChange/newRequest.js';
+import InfoDom from './InfoDom.js'
 
 export let allAnimSets = [];
 
@@ -345,9 +346,10 @@ export function handleChangeFlow(param) {
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
-    relatedTagsDom(cleanIconData.topTags)
-    searchTermDom(cleanIconData.icons[0].term)
-    generateAnimDomElements(cleanIconData.icons, resolve)
+    InfoDom.relatedTagsDom(cleanIconData.topTags);
+    InfoDom.searchTermDom(cleanIconData.icons[0].term)
+    InfoDom.generateAppendix(cleanIconData)
+    generateAnimDomElements(cleanIconData.icons, resolve);
   })
   })
   .then((iconDataFive) => { return new Promise((resolve, reject) => { loader.load(generateElements); })
@@ -376,32 +378,26 @@ function destroyElements(setsToDestroy, resolve) {
 
 /////////// related tags ///////////
 
-let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
-function relatedTagsDom(tags) {
-  while (relatedTagsMenu.firstChild) {
-    relatedTagsMenu.removeChild(relatedTagsMenu.firstChild);
-  }
-  for (let i = 0 ; i < 5; i++) {
-    let tagItem = document.createElement('li');
-    tagItem.textContent = tags[i][0]
-    tagItem.addEventListener('click', function(e) {
-      handleChangeFlow(tagItem.textContent)
-    })
-    relatedTagsMenu.append(tagItem)
-  }
-}
+// function relatedTagsDom(tags) {
+//   let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
+//   while (relatedTagsMenu.firstChild) {
+//     relatedTagsMenu.removeChild(relatedTagsMenu.firstChild);
+//   }
+//   for (let i = 0 ; i < 5; i++) {
+//     let tagItem = document.createElement('li');
+//     tagItem.textContent = tags[i][0]
+//     tagItem.addEventListener('click', function(e) {
+//       handleChangeFlow(tagItem.textContent)
+//     })
+//     relatedTagsMenu.append(tagItem)
+//   }
+// }
 
 /////////// search term ///////////
 
-let searchTerm = document.querySelector('.searchTerm');
-function searchTermDom(term) {
-  console.log(term)
-  searchTerm.innerHTML = '';
-  searchTerm.innerHTML = term;
-}
-
-// let searchTerm = cleanData.icons[0].term;
-// console.log(searchTerm)
-// let searchTerm = document.querySelector('.searchTerm')
-// searchTerm.textContent = (iconData[0].term).charAt(0).toUpperCase() + iconData[0].term.slice(1)
-// console.log(iconData[0].term);
+// let searchTerm = document.querySelector('.searchTerm');
+// function searchTermDom(term) {
+//   console.log(term)
+//   searchTerm.innerHTML = '';
+//   searchTerm.innerHTML = term;
+// }

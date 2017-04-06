@@ -1,4 +1,47 @@
-.infoOverlay {
+.appendix {
+  position: absolute;
+  width: 50%;
+  bottom: 0;
+  height: calc(100% - 50px);
+  border-right: thin black solid;
+}
+
+.iconHolder {
+  position: absolute;
+  bottom:0;
+  width: 100%;
+  height: calc(100% - 100px);
+  border-top: thin black solid;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+.iconData {
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  float: left;
+  border-right: thin black solid;
+  border-bottom: thin black solid;
+}
+
+.iconGraphic img {
+  display: block;
+  width: 100px;
+  left: 10px;
+  margin: 0 auto;
+}
+
+.iconTagList {
+  font-size: .75em;
+}
+
+.iconTagList li {
+  margin: 0 3px;
+  display: inline-block;
+}
+
+/*.infoOverlay {
   transition: opacity .2s ease-in-out;
   position: absolute;
   width: 50%;
@@ -8,7 +51,6 @@
   overflow-y: scroll;
   pointer-events: none;
   opacity: 0;
-  /*overflow: visible;*/
 }
 
 .infoevents {
@@ -22,12 +64,11 @@
 
 .infoWrapper {
   margin: 0 40px;
-  /*border: 1px solid grey;*/
-}
+}*/
 
 /* --------- gradient --------- */
 
-.gradient {
+/*.gradient {
   transition: opacity 1s;
   position: absolute;
   z-index: 10000;
@@ -36,11 +77,11 @@
   height: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0));
   opacity: 0;
-}
+}*/
 
 /* --------- Noun Data --------- */
 
-.currentSearchHeaderWrapper {
+/*.currentSearchHeaderWrapper {
   display: inline-block;
   position: relative;
   width: 100%;
@@ -53,7 +94,6 @@
   font-weight: 500;
   letter-spacing: -4px;
   cursor: pointer;
-  /*border: thin black solid;*/
 }
 
 .topRelatedTags {
@@ -72,14 +112,12 @@
   width: 100%
 }
 
-/*whole data wrapper*/
 .nounDataWrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-/*individual data wrapper*/
 .iconDataHolder {
   flex-grow: 1;
   flex-shrink: 0;
@@ -134,10 +172,7 @@ li.iconTag {
   margin: 0 3px;
   font-size: 0.707em;
   cursor: pointer;
-  /*border-bottom: 1px solid rgba(0, 0, 0, .2);*/
-}
-
-
+}*/
 
 
 /*.iconTags li {
@@ -215,19 +250,14 @@ li.iconTag {
   opacity: 1;
 }*/
 
-@media only screen
+/*@media only screen
   and (max-width: 800px)
   {
   .infoOverlay {
     width: 100%;
   }
   .currentSearchWord {
-    /*margin: 75px 0 10px 0;*/
     font-size: 75px;
-    /*font-weight: 500;*/
-    /*letter-spacing: -4px;*/
-    /*cursor: pointer;*/
-    /*border: thin black solid;*/
   }
 
   .topRelatedTags {
@@ -235,7 +265,7 @@ li.iconTag {
     margin-bottom: 10px;
     font-weight: 500;
   }
-}
+}*/
 
 
 

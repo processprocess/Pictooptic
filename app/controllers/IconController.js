@@ -25,7 +25,7 @@ class IconController {
 
   static generateData(data, res) {
     const icons = data.map(iconData => new Icon(iconData));
-    const topTags = IconController.topTags(icons); // future dev
+    const topTags = IconController.topTags(icons);
     res.status(200).json({ icons: icons, topTags: topTags });
   }
 

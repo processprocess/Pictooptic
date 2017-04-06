@@ -108,6 +108,7 @@ input:focus:-ms-input-placeholder { color:transparent; }
   width: 200px;
   top: 50px;
   height: auto;
+  position: absolute;
 }
 
 .relatedTagsMenu li {

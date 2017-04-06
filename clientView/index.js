@@ -17,7 +17,7 @@ related.addEventListener('mouseout', function(e) {
 let searchInput = document.querySelector('.searchInput')
 // let offNav = document.querySelector('.offNav')
 // // let canvas = document.querySelector('canvas')
-//
+
 // let searching = false;
 //
 // items.forEach(item => {

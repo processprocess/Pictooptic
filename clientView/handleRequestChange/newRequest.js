@@ -13,7 +13,8 @@ export default function newRequest(param, resolve) {
             let cleanIconObjects = data.body;
             resolve(cleanIconObjects);
          })
-         .catch(err => { handleError(err); console.log(err)})
+         .catch(err => { console.log(err)})
+        //  .catch(err => { handleError(err); console.log(err)})
          if (!resolve) return;
 }
 
