@@ -12,7 +12,7 @@
   font-size: 1.5em;
 }
 
-/*/////////// loading ///////////*/
+/*/////////// loading animation ///////////*/
 
 .loadingWrapper {
   transition: all .5s;
@@ -33,4 +33,20 @@
   left: 50%;
   top: 45%;
   transform: translate(-50%, -50%);
+}
+
+#loaderAnimation {
+  position:absolute;
+  /*width:400px;*/
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.letter path {
+  fill: black;
+}
+
+.botas_loop_3,.botas_loop_2{
+  display:none
 }

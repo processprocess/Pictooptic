@@ -10,6 +10,7 @@ import getRandomVal from './getRandomVal.js';
 import './libs/PixiPlugin.js';
 import newRequest from './handleRequestChange/newRequest.js';
 import InfoDom from './InfoDom.js'
+import LoaderAnim from './LoaderAnim.js';
 
 export let allAnimSets = [];
 
@@ -333,6 +334,10 @@ export function controlFlow(param) {
   })
   .then((newDataFour) => { return new Promise((resolve, reject) => {
     destroyElements(allSets, resolve);
+    })
+  })
+  .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
+    LoaderAnim.play(resolve)
     loadingWrapper.classList.remove('notVisible');
     })
   })
@@ -345,8 +350,13 @@ export function controlFlow(param) {
     generateAnimDomElements(cleanIconData.icons, resolve);
     })
   })
+  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
+    LoaderAnim.reverse(resolve)
+    loadingWrapper.classList.remove('notVisible');
+    })
+  })
   .then((resolveData) => {
-    loadingWrapper.classList.add('notVisible');
+    loadingWrapper.classList.remove('notVisible');
     console.log('done with gen dom')
     randomLocaiton(allSets, {duration:1, stagger:.5})
   })

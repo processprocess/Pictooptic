@@ -1,6 +1,13 @@
 console.clear()
 import { controlFlow } from './generateAnimDomElements.js';
+import LoaderAnim from './LoaderAnim.js';
 // import { substringMatcher } from './typeahead.js'
+
+window.onload = function() {
+  LoaderAnim.play();
+};
+
+
 
 /////////// nav ///////////
 
