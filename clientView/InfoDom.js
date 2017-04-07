@@ -7,18 +7,24 @@ class InfoDom {
     searchTerm.innerHTML = term;
   }
   static relatedTagsDom(tags) {
-    let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
-    while (relatedTagsMenu.firstChild) {
-      relatedTagsMenu.removeChild(relatedTagsMenu.firstChild);
+    let relatedMenu = document.querySelector('.relatedMenu');
+    while (relatedMenu.firstChild) {
+      relatedMenu.removeChild(relatedMenu.firstChild);
     }
-    for (let i = 0 ; i < 5; i++) {
+    for (let i = 0 ; i < 15; i++) {
       let tagItem = document.createElement('li');
       tagItem.textContent = tags[i][0];
       tagItem.addEventListener('click', function(e) {
         controlFlow(tagItem.textContent);
       })
-      relatedTagsMenu.append(tagItem);
+      relatedMenu.append(tagItem);
     }
+    let lastItem = document.createElement('li');
+    lastItem.textContent = 'random';
+    lastItem.addEventListener('click', function(e) {
+      controlFlow('randomSample');
+    })
+    relatedMenu.append(lastItem);
   }
   static generateAppendix(cleanIconData) {
     let iconHolder = document.querySelector('.iconHolder')

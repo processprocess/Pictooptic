@@ -11,14 +11,14 @@ window.onload = function() {
 
 /////////// nav ///////////
 
-let related = document.querySelector('.related');
-let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
-related.addEventListener('mouseover', function(e) {
-  relatedTagsMenu.classList.remove('notVisible')
-})
-related.addEventListener('mouseout', function(e) {
-  relatedTagsMenu.classList.add('notVisible')
-})
+// let related = document.querySelector('.related');
+// let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
+// related.addEventListener('mouseover', function(e) {
+//   relatedTagsMenu.classList.remove('notVisible')
+// })
+// related.addEventListener('mouseout', function(e) {
+//   relatedTagsMenu.classList.add('notVisible')
+// })
 
 ///////////// logo button ////////////
 
@@ -26,6 +26,20 @@ const logo = document.querySelector('.logo');
 logo.addEventListener('click', function(e) {
   controlFlow('randomSample')
 })
+
+
+// let relatedMenu = document.querySelector('.relatedMenu');
+// let randomButton = document.createElement('li');
+// randomButton.innerHTML = `<li class='relatedMenu::after'>random</li>`
+// relatedMenu.append(randomButton)
+// randomButton.addEventListener('click', function(e) {
+//   controlFlow('randomSample')
+// })
+
+// .relatedMenu:after {
+//   border: thin black solid;
+//   content: "random";
+// }
 
 /////////// handle key presses ///////////
 

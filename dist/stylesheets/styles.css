@@ -23,7 +23,7 @@ canvas {
   /*height:50px;*/
   border-bottom: 1px solid black;
   /*text-align: center;*/
-  line-height: 50px;
+  /*line-height: 50px;*/
 }
 
 /*//////// search bar ////////*/
@@ -97,32 +97,37 @@ input:focus:-ms-input-placeholder { color:transparent; }
 /*//////// related item ////////*/
 
 .related {
-  float: left;
-  top: 0px;
-  text-indent: 1em;
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-left:1px solid black;
+  height: 50px;
 }
 
-.relatedTagsMenu {
-  width: 200px;
-  top: 50px;
-  height: auto;
-  position: absolute;
+.relatedMenu {
+  margin-left: 17px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  width: auto;
+  height: 40px;
+}
+.relatedMenu::after,
+.relatedMenu li {
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+  max-width: 100px;
+  height: 50%;
+  letter-spacing: .4px;
+  font-size: .75em;
 }
 
-.relatedTagsMenu li {
-  line-height: normal;
-  text-align: left;
-  color: black;
-  text-indent: .75em;
-  font-size: 1em;
-  padding: 11px 1px;
-  margin-left: -1px;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-}
+/*.relatedMenu:after {
+  border: thin black solid;
+  content: 'random '
+}*/
 
 /*//////// searchTerm ////////*/
 
@@ -142,6 +147,13 @@ input:focus:-ms-input-placeholder { color:transparent; }
   pointer-events: none;
 }
 
+/*//////// progress ////////*/
+
+.progress {
+  bottom:0;
+  position: absolute;
+  float:left;
+}
 
 
 
