@@ -2,9 +2,8 @@ import { controlFlow } from './generateAnimDomElements.js'
 
 class InfoDom {
   static searchTermDom(term) {
-    let searchTerm = document.querySelector('.searchTerm');
-    searchTerm.innerHTML = '';
-    searchTerm.innerHTML = term;
+    let searchInput = document.querySelector('.searchInput')
+    searchInput.value = term
   }
   static relatedTagsDom(tags) {
     let relatedMenu = document.querySelector('.relatedMenu');
@@ -64,7 +63,7 @@ class InfoDom {
 
 module.exports = InfoDom;
 
-let searchTerm = document.querySelector('.searchTerm');
-searchTerm.addEventListener('click', function(e) {
+let infoIconWrapper = document.querySelector('.infoIconWrapper');
+infoIconWrapper.addEventListener('click', function(e) {
   InfoDom.showAppendix()
 })

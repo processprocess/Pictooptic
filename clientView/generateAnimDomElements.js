@@ -10,7 +10,7 @@ import getRandomVal from './getRandomVal.js';
 import './libs/PixiPlugin.js';
 import newRequest from './handleRequestChange/newRequest.js';
 import InfoDom from './InfoDom.js'
-import LoaderAnim from './LoaderAnim.js';
+import IntroAnim from './IntroAnim.js';
 
 export let allAnimSets = [];
 
@@ -336,11 +336,11 @@ export function controlFlow(param) {
     destroyElements(allSets, resolve);
     })
   })
-  .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
-    LoaderAnim.play(resolve)
-    loadingWrapper.classList.remove('notVisible');
-    })
-  })
+  // .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
+  //   IntroAnim.play(resolve)
+  //   loadingWrapper.classList.remove('notVisible');
+  //   })
+  // })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
@@ -350,13 +350,12 @@ export function controlFlow(param) {
     generateAnimDomElements(cleanIconData.icons, resolve);
     })
   })
-  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
-    LoaderAnim.reverse(resolve)
-    loadingWrapper.classList.remove('notVisible');
-    })
-  })
+  // .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
+  //   IntroAnim.reverse(resolve)
+  //   loadingWrapper.classList.remove('notVisible');
+  //   })
+  // })
   .then((resolveData) => {
-    loadingWrapper.classList.remove('notVisible');
     console.log('done with gen dom')
     randomLocaiton(allSets, {duration:1, stagger:.5})
   })

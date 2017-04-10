@@ -17,25 +17,26 @@
 
     <canvas></canvas>
 
-    <!-- <button id="reverse" style="position:absolute; top: 100px;">reverse</button> -->
-    <!-- <button id="play" style="position:absolute; top: 200px;">play</button> -->
-
-
-    <!-- <div class="introWrapper">What do you see <br> In a symbol?</div> -->
-    <!-- <div class="introWrapper">Type any word. <br> Then press enter.</div> -->
-
-    <div class="loadingWrapper">
-      <div id="loaderAnimation"></div>
-      <!-- <div class="loadingLogo"><img src="images/logo.png"></img></div> -->
+    <div class="introWrapper">
+      <div class="introAnimation"></div>
+      <input class="inputIntro notVisible" type="text"></input>
+      <div class="randomButtonIntro notVisible">Random Search</div>
     </div>
 
-    <div class="nav">
+    <div class="nav notVisible">
 
       <div class="logo"><img src="images/logo.png"></div>
 
       <div class="inputWrapper">
-        <input class="searchInput" type="text"></input>
-        <!-- <input class="typeahead" type="text"></input> -->
+        <input class="typeahead" type="text"></input>
+        <ul class="resentSearches searchMenu notVisible">
+          <li>word</li>
+          <li>wordsss</li>
+          <li>worddf</li>
+          <li>wordminology</li>
+        </ul>
+        <div class="searchIconWrapper"><div class="serachIcon">S</div></div>
+        <div class="infoIconWrapper"><div class="infoIcon">I</div></div>
       </div>
 
       <div class="related">
@@ -53,21 +54,14 @@
         </ul>
       </div>
 
-      <!-- <div class="related">related tags
-        <ul class ="relatedTagsMenu notVisible"></ul>
-      </div> -->
-
     </div>
 
-    <div class="searchTerm">.</div>
+    <!-- <div class="searchTerm">.</div> -->
 
     <div class="appendix notVisible">
       <div class="iconHolder">
       </div>
     </div>
-
-
-
 
     <div class='progress'>100%</div>
 

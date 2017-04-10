@@ -3,7 +3,7 @@ import bodymovin from 'bodymovin'
 let anim;
 
 let animData = {
-    container: document.getElementById('loaderAnimation'),
+    container: document.querySelector('.introAnimation'),
     renderer: 'svg',
     loop: false,
     autoplay: false,
@@ -13,7 +13,7 @@ let animData = {
     path: './images/animation/loadAnim.json'
 };
 
-class LoaderAnim {
+class IntroAnim {
   static play(resolve) {
     anim.setDirection(1)
     anim.play();
@@ -39,10 +39,10 @@ class LoaderAnim {
 anim = bodymovin.loadAnimation(animData);
 
 
-// document.querySelector('#play').addEventListener('click',function(e) { LoaderAnim.play() });
-// document.querySelector('#reverse').addEventListener('click',function(e) { LoaderAnim.reverse() });
+// document.querySelector('#play').addEventListener('click',function(e) { IntroAnim.play() });
+// document.querySelector('#reverse').addEventListener('click',function(e) { IntroAnim.reverse() });
 
-module.exports = LoaderAnim;
+module.exports = IntroAnim;
 
 
 

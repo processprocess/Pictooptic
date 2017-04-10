@@ -14,7 +14,7 @@
       display:none
     }
 
-    #loaderAnimation {
+    .introAnimation {
       position:absolute;
       width:400px;
       left: 50%;
@@ -37,7 +37,7 @@
   <button id="play">play</button>
   <div class="centerLine"></div>
 
-  <div id="loaderAnimation"></div>
+  <div class="IntroAnimation"></div>
 
 <script>
 
@@ -45,7 +45,7 @@
 
   let anim;
   let animData = {
-      container: document.getElementById('loaderAnimation'),
+      container: document.querySelector('.introAnimation'),
       renderer: 'svg',
       loop: false,
       autoplay: false,

@@ -1,24 +1,30 @@
 console.clear()
 import { controlFlow } from './generateAnimDomElements.js';
-import LoaderAnim from './LoaderAnim.js';
-// import { substringMatcher } from './typeahead.js'
+import { substringMatcher } from './typeahead.js'
+import { handleIntro } from './handleIntro.js';
 
-window.onload = function() {
-  LoaderAnim.play();
-};
+/////////// past searches ///////////
 
+let searchIconWrapper = document.querySelector('.searchIconWrapper')
+let resentSearches = document.querySelector('.resentSearches')
 
+searchIconWrapper.addEventListener('click', function(e) {
+  resentSearches.classList.toggle('notVisible')
+})
 
-/////////// nav ///////////
+// store local data
 
-// let related = document.querySelector('.related');
-// let relatedTagsMenu = document.querySelector('.relatedTagsMenu');
-// related.addEventListener('mouseover', function(e) {
-//   relatedTagsMenu.classList.remove('notVisible')
-// })
-// related.addEventListener('mouseout', function(e) {
-//   relatedTagsMenu.classList.add('notVisible')
-// })
+/////////// random search ///////////
+
+let searchMenu = document.querySelector('.searchMenu');
+let randomSuggestion = document.createElement('li');
+randomSuggestion.textContent = 'search a random word';
+randomSuggestion.classList.add('searchSuggestion')
+randomSuggestion.addEventListener('click', function(e) {
+  controlFlow('randomSample');
+})
+searchMenu.append(randomSuggestion);
+resentSearches.append(randomSuggestion);
 
 ///////////// logo button ////////////
 
@@ -27,23 +33,11 @@ logo.addEventListener('click', function(e) {
   controlFlow('randomSample')
 })
 
-
-// let relatedMenu = document.querySelector('.relatedMenu');
-// let randomButton = document.createElement('li');
-// randomButton.innerHTML = `<li class='relatedMenu::after'>random</li>`
-// relatedMenu.append(randomButton)
-// randomButton.addEventListener('click', function(e) {
-//   controlFlow('randomSample')
-// })
-
-// .relatedMenu:after {
-//   border: thin black solid;
-//   content: "random";
-// }
-
 /////////// handle key presses ///////////
 
-let searchInput = document.querySelector('.searchInput')
+let searchInput = document.querySelector('.searchInput');
+let introWrapper = document.querySelector('.introWrapper');
+let nav = document.querySelector('.nav');
 
 function handleKeydown(e) {
   let submitValue = searchInput.value;
@@ -54,7 +48,10 @@ function handleKeydown(e) {
   } else if (e.keyCode < 64 || e.keyCode >= 91) { // check if alphabetic
     return;
   } else if (e.keyCode) { // any other key
+    searchInput.focus()
     // activateNav()
+    introWrapper.classList.add('notVisible');
+    nav.classList.remove('notVisible');
   }
 }
 
