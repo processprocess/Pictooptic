@@ -341,23 +341,29 @@ function update() {
   }
 }
 
+let xMin = window.innerWidth/4;
+let xMax = window.innerWidth/2 + 50;
+
+let yMin = window.innerHeight/5.5 + 50;
+let yMax = window.innerHeight/1.50 + 50;
+
 function updatePos(animSet, diffy, diffx) {
 
-  let faceL = animSet[0]
-  let faceR = animSet[1]
+  let animL = animSet[0]
+  let animR = animSet[1]
 
-  let scale = faceL.x / (window.innerWidth/2);
+  let scale = ((animL.x - xMin)) / (xMax - xMin)
 
-  TweenMax.set(faceL, { pixi: {
-    y: faceL.y + diffy,
-    x: faceL.x + diffx,
+  TweenMax.set(animL, { pixi: {
+    y: animL.y + diffy,
+    x: animL.x + diffx,
     scaleX:scale,
     scaleY:scale,
   }});
 
-  TweenMax.set(faceR, { pixi: {
-    y: faceL.y,
-    x: window.innerWidth - (faceL.x),
+  TweenMax.set(animR, { pixi: {
+    y: animL.y,
+    x: window.innerWidth - (animL.x),
     scaleX:scale * -1,
     scaleY:scale,
   }});
@@ -365,11 +371,13 @@ function updatePos(animSet, diffy, diffx) {
 }
 
 function checkPos(animSet, diffy, diffx) {
-  let faceL = animSet[0]
-  if (faceL.x < 0 - faceL.width/2) { TweenLite.set(faceL, { pixi: { x: window.innerWidth/2 + faceL.width/2 }})}
-  if (faceL.x > window.innerWidth/2 + faceL.width/2) { TweenLite.set(faceL, { pixi: { x: 0  }})}
-  if (faceL.y < 0 - faceL.height/2) { TweenLite.set(faceL, { pixi: { y: window.innerHeight + faceL.height/2 }})}
-  if (faceL.y > window.innerHeight + faceL.height/2) { TweenLite.set(faceL, { pixi: { y: 0 - faceL.height/2 }})}
+  let animL = animSet[0];
+
+  if (animL.x < xMin - animL.width/2) { TweenLite.set(animL, { pixi: { x: xMax }})}
+  if (animL.x > xMax + animL.width/2) { TweenLite.set(animL, { pixi: { x: xMin }})}
+
+  if (animL.y < yMin - animL.height/2) { TweenLite.set(animL, { pixi: { y: yMax + animL.height/2 }})}
+  if (animL.y > yMax + animL.height/2) { TweenLite.set(animL, { pixi: { y: yMin - animL.height/2 }})}
 }
 
 
