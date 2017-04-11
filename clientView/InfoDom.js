@@ -11,6 +11,7 @@ class InfoDom {
       relatedMenu.removeChild(relatedMenu.firstChild);
     }
     for (let i = 0 ; i < 15; i++) {
+      if (tags[i] === undefined) return;
       let tagItem = document.createElement('li');
       tagItem.textContent = tags[i][0];
       tagItem.addEventListener('click', function(e) {

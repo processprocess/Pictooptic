@@ -1,26 +1,18 @@
 import "pixi.js";
 import "gsap";
-import Draggable from '../node_modules/gsap/Draggable.js';
 import './libs/PixiPlugin.js';
-import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
-import { colorPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
-import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
-import { changeLocation } from './animations.js';
-import { currentParam } from './handleRequestChange/handleChange.js';
-import handleChange from './handleRequestChange/handleChange.js';
-import getRandomVal from './getRandomVal.js';
 import newRequest from './handleRequestChange/newRequest.js';
 import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
+import Animate from './Animate.js';
 
-export let allAnimSets = [];
+export let allSets = [];
 
 let leftBox;
 let rightBox;
 let bgCover;
 let filter;
-let allSets = [];
 let loader;
 let stage;
 let renderer;
@@ -62,7 +54,7 @@ function setUp() {
 }
 setUp()
 
-/////////// parse Json ///////////
+/////////// parse response ///////////
 
 export default function generateAnimDomElements (iconData, resolve) {
   loader.reset(true)
@@ -109,31 +101,7 @@ export default function generateAnimDomElements (iconData, resolve) {
 
         /////////// set values ////////////
 
-        TweenMax.set(animL, {
-          pixi: {
-            anchor: 0.5,
-            scaleX: 0,
-            scaleY: 0,
-            x: window.innerWidth/2 + animL.width/2,
-            y: window.innerHeight/2,
-          },
-          colorProps: {
-            tint: 0x000000,
-          },
-        });
-
-        TweenMax.set(animR, {
-          pixi: {
-            anchor: 0.5,
-            scaleX: 0,
-            scaleY: 0,
-            x: window.innerWidth/2 - animR.width/2,
-            y: window.innerHeight/2,
-          },
-          colorProps: {
-            tint: 0x000000,
-          },
-        });
+        Animate.setValues(animL, animR)
 
         /////////// set events ////////////
 
@@ -161,265 +129,57 @@ function loadProgressHandler(loader, resource) {
   progress.textContent = loader.progress + "%"
 }
 
-///////////// random location  ////////////
+///////////// size variables  ////////////
 
-let xMin = window.innerWidth/4;
-let xMax = window.innerWidth/2 + 50;
+let vw = window.innerWidth;
+let vh = window.innerHeight;
 
-let yMin = window.innerHeight/5.5 + 50;
-let yMax = window.innerHeight/1.50 + 50;
+let xMin = vw/4;
+let xMax = vw/2 + 50;
+let yMin = vh/5.5 + 50;
+let yMax = vh/1.50 + 50;
 
-export function randomLocaiton(elements, options, resolve) {
+window.addEventListener('resize', function(e) {
 
-  options = options || {};
-  let duration = options.duration || 0.2;
-  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-  let tl = new TimelineLite( {onComplete:resolve} );
+  vw = window.innerWidth;
+  vh = window.innerHeight;
 
-  elements.forEach((element, i) => {
-    let animL = element[0]
-    let animR = element[1]
+  xMin = vw/4;
+  xMax = vw/2 + 50;
+  yMin = vh/5.5 + 50;
+  yMax = vh/1.50 + 50;
 
-    let endX = randomInt(xMin, xMax);
-    let endY = randomInt(yMin, yMax);
-    let scale = ((endX - xMin)) / (xMax - xMin)
+  renderer.resize(vw, vh);
+  leftBox.width = vw/2;
+  leftBox.height = vh;
+  rightBox.width = vw/2;
+  rightBox.height = vh;
+  bgCover.width = vw;
+  bgCover.height = vh;
 
-    tl.add(
-      TweenLite.to(animL, duration, {
-        pixi: {
-          x:(index, element) => {
-            return endX
-          },
-          y: endY,
-          scale: scale,
-        },
-        ease: Power1.easeInOut,
-      }, stagger * i),
+  shuffle();
 
-      TweenLite.to(animR, duration, {
-        pixi: {
-          x: () => renderer.view.width - endX,
-          y: endY,
-          scaleX: ()=> scale*-1,
-          scaleY: scale,
-        },
-        ease: Power1.easeInOut,
-      }, 0)
-    )
-
-  })
-  return tl;
-}
-
-
-///////////// changeBG color ////////////
-
-function changeBGColor() {
-  TweenMax.to(bgCover, 0.5, {colorProps: {
-      tint: colorPallete[0], format:"number"
-    }
-  });
-}
-
-///////////// change element color ////////////
-
-export function changeElementColor(elements, options) {
-
-  options = options || {};
-  let duration = options.duration || 0.2;
-  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-  let tl = new TimelineLite( {} );
-
-  elements.forEach((element, i) => {
-    let animL = element[0]
-    let animR = element[1]
-    let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
-
-    tl.add(
-
-      TweenMax.to(animL, duration, {colorProps: {
-          tint: tint, format:"number",
-        },
-      }, stagger * i),
-
-      TweenMax.to(animR, duration, {colorProps: {
-          tint: tint, format:"number",
-        }
-      }, 0)
-
-    )
-
-  })
-  return tl;
-}
-
-///////////// animateOut ////////////
-
-export function animateOut(elements, options, resolve) {
-
-  if(elements.length === 0) resolve()
-
-  TweenMax.to(bgCover, 0.5, {colorProps: {
-      tint: 0xffffff, format:"number"
-    }
-  });
-
-  options = options || {};
-  let duration = options.duration || 0.2;
-  let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-  let tl = new TimelineLite( {onComplete:resolve} );
-
-  elements.forEach((element, i) => {
-    let animL = element[0]
-    let animR = element[1]
-
-    tl.add(
-
-      TweenLite.to(animL, duration, { pixi: {
-        x: window.innerWidth/2 + animL.width,
-        y: window.innerHeight/2,
-      },
-        ease: Power1.easeInOut,
-      }, stagger * i),
-
-      TweenLite.to(animR, duration, { pixi: {
-        x: window.innerWidth/2 - animR.width,
-        y: window.innerHeight/2,
-      },
-        ease: Power1.easeInOut,
-      }, 0)
-
-    )
-
-  })
-  return tl;
-}
+})
 
 ///////////// shuffle all elements ////////////
 
 function shuffle() {
   randomColorRequest();
-  changeBGColor();
-  randomLocaiton(allSets, {duration:1, stagger:0})
-  changeElementColor(allSets, {duration:1, stagger:0})
+  Animate.randomBGColor(bgCover);
+  Animate.randomLocaiton(allSets, {duration:1, stagger:0})
+  Animate.changeElementColor(allSets, {duration:1, stagger:0})
 }
 
 document.querySelector('.shuffleButton').addEventListener('click', function(e) {shuffle() }); // debug
-
-///////////// draggable ////////////
-
-let body = document.body;
-let dragWrap = document.querySelector('.dragWrap');
-let testDiv = document.querySelector('.testDiv');
-
-Draggable.create(testDiv, {
-  throwProps: true,
-  dragResistance: 0.25,
-  edgeResistance: 1,
-  throwResistance: 1000,
-  onThrowComplete: update,
-  onThrowUpdate: update,
-  onDrag: update,
-  trigger: body,
-});
-
-let testDivcords = Draggable.get(testDiv);
-
-let oldx = 0;
-let oldy = 0;
-
-// TweenLite.ticker.addEventListener("tick", yourFunction);
-//
-// function yourFunction() {
-//   allSets.forEach((animSet, i)=>{
-//     checkPos(animSet);
-//     updatePos(animSet, i, 0, .5);
-//   })
-// }
-
-// function stopMyInterval() { clearInterval(myInterval); };
-
-function update() {
-  let newx = Math.floor(testDivcords.x);
-  let newy = Math.floor(testDivcords.y);
-  let diffx = newx - oldx;
-  let diffy = newy - oldy;
-  oldx = newx;
-  oldy = newy;
-  allSets.forEach((animSet, i)=>{
-    checkPos(animSet, diffy, diffx);
-    updatePos(animSet, i, diffy, diffx);
-  })
-}
-
-function updatePos(animSet, i, diffy, diffx) {
-
-  if(i%2 === 0) {diffy = diffy/2; diffx = diffx/2}
-  else if(i%3 === 0) {diffy = diffy/3; diffx = diffx/3}
-  // else {console.log('odd');}
-
-  let animL = animSet[0];
-  let animR = animSet[1];
-
-  // let scaleY = (animL.y - yMin);
-  // let scaleX = (animL.x - xMin);
-  // let scale = ((animL.y - yMin)) / (yMax - yMin);
-  let scale = ((animL.x - xMin)) / (xMax - xMin);
-  // let scale = (scaleY + scaleX) / ((xMax - xMin) + (yMax - yMin))
-  // console.log(scale)
-
-  TweenMax.set(animL, { pixi: {
-    y: animL.y + diffy,
-    x: animL.x + diffx,
-    scaleX:scale,
-    scaleY:scale,
-  }});
-
-  TweenMax.set(animR, { pixi: {
-    y: animL.y,
-    x: window.innerWidth - (animL.x),
-    scaleX:scale * -1,
-    scaleY:scale,
-  }});
-
-}
-
-function checkPos(animSet, diffy, diffx) {
-  let animL = animSet[0];
-  if (animL.x < xMin) { TweenLite.set(animL, { pixi: { x: xMax + 50 }})}
-  if (animL.x > xMax + 50) { TweenLite.set(animL, { pixi: { x: xMin }})}
-  if (animL.y < yMin - animL.height/2) { TweenLite.set(animL, { pixi: { y: yMax + animL.height/2 }})}
-  if (animL.y > yMax + animL.height/2) { TweenLite.set(animL, { pixi: { y: yMin - animL.height/2 }})}
-}
-
-///////////// random int ////////////
-
-function randomInt(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-///////////// window resize ////////////
-
-window.addEventListener('resize', function(e) {
-
-  renderer.resize(window.innerWidth, window.innerHeight);
-  leftBox.width = window.innerWidth/2;
-  leftBox.height = window.innerHeight;
-  rightBox.width = window.innerWidth/2;
-  rightBox.height = window.innerHeight;
-  bgCover.width = window.innerWidth;
-  bgCover.height = window.innerHeight;
-
-  shuffle();
-
-})
 
 ///////////// control flow ////////////
 
 let loadingWrapper = document.querySelector('.loadingWrapper')
 
 export function controlFlow(param) {
-  new Promise((resolve, reject) => { animateOut(allSets, {duration:1, stagger:0}, resolve)
+  new Promise((resolve, reject) => {
+    Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
+    Animate.whiteBGColor(bgCover);
   })
   .then((newDataFour) => { return new Promise((resolve, reject) => {
     destroyElements(allSets, resolve);
@@ -446,7 +206,7 @@ export function controlFlow(param) {
   // })
   .then((resolveData) => {
     console.log('done with gen dom')
-    randomLocaiton(allSets, {duration:1, stagger:.5})
+    Animate.randomLocaiton(allSets, {duration:1, stagger:.5})
   })
 }
 

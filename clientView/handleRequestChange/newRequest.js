@@ -1,8 +1,5 @@
 import request from 'superagent';
 import generateAnimDomElements, { updateElements } from '../generateAnimDomElements.js';
-import handleError from './handleError.js';
-import { lettersIn, animateIn } from '../animations.js';
-import staggerAnimation from '../staggerAnimation.js';
 
 /////////// handle request ///////////
 
@@ -14,7 +11,6 @@ export default function newRequest(param, resolve) {
             resolve(cleanIconObjects);
          })
          .catch(err => { console.log(err)})
-        //  .catch(err => { handleError(err); console.log(err)})
          if (!resolve) return;
 }
 
