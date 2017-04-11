@@ -163,6 +163,12 @@ function loadProgressHandler(loader, resource) {
 
 ///////////// random location  ////////////
 
+let xMin = window.innerWidth/4;
+let xMax = window.innerWidth/2 + 50;
+
+let yMin = window.innerHeight/5.5 + 50;
+let yMax = window.innerHeight/1.50 + 50;
+
 export function randomLocaiton(elements, options, resolve) {
 
   options = options || {};
@@ -173,12 +179,6 @@ export function randomLocaiton(elements, options, resolve) {
   elements.forEach((element, i) => {
     let animL = element[0]
     let animR = element[1]
-
-    let xMin = animL.width/2 + window.innerWidth/4;
-    let xMax = window.innerWidth/2 + 50;
-
-    let yMin = window.innerHeight/5.5 + 50;
-    let yMax = window.innerHeight/1.50 + 50;
 
     let endX = randomInt(xMin, xMax);
     let endY = randomInt(yMin, yMax);
@@ -328,6 +328,17 @@ let testDivcords = Draggable.get(testDiv);
 let oldx = 0;
 let oldy = 0;
 
+// TweenLite.ticker.addEventListener("tick", yourFunction);
+//
+// function yourFunction() {
+//   allSets.forEach((animSet, i)=>{
+//     checkPos(animSet);
+//     updatePos(animSet, i, 0, .5);
+//   })
+// }
+
+// function stopMyInterval() { clearInterval(myInterval); };
+
 function update() {
   let newx = Math.floor(testDivcords.x);
   let newy = Math.floor(testDivcords.y);
@@ -335,24 +346,27 @@ function update() {
   let diffy = newy - oldy;
   oldx = newx;
   oldy = newy;
-  for(let animSet of allSets) {
+  allSets.forEach((animSet, i)=>{
     checkPos(animSet, diffy, diffx);
-    updatePos(animSet, diffy, diffx);
-  }
+    updatePos(animSet, i, diffy, diffx);
+  })
 }
 
-let xMin = window.innerWidth/4;
-let xMax = window.innerWidth/2 + 50;
+function updatePos(animSet, i, diffy, diffx) {
 
-let yMin = window.innerHeight/5.5 + 50;
-let yMax = window.innerHeight/1.50 + 50;
+  if(i%2 === 0) {diffy = diffy/2; diffx = diffx/2}
+  else if(i%3 === 0) {diffy = diffy/3; diffx = diffx/3}
+  // else {console.log('odd');}
 
-function updatePos(animSet, diffy, diffx) {
+  let animL = animSet[0];
+  let animR = animSet[1];
 
-  let animL = animSet[0]
-  let animR = animSet[1]
-
-  let scale = ((animL.x - xMin)) / (xMax - xMin)
+  // let scaleY = (animL.y - yMin);
+  // let scaleX = (animL.x - xMin);
+  // let scale = ((animL.y - yMin)) / (yMax - yMin);
+  let scale = ((animL.x - xMin)) / (xMax - xMin);
+  // let scale = (scaleY + scaleX) / ((xMax - xMin) + (yMax - yMin))
+  // console.log(scale)
 
   TweenMax.set(animL, { pixi: {
     y: animL.y + diffy,
@@ -372,15 +386,11 @@ function updatePos(animSet, diffy, diffx) {
 
 function checkPos(animSet, diffy, diffx) {
   let animL = animSet[0];
-
-  if (animL.x < xMin - animL.width/2) { TweenLite.set(animL, { pixi: { x: xMax }})}
-  if (animL.x > xMax + animL.width/2) { TweenLite.set(animL, { pixi: { x: xMin }})}
-
+  if (animL.x < xMin) { TweenLite.set(animL, { pixi: { x: xMax + 50 }})}
+  if (animL.x > xMax + 50) { TweenLite.set(animL, { pixi: { x: xMin }})}
   if (animL.y < yMin - animL.height/2) { TweenLite.set(animL, { pixi: { y: yMax + animL.height/2 }})}
   if (animL.y > yMax + animL.height/2) { TweenLite.set(animL, { pixi: { y: yMin - animL.height/2 }})}
 }
-
-
 
 ///////////// random int ////////////
 
