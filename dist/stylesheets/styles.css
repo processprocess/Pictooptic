@@ -15,6 +15,34 @@ canvas {
   position: absolute;
 }
 
+/* --------- draggable --------- */
+
+.dragWrap {
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  border:1px solid black;
+  background: rgba(0,0,100,.5);
+  z-index: 1;
+}
+
+.testDiv {
+  position:absolute;
+  background: lightblue;
+  border: 1px solid black;
+  display:block;
+  z-index: 100;
+}
+
+.shuffleButton {
+  width:50px;
+  height:50px;
+  position:absolute;
+  border:1px solid grey;
+  z-index: 1000;
+  right:0;
+}
+
 /* --------- navigation --------- */
 
 .nav {
@@ -24,6 +52,7 @@ canvas {
   border-bottom: 1px solid black;
   /*text-align: center;*/
   /*line-height: 50px;*/
+  z-index: 2;
 }
 
 /*//////// search bar ////////*/

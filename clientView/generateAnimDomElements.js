@@ -1,15 +1,17 @@
-import "gsap";
 import "pixi.js";
-import { colorPallete } from './handleRequestChange/newRequest.js'
+import "gsap";
+import Draggable from '../node_modules/gsap/Draggable.js';
+import './libs/PixiPlugin.js';
+import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
+import { colorPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import { changeLocation } from './animations.js';
 import { currentParam } from './handleRequestChange/handleChange.js';
 import handleChange from './handleRequestChange/handleChange.js';
 import getRandomVal from './getRandomVal.js';
-import './libs/PixiPlugin.js';
 import newRequest from './handleRequestChange/newRequest.js';
-import InfoDom from './InfoDom.js'
+import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
 
 export let allAnimSets = [];
@@ -37,9 +39,9 @@ function setUp() {
   stage = new PIXI.Container();
 
   stage.interactive = true;
-  stage.on('click', function(e) {
-    shuffle()
-  });
+  // stage.on('click', function(e) {
+  //   shuffle()
+  // });
 
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
@@ -293,7 +295,6 @@ export function animateOut(elements, options, resolve) {
   return tl;
 }
 
-
 ///////////// shuffle all elements ////////////
 
 function shuffle() {
@@ -302,6 +303,76 @@ function shuffle() {
   randomLocaiton(allSets, {duration:1, stagger:0})
   changeElementColor(allSets, {duration:1, stagger:0})
 }
+
+document.querySelector('.shuffleButton').addEventListener('click', function(e) {shuffle() }); // debug
+
+///////////// draggable ////////////
+
+let body = document.body;
+let dragWrap = document.querySelector('.dragWrap');
+let testDiv = document.querySelector('.testDiv');
+
+Draggable.create(testDiv, {
+  throwProps: true,
+  dragResistance: 0.25,
+  edgeResistance: 1,
+  throwResistance: 1000,
+  onThrowComplete: update,
+  onThrowUpdate: update,
+  onDrag: update,
+  trigger: body,
+});
+
+let testDivcords = Draggable.get(testDiv);
+
+let oldx = 0;
+let oldy = 0;
+
+function update() {
+  let newx = Math.floor(testDivcords.x);
+  let newy = Math.floor(testDivcords.y);
+  let diffx = newx - oldx;
+  let diffy = newy - oldy;
+  oldx = newx;
+  oldy = newy;
+  for(let animSet of allSets) {
+    checkPos(animSet, diffy, diffx);
+    updatePos(animSet, diffy, diffx);
+  }
+}
+
+function updatePos(animSet, diffy, diffx) {
+
+  let faceL = animSet[0]
+  let faceR = animSet[1]
+
+  let scale = faceL.x / (window.innerWidth/2);
+
+  TweenMax.set(faceL, { pixi: {
+    y: faceL.y + diffy,
+    x: faceL.x + diffx,
+    scaleX:scale,
+    scaleY:scale,
+  }});
+
+  TweenMax.set(faceR, { pixi: {
+    y: faceL.y,
+    x: window.innerWidth - (faceL.x),
+    scaleX:scale * -1,
+    scaleY:scale,
+  }});
+
+}
+
+function checkPos(animSet, diffy, diffx) {
+  let faceL = animSet[0]
+  if (faceL.x < 0 - faceL.width/2) { TweenLite.set(faceL, { pixi: { x: window.innerWidth/2 + faceL.width/2 }})}
+  if (faceL.x > window.innerWidth/2 + faceL.width/2) { TweenLite.set(faceL, { pixi: { x: 0  }})}
+  if (faceL.y < 0 - faceL.height/2) { TweenLite.set(faceL, { pixi: { y: window.innerHeight + faceL.height/2 }})}
+  if (faceL.y > window.innerHeight + faceL.height/2) { TweenLite.set(faceL, { pixi: { y: 0 - faceL.height/2 }})}
+}
+
+
 
 ///////////// random int ////////////
 
@@ -379,4 +450,4 @@ function destroyElements(setsToDestroy, resolve) {
   })
 }
 
-// controlFlow('randomSample')
+controlFlow('randomSample') // debug
