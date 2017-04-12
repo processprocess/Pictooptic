@@ -12,6 +12,7 @@ import { allSets } from './generateAnimDomElements.js'
 class Animate {
 
   static setValues(animL, animR) {
+
     TweenMax.set(animL, {
       pixi: {
         anchor: 0.5,
@@ -40,36 +41,58 @@ class Animate {
 
   static randomLocaiton(elements, options, resolve) {
 
-    let xMin = window.innerWidth/4;
-    let xMax = window.innerWidth/2 + 50;
-
-    let yMin = window.innerHeight/5.5 + 50;
-    let yMax = window.innerHeight/1.50 + 50;
-
-    options = options || {};
-    let duration = options.duration || 0.2;
-    let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-    let tl = new TimelineLite( {onComplete:resolve} );
+    // let xMin = window.innerWidth/4;
+    // let xMax = window.innerWidth/2 + 50;
+    //
+    // let yMin = window.innerHeight/5.5 + 50;
+    // let yMax = window.innerHeight/1.50 + 50;
 
     elements.forEach((element, i) => {
       let animL = element[0]
       let animR = element[1]
 
-      let endX = randomInt(xMin, xMax);
-      let endY = randomInt(yMin, yMax);
-      let scale = ((endX - xMin)) / (xMax - xMin)
+      // let endX = randomInt(xMin, xMax);
+      // let endY = randomInt(yMin, yMax);
+      // let scale = ((endX - xMin)) / (xMax - xMin)
+
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+
+      let centerX = width * .5;
+      let centerY = height * .5;
+      let maxRadius = -.4;
+      let radius = height * randomInt(0, maxRadius);
+      let maxDistance = height * maxRadius;
+
+      let angle = randomInt(0,3.14);
+
+      let startX = centerX + Math.sin(angle) * radius;
+      let startY = centerY + Math.cos(angle) * radius;
+
+      let xDistance = startX - centerX;
+      let yDistance = startY - centerY;
+      let distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+      let distancePercent = 1 - distance / Math.abs(maxDistance);
+
+      let scale = distancePercent;
+
+      options = options || {};
+      let duration = options.duration || 0.2;
+      let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+
+      let tl = new TimelineLite( {onComplete:resolve} );
 
       tl.add(
         TweenLite.to(animL, duration, { pixi: {
-            x: endX,
-            y: endY,
+            x: startX,
+            y: startY,
             scale: scale,
           },
           ease: Power1.easeInOut,
         }, stagger * i),
         TweenLite.to(animR, duration, { pixi: {
-            x: window.innerWidth - endX,
-            y: endY,
+            x: window.innerWidth - startX,
+            y: startY,
             scaleX: scale * -1,
             scaleY: scale,
           },
@@ -77,8 +100,8 @@ class Animate {
         }, 0)
       )
 
+      return tl;
     })
-    return tl;
   }
 
   static changeElementColor(elements, options) {
@@ -164,11 +187,13 @@ class Animate {
 
   static updatePos(animSet, i, diffy, diffx) {
 
-    let xMin = window.innerWidth/4;
-    let xMax = window.innerWidth/2 + 50;
-
-    let yMin = window.innerHeight/5.5 + 50;
-    let yMax = window.innerHeight/1.50 + 50;
+    // let xMin = window.innerWidth/4;
+    // let xMax = window.innerWidth/2 + 50;
+    //
+    // let yMin = window.innerHeight/5.5 + 50;
+    // let yMax = window.innerHeight/1.50 + 50;
+    //
+    // let scale = ((animL.x - xMin)) / (xMax - xMin);
 
     if(i%2 === 0) {diffy = diffy/2; diffx = diffx/2}
     else if(i%3 === 0) {diffy = diffy/3; diffx = diffx/3}
@@ -176,7 +201,21 @@ class Animate {
     let animL = animSet[0];
     let animR = animSet[1];
 
-    let scale = ((animL.x - xMin)) / (xMax - xMin);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    let centerX = width * .5;
+    let centerY = height * .5;
+    let maxRadius = -.4;
+    let maxDistance = height * maxRadius;
+
+    let xDistance = animL.x - centerX;
+    let yDistance = animL.y - centerY;
+
+    let distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+    let distancePercent = 1 - distance / Math.abs(maxDistance);
+
+    let scale = distancePercent;
 
     TweenMax.set(animL, { pixi: {
       y: animL.y + diffy,
@@ -197,16 +236,36 @@ class Animate {
   static checkPos(animSet, diffy, diffx) {
     let animL = animSet[0];
 
-    let xMin = window.innerWidth/4;
-    let xMax = window.innerWidth/2 + 50;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
-    let yMin = window.innerHeight/5.5 + 50;
-    let yMax = window.innerHeight/1.50 + 50;
+    let centerX = width * .5;
+    let centerY = height * .5;
+    let maxRadius = -.4;
+    let maxDistance = height * maxRadius;
 
-    if (animL.x < xMin) { TweenLite.set(animL, { pixi: { x: xMax + 50 }})}
-    if (animL.x > xMax + 50) { TweenLite.set(animL, { pixi: { x: xMin }})}
-    if (animL.y < yMin - animL.height/2) { TweenLite.set(animL, { pixi: { y: yMax + animL.height/2 }})}
-    if (animL.y > yMax + animL.height/2) { TweenLite.set(animL, { pixi: { y: yMin - animL.height/2 }})}
+    let xDistance = animL.x - centerX;
+    let yDistance = animL.y - centerY;
+
+    let currentMaxX = Math.sqrt(maxDistance * maxDistance - yDistance * yDistance)
+    let currentMaxY =  Math.sqrt(maxDistance * maxDistance - xDistance * xDistance)
+
+    let distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+    let distancePercent = 1 - distance / Math.abs(maxDistance);
+
+    if (Math.abs(yDistance) > Math.abs(currentMaxY)-10) { TweenLite.set(animL, { pixi: { y: centerY + yDistance * -1 }})}
+    if (Math.abs(xDistance) > Math.abs(currentMaxX)) { TweenLite.set(animL, { pixi: { x: centerX + animL.width/2 - 1 }})}
+    if ((animL.x - animL.width/2) > centerX) { TweenLite.set(animL, { pixi: { x: centerX - currentMaxX }})}
+
+    // let xMin = window.innerWidth/4;
+    // let xMax = window.innerWidth/2 + 50;
+    // let yMin = window.innerHeight/5.5 + 50;
+    // let yMax = window.innerHeight/1.50 + 50;
+
+    // if (animL.x < xMin) { TweenLite.set(animL, { pixi: { x: xMax + 50 }})}
+    // if (animL.x > xMax + 50) { TweenLite.set(animL, { pixi: { x: xMin }})}
+    // if (animL.y < yMin - animL.height/2) { TweenLite.set(animL, { pixi: { y: yMax + animL.height/2 }})}
+    // if (animL.y > yMax + animL.height/2) { TweenLite.set(animL, { pixi: { y: yMin - animL.height/2 }})}
   }
 
 }
@@ -240,7 +299,6 @@ let oldy = 0;
 function randomInt(min, max) {
   return Math.random() * (max - min) + min;
 }
-
 
 ///////////// idle animation ////////////
 
