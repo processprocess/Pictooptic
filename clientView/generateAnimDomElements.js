@@ -2,16 +2,16 @@ import "pixi.js";
 import "gsap";
 import './libs/PixiPlugin.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
+import Animate from './Animate.js';
 import newRequest from './handleRequestChange/newRequest.js';
 import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
-import Animate from './Animate.js';
 
 export let allSets = [];
+export let bgCover;
 
 let leftBox;
 let rightBox;
-let bgCover;
 let filter;
 let loader;
 let stage;
@@ -69,21 +69,21 @@ export default function generateAnimDomElements (iconData, resolve) {
 
   function generateElements(loader, resources){
     let elementCount = iconData.length
-
+    let iconHolder = document.querySelectorAll('.iconGraphic');
     for( let i = 0 ; i < elementCount ; i++){
+
+      console.log(iconHolder[i]);
 
       var ogTexture = eval(`resources.item${i}.texture`);
       var width  = ogTexture.width;
       var height = ogTexture.height;
 
-      for( let i = 0 ; i < 2 ; i++){
+      // for( let i = 0 ; i < 1 ; i++){
 
         var renderTarget = new PIXI.CanvasRenderTarget(width, height);
         PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
-
         var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
         var lightSprite = new PIXI.Sprite(whiteTexture);
-
         renderTarget.destroy();
 
         let animL = new PIXI.Sprite(whiteTexture);
@@ -97,7 +97,15 @@ export default function generateAnimDomElements (iconData, resolve) {
         animR.mask = rightBox;
         animR.name = 'animR';
 
-        allSets.push([animL, animR]);
+        /////////// create canvas icons ////////////
+
+        let animIcon = document.createElement('canvas');
+        animIcon.width = 100;
+        animIcon.height = 100;
+        animIcon.classList.add('animIconCanvas');
+        let ctx = animIcon.getContext('2d');
+        ctx.drawImage(animL.texture.baseTexture.source, 0, 0, 200, 200, 0, 0, 100, 100);
+        iconHolder[i].append(animIcon)
 
         /////////// set values ////////////
 
@@ -115,7 +123,9 @@ export default function generateAnimDomElements (iconData, resolve) {
         //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
         // });
 
-      }
+        allSets.push([animL, animR, animIcon]);
+
+      // }
     }
     resolve()
   }
@@ -157,20 +167,9 @@ window.addEventListener('resize', function(e) {
   bgCover.width = vw;
   bgCover.height = vh;
 
-  shuffle();
+  Animate.shuffle(bgCover, allSets);
 
 })
-
-///////////// shuffle all elements ////////////
-
-function shuffle() {
-  randomColorRequest();
-  Animate.randomBGColor(bgCover);
-  Animate.randomLocaiton(allSets, {duration:1, stagger:0})
-  Animate.changeElementColor(allSets, {duration:1, stagger:0})
-}
-
-document.querySelector('.shuffleButton').addEventListener('click', function(e) {shuffle() }); // debug
 
 ///////////// control flow ////////////
 
@@ -205,7 +204,7 @@ export function controlFlow(param) {
   //   })
   // })
   .then((resolveData) => {
-    console.log('done with gen dom')
+    // console.log('done with gen dom')
     Animate.randomLocaiton(allSets, {duration:1, stagger:.5})
   })
 }

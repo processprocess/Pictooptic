@@ -7,13 +7,13 @@ import { colorPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import getRandomVal from './getRandomVal.js';
-import { allSets } from './generateAnimDomElements.js'
+import { allSets, bgCover } from './generateAnimDomElements.js'
 
 let width = window.innerWidth;
 let height = window.innerHeight;
 let centerX = width * .5;
 let centerY = height * .5;
-let maxRadius = -.4;
+let maxRadius = -.5;
 let maxDistance = height * maxRadius;
 let tick = 0;
 
@@ -245,6 +245,124 @@ class Animate {
     if ((animL.x - 100) > centerX) { TweenLite.set(animL, { pixi: { x: startX, y: startY }})}
     if (Math.abs(distance) > Math.abs(maxDistance)) { TweenLite.set(animL, { pixi: {x: centerX + 100, y: randomY }})}
 
+  }
+
+  static shuffle() {
+    let searchWord = document.querySelector('.searchWord')
+    let appendixWord = document.querySelector('.appendixWord')
+    let subHeadAppendix = document.querySelector('.subHeadAppendix')
+    randomColorRequest();
+    Animate.randomLocaiton(allSets, {duration:1, stagger:0});
+    setTimeout(function(){
+      Animate.randomBGColor(bgCover);
+      Animate.changeElementColor(allSets, {duration:1, stagger:0});
+      Animate.letterColors(searchWord);
+      Animate.letterColors(appendixWord);
+      Animate.letterColors(subHeadAppendix);
+      Animate.relatedWordColors();
+      Animate.appendixColors();
+    }, 10 );
+  }
+
+  static letterColors(elements) {
+
+    if(elements.length > 0) {
+      elements.forEach(element => {
+        let elementSpans = Array.from(element.querySelectorAll('span'));
+        TweenMax.to(elementSpans, .5, {
+          color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+          ease:Sine.easeInOut,
+        })
+      })
+    } else {
+      let elementSpans = Array.from(elements.querySelectorAll('span'));
+      TweenMax.to(elementSpans, .5, {
+        color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+        ease:Sine.easeInOut,
+      })
+    }
+  }
+
+  static relatedWordColors() {
+    let relatedMenu = document.querySelector('.relatedMenu')
+    let elements = relatedMenu
+    let elementNodes = Array.from(elements.querySelectorAll('li'));
+    TweenMax.to(elementNodes, .5, {
+      color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
+      ease:Sine.easeInOut,
+    })
+  }
+
+  static appendixColors() {
+    let appendix = document.querySelector('.appendix');
+    let appendixBG = appendix.querySelector('.appendix');
+    let tags = appendix.querySelectorAll('li');
+    let usernames = appendix.querySelectorAll('.userName');
+
+    TweenMax.to(appendix, .5, {
+      backgroundColor: colorPallete[0],
+      ease: Sine.easeInOut,
+    })
+
+    TweenMax.to(tags, .5, {
+      color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
+    })
+
+    TweenMax.to(usernames, .5, {
+      color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
+    })
+
+    allSets.forEach(elementSet => {
+      let animLcanvas = elementSet[2];
+      let color = colorPallete[Math.floor(getRandomVal(2, colorPallete.length))];
+      Animate.changeCanvasColor(animLcanvas, color);
+    })
+
+  }
+
+  static changeCanvasColor(element, color) {
+
+    let animLcanvas = element
+    let rgb = Animate.hexToRgb(color)
+
+    let width = animLcanvas.width;
+    let height = animLcanvas.height;
+
+    let ctx = animLcanvas.getContext('2d');
+    let imageData = ctx.getImageData(0, 0, width, height);
+
+    for (let i = 0; i < height; i++) {
+      let inpos = i * (width) * 4;
+      let outpos = i * (width) * 4;
+      for (let x = 0; x < width; x++) {
+        let r = imageData.data[inpos++] = rgb.r;
+        let g = imageData.data[inpos++] = rgb.g;
+        let b = imageData.data[inpos++] = rgb.b;
+        let a = imageData.data[inpos++];
+        imageData.data[outpos++] = r;
+        imageData.data[outpos++] = g;
+        imageData.data[outpos++] = b;
+        imageData.data[outpos++] = a;
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  static hexToRgb(hex){
+    let c;
+    let rgb = {}
+    c = hex.substring(1).split('');
+    if(c.length === 3){
+      c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = '0x' + c.join('');
+    rgb.r = (c>>16)&255;
+    rgb.g = (c>>8)&255;
+    rgb.b = c&255;
+    return rgb
   }
 
 }

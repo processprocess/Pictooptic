@@ -1,10 +1,20 @@
 import { controlFlow } from './generateAnimDomElements.js'
+import Animate from './Animate.js'
 
 class InfoDom {
   static searchTermDom(term) {
-    let searchInput = document.querySelector('.searchInput')
-    searchInput.value = term
+    let searchWord = document.querySelector('.searchWord');
+    let appendixWord = document.querySelector('.appendixWord');
+    let newString = '';
+    for (let i = 0; i < term.length; i++) {
+      let newSpanString = `<span>${term.charAt(i)}</span>`;
+      newString += newSpanString;
+    }
+    searchWord.innerHTML = newString
+    appendixWord.innerHTML = newString
+    searchWord.addEventListener('click', function(e) { Animate.shuffle() });
   }
+
   static relatedTagsDom(tags) {
     let relatedMenu = document.querySelector('.relatedMenu');
     while (relatedMenu.firstChild) {
@@ -26,6 +36,7 @@ class InfoDom {
     })
     relatedMenu.append(lastItem);
   }
+
   static generateAppendix(cleanIconData) {
     let iconHolder = document.querySelector('.iconHolder')
     while (iconHolder.firstChild) {
@@ -37,7 +48,7 @@ class InfoDom {
       iconHolder.append(iconData);
       let iconGraphic = document.createElement('div');
       iconGraphic.classList.add('iconGraphic');
-      iconGraphic.innerHTML = `<img src="${icon.previewURL}">`
+      // iconGraphic.innerHTML = `<img src="${icon.previewURL}">`
       iconData.append(iconGraphic);
       let userName = document.createElement('div');
       userName.classList.add('userName');
@@ -50,7 +61,7 @@ class InfoDom {
       tags.forEach(tag => {
         let iconTag = document.createElement('li');
         iconTag.textContent = tag;
-        iconTag.addEventListener('click',() => handleChangeFlow(tag))
+        iconTag.addEventListener('click',() => controlFlow(tag))
         iconTagList.append(iconTag);
       })
     })
@@ -58,7 +69,6 @@ class InfoDom {
   static showAppendix() {
     let appendix = document.querySelector('.appendix');
     appendix.classList.toggle('notVisible')
-    console.log('test');
   }
 }
 

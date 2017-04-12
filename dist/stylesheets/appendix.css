@@ -2,33 +2,67 @@
   position: absolute;
   width: 50%;
   bottom: 0;
-  height: calc(100% - 50px);
-  border-right: thin black solid;
+  height: 100%;
+  z-index: 100;
+  background:white;
+}
+
+.headerAppendix {
+  position: relative;
+  height: 20vw;
+  width: 100%;
+  /*border: thin black solid;*/
+  display: block;
+  /*padding: 80px 0px 20px 20px;*/
+}
+
+.appendixWord {
+  position: absolute;
+  font-size: 8vw;
+  margin-left: 1vw;
+  bottom: 4.5vw;
+}
+
+.subHeadAppendix {
+  position: absolute;
+  font-size: 2vw;
+  margin-left: 1vw;
+  bottom: 2vw;
+}
+
+.bigRule {
+  position: absolute;
+  margin: 0 auto;
+  width: 100%;
+  height: 5px;
+  background: black;
+  bottom: 0;
 }
 
 .iconHolder {
-  position: absolute;
-  bottom:0;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  bottom: 0;
   width: 100%;
-  height: calc(100% - 100px);
-  border-top: thin black solid;
+  /*height:100%;*/
+  height: calc(100% - 20vw);
+  /*border-top: thin black solid;*/
   -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
 }
 
 .iconData {
+  flex-grow: 1;
   text-align: center;
   width: 150px;
   height: 150px;
   float: left;
-  border-right: thin black solid;
-  border-bottom: thin black solid;
 }
 
-.iconGraphic img {
+.iconGraphic canvas {
+  position: relative;
   display: block;
-  width: 100px;
-  left: 10px;
   margin: 0 auto;
 }
 

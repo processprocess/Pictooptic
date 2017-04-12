@@ -45,26 +45,42 @@ canvas {
   /*margin-right:-50px;*/
 }
 
+/* --------- search word --------- */
+
+.searchWordHolder {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width:100%;
+  z-index: 40;
+  padding: 10px 0;
+}
+
+.searchWord {
+  font-size: 3em;
+  cursor: pointer;
+}
+
 /* --------- navigation --------- */
 
 .nav {
   position: absolute;
   width: 100%;
   /*height:50px;*/
-  border-bottom: 1px solid black;
+  /*border-bottom: 1px solid black;*/
   /*text-align: center;*/
   /*line-height: 50px;*/
-  z-index: 20;
+  z-index: 1000;
 }
 
 /*//////// search bar ////////*/
 
 .logo {
-  position: relative;
+  position: absolute;
   float: left;
   height:35px;
+  z-index: 200;
   /*width: 200px;*/
-
 }
 
 .logo img{
@@ -74,28 +90,55 @@ canvas {
 
 /*//////// search bar ////////*/
 
+.searchOverlay {
+  position: absolute;
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*float: left;*/
+  /*top:0;*/
+  /*height: 50px;*/
+  /*padding: 0 5px;*/
+  width: 100%;
+  height: 100%;
+  /*background: red;*/
+  background: rgba(255,255,255, .8);
+  z-index: 100;
+}
+
 .inputWrapper {
-  display: flex;
-  align-items: center;
-  float: left;
-  top:0;
-  height: 50px;
-  padding: 0 5px;
-  border-left:1px solid black;
+  position: absolute;
+  top:30%;
+  left:20px;
+  /*border: thin black solid;*/
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*float: left;*/
+  /*top:0;*/
+  /*height: 50px;*/
+  /*padding: 0 5px;*/
+  /*width: 100%;
+  height: 100%;*/
+  /*background: red;*/
+  /*background: rgba(255,255,255, .8);*/
+  /*z-index: 100;*/
 }
 
 .searchHint,
 .searchInput {
+  width:100%;
+  position: absolute;
+  display: inline-block;
+  /*left: 50%;*/
   /*line-height: 50px;*/
-  width: 190px;
-  height: 40px;
+  /*width: 190px;
+  height: 40px;*/
   text-align: left;
-  font-size: 1.25em;
-  text-indent: .75em;
+  font-size: 20vh;
+  /*text-indent: .75em;*/
   cursor: text;
   outline: 0;
   border: none;
-  border: thin black solid;
+  /*border: thin black solid;*/
 }
 
 .searchHint {
@@ -112,15 +155,14 @@ input {
 
 .resentSearches li,
 .searchSuggestion {
-  text-indent: .75em;
-  font-size: 1em;
+  /*text-indent: .75em;*/
   text-align: left;
   padding: 10px 0;
-  border-bottom: thin black solid;
+  /*border-bottom: thin black solid;
   border-left: thin black solid;
-  border-right: thin black solid;
+  border-right: thin black solid;*/
   letter-spacing: .4px;
-  font-size: .75em;
+  font-size: 3vh;
 }
 
 input:focus::-webkit-input-placeholder { color:transparent; }
@@ -139,57 +181,71 @@ input:focus:-ms-input-placeholder { color:transparent; }
 
 }
 
-/*//////// search Icon ////////*/
+/*//////// icons ////////*/
 
-.searchIconWrapper {
+.icons {
+  position: absolute;
+  /*border: thin black solid;*/
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height:40px;
-  border: thin black solid;
-  margin-left: -1px
+  left:125px;
+  top:12px;
+  z-index: 10000;
 }
 
 .infoIconWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height:40px;
-  border: thin black solid;
-  margin-left: -1px
+  width: 25px;
+  height:25px;
+  border: 2px black solid;
+  opacity: .3;
+  /*margin-left: -1px;*/
+  border-radius: 50%;
+}
+
+.searchIconWrapper {
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height:25px;
+  border: 2px black solid;
+  /*margin-left: -1px;*/
+  z-index: 100;
+  opacity: .3;
+  border-radius: 50%;
 }
 
 /*//////// related item ////////*/
 
 .related {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-left:1px solid black;
+  flex-direction: row;
   height: 50px;
+  z-index: 20;
 }
 
 .relatedMenu {
-  margin-left: 17px;
+  justify-content:space-around;
+  width:100%;
   display: flex;
-  flex-direction: column;
-  align-content: flex-start;
+  flex-direction: row;
   flex-wrap: wrap;
-  width: auto;
   height: 40px;
 }
 
 .relatedMenu::after,
 .relatedMenu li {
-  margin-right: 25px;
   display: flex;
   align-items: center;
-  max-width: 100px;
-  height: 50%;
   letter-spacing: .4px;
-  font-size: .75em;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 
 /*//////// hide elements ////////*/
