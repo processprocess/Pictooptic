@@ -72,60 +72,57 @@ export default function generateAnimDomElements (iconData, resolve) {
     let iconHolder = document.querySelectorAll('.iconGraphic');
     for( let i = 0 ; i < elementCount ; i++){
 
-      console.log(iconHolder[i]);
-
       var ogTexture = eval(`resources.item${i}.texture`);
       var width  = ogTexture.width;
       var height = ogTexture.height;
 
-      // for( let i = 0 ; i < 1 ; i++){
+      /////////// create canvas icons ////////////
 
-        var renderTarget = new PIXI.CanvasRenderTarget(width, height);
-        PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
-        var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
-        var lightSprite = new PIXI.Sprite(whiteTexture);
-        renderTarget.destroy();
+      let animIcon = document.createElement('canvas');
+      animIcon.width = 100;
+      animIcon.height = 100;
+      animIcon.classList.add('animIconCanvas');
+      let ctx = animIcon.getContext('2d');
+      ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
+      iconHolder[i].append(animIcon)
 
-        let animL = new PIXI.Sprite(whiteTexture);
-        stage.addChild(animL);
-        let animR = new PIXI.Sprite(whiteTexture);
-        stage.addChild(animR);
+      /////////// create animating icons ////////////
 
-        animL.mask = leftBox;
-        animL.name = 'animL';
+      var renderTarget = new PIXI.CanvasRenderTarget(width, height);
+      PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
+      var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
+      var lightSprite = new PIXI.Sprite(whiteTexture);
+      renderTarget.destroy();
 
-        animR.mask = rightBox;
-        animR.name = 'animR';
+      let animL = new PIXI.Sprite(whiteTexture);
+      stage.addChild(animL);
+      let animR = new PIXI.Sprite(whiteTexture);
+      stage.addChild(animR);
 
-        /////////// create canvas icons ////////////
+      animL.mask = leftBox;
+      animL.name = 'animL';
 
-        let animIcon = document.createElement('canvas');
-        animIcon.width = 100;
-        animIcon.height = 100;
-        animIcon.classList.add('animIconCanvas');
-        let ctx = animIcon.getContext('2d');
-        ctx.drawImage(animL.texture.baseTexture.source, 0, 0, 200, 200, 0, 0, 100, 100);
-        iconHolder[i].append(animIcon)
+      animR.mask = rightBox;
+      animR.name = 'animR';
 
-        /////////// set values ////////////
+      /////////// set starting values ////////////
 
-        Animate.setValues(animL, animR)
+      Animate.setValues(animL, animR)
 
-        /////////// set events ////////////
+      /////////// set events ////////////
 
-        // animL.interactive = true;
-        // animL.on('mouseover', function(e) {
-        //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-        // });
-        //
-        // animR.interactive = true;
-        // animR.on('mouseover', function(e) {
-        //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-        // });
+      // animL.interactive = true;
+      // animL.on('mouseover', function(e) {
+      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+      // });
+      //
+      // animR.interactive = true;
+      // animR.on('mouseover', function(e) {
+      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
+      // });
 
-        allSets.push([animL, animR, animIcon]);
+      allSets.push([animL, animR, animIcon]);
 
-      // }
     }
     resolve()
   }
@@ -177,6 +174,7 @@ let loadingWrapper = document.querySelector('.loadingWrapper')
 
 export function controlFlow(param) {
   new Promise((resolve, reject) => {
+    // closeWindows()
     Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
     Animate.whiteBGColor(bgCover);
   })

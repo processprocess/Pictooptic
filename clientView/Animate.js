@@ -202,7 +202,7 @@ class Animate {
     let distance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
     let distancePercent = 1 - distance / Math.abs(maxDistance);
 
-    let scale = distancePercent;
+    let scale = distancePercent*1.25;
 
     TweenMax.set(animL, { pixi: {
       y: animL.y + diffy,
@@ -251,17 +251,28 @@ class Animate {
     let searchWord = document.querySelector('.searchWord')
     let appendixWord = document.querySelector('.appendixWord')
     let subHeadAppendix = document.querySelector('.subHeadAppendix')
+    let instructions = document.querySelector('.instructions')
     randomColorRequest();
     Animate.randomLocaiton(allSets, {duration:1, stagger:0});
     setTimeout(function(){
       Animate.randomBGColor(bgCover);
       Animate.changeElementColor(allSets, {duration:1, stagger:0});
+      Animate.letterColors(instructions);
       Animate.letterColors(searchWord);
       Animate.letterColors(appendixWord);
       Animate.letterColors(subHeadAppendix);
       Animate.relatedWordColors();
       Animate.appendixColors();
+      Animate.svgFillRandom()
     }, 10 );
+  }
+
+  static svgFillRandom() {
+    let logoSVG = document.querySelectorAll('.logoSVG');
+    TweenMax.to(logoSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
   }
 
   static letterColors(elements) {
@@ -283,6 +294,25 @@ class Animate {
     }
   }
 
+  static letterColorsBW(elements) {
+
+    if(elements.length > 0) {
+      elements.forEach(element => {
+        let elementSpans = Array.from(element.querySelectorAll('span'));
+        TweenMax.to(elementSpans, .5, {
+          color: 0x000000,
+          ease:Sine.easeInOut,
+        })
+      })
+    } else {
+      let elementSpans = Array.from(elements.querySelectorAll('span'));
+      TweenMax.to(elementSpans, .5, {
+        color: 0x000000,
+        ease:Sine.easeInOut,
+      })
+    }
+  }
+
   static relatedWordColors() {
     let relatedMenu = document.querySelector('.relatedMenu')
     let elements = relatedMenu
@@ -296,8 +326,14 @@ class Animate {
   static appendixColors() {
     let appendix = document.querySelector('.appendix');
     let appendixBG = appendix.querySelector('.appendix');
+    let bigRule = document.querySelector('.bigRule');
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
+
+    TweenMax.to(bigRule, .5, {
+      backgroundColor: colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
+    })
 
     TweenMax.to(appendix, .5, {
       backgroundColor: colorPallete[0],
@@ -319,6 +355,32 @@ class Animate {
       let color = colorPallete[Math.floor(getRandomVal(2, colorPallete.length))];
       Animate.changeCanvasColor(animLcanvas, color);
     })
+
+  }
+
+  static resetBW() {
+    let appendix = document.querySelector('.appendix');
+    let instructions = document.querySelector('.instructions');
+    let appendixBG = appendix.querySelector('.appendix');
+    let subHeadAppendix = appendix.querySelector('.subHeadAppendix')
+    let bigRule = appendix.querySelector('.bigRule');
+
+    TweenMax.set(bigRule, {
+      backgroundColor: 0x000000,
+    })
+
+    TweenMax.set(appendix, {
+      backgroundColor: 0xFFFFFF,
+    })
+
+    let logoSVG = document.querySelectorAll('.logoSVG');
+    TweenMax.to(logoSVG, .5, {
+      fill:  0x000000,
+      ease:Sine.easeInOut,
+    })
+
+    Animate.letterColorsBW(subHeadAppendix)
+    Animate.letterColorsBW(instructions)
 
   }
 

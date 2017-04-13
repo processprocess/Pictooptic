@@ -11,39 +11,40 @@
   position: relative;
   height: 20vw;
   width: 100%;
-  /*border: thin black solid;*/
   display: block;
-  /*padding: 80px 0px 20px 20px;*/
 }
 
 .appendixWord {
   position: absolute;
   font-size: 8vw;
-  margin-left: 1vw;
+  margin-left: 20px;
   bottom: 4.5vw;
 }
 
 .subHeadAppendix {
   position: absolute;
   font-size: 2vw;
-  margin-left: 1vw;
+  margin-left: 20px;
   bottom: 2vw;
 }
 
 .bigRule {
   position: absolute;
   margin: 0 auto;
-  width: 100%;
+  left: 0;
+  right: 0;
+  width: calc(100% - 40px);
   height: 5px;
   background: black;
   bottom: 0;
 }
 
 .iconHolder {
+  padding-top: 20px;
   display: flex;
   flex-wrap: wrap;
   position: relative;
-  bottom: 0;
+  /*bottom: 0;*/
   width: 100%;
   /*height:100%;*/
   height: calc(100% - 20vw);
@@ -53,6 +54,7 @@
 }
 
 .iconData {
+  margin: 25px 15px;
   flex-grow: 1;
   text-align: center;
   width: 150px;
@@ -66,6 +68,11 @@
   margin: 0 auto;
 }
 
+.userName {
+  margin-top: 15px;
+  font-size: 1.25em;
+}
+
 .iconTagList {
   font-size: .75em;
 }
@@ -73,6 +80,18 @@
 .iconTagList li {
   margin: 0 3px;
   display: inline-block;
+}
+
+.gradient {
+  /*transition: opacity 1s;*/
+  position: absolute;
+  z-index: 10000;
+  left: 100%;
+  width: 10px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, .1), rgba(0, 0, 0, 0));
+  opacity: 1;
+  z-index: 10000;
 }
 
 /*.infoOverlay {

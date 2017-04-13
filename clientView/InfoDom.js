@@ -12,7 +12,7 @@ class InfoDom {
     }
     searchWord.innerHTML = newString
     appendixWord.innerHTML = newString
-    searchWord.addEventListener('click', function(e) { Animate.shuffle() });
+    // searchWord.addEventListener('click', function(e) { Animate.shuffle() });
   }
 
   static relatedTagsDom(tags) {
@@ -42,6 +42,7 @@ class InfoDom {
     while (iconHolder.firstChild) {
       iconHolder.removeChild(iconHolder.firstChild);
     }
+    Animate.resetBW()
     cleanIconData.icons.forEach(icon => {
       let iconData = document.createElement('div');
       iconData.classList.add('iconData');
@@ -58,7 +59,8 @@ class InfoDom {
       iconTagList.classList.add('iconTagList');
       iconData.append(iconTagList);
       let tags = icon.tags;
-      tags.forEach(tag => {
+      tags.forEach((tag, i) => {
+        if (i > 2) return
         let iconTag = document.createElement('li');
         iconTag.textContent = tag;
         iconTag.addEventListener('click',() => controlFlow(tag))
@@ -66,15 +68,6 @@ class InfoDom {
       })
     })
   }
-  static showAppendix() {
-    let appendix = document.querySelector('.appendix');
-    appendix.classList.toggle('notVisible')
-  }
 }
 
 module.exports = InfoDom;
-
-let infoIconWrapper = document.querySelector('.infoIconWrapper');
-infoIconWrapper.addEventListener('click', function(e) {
-  InfoDom.showAppendix()
-})
