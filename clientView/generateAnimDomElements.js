@@ -168,13 +168,29 @@ window.addEventListener('resize', function(e) {
 
 })
 
+///////////// close windows ////////////
+
+let searchOverlay = document.querySelector('.searchOverlay');
+let appendix = document.querySelector('.appendix');
+let searchInput = document.querySelector('.searchInput');
+let searchWord = document.querySelector('.searchWord');
+let relatedMenu = document.querySelector('.relatedMenu');
+
+function close() {
+  searchOverlay.classList.add('notVisible');
+  appendix.classList.add('notVisible');
+  // searchInput.value = '';
+  searchWord.classList.remove('notVisible')
+  relatedMenu.classList.remove('notVisible')
+}
+
 ///////////// control flow ////////////
 
 let loadingWrapper = document.querySelector('.loadingWrapper')
 
 export function controlFlow(param) {
   new Promise((resolve, reject) => {
-    // closeWindows()
+    close()
     Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
     Animate.whiteBGColor(bgCover);
   })

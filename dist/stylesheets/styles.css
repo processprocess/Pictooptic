@@ -11,6 +11,10 @@
   padding: 0;
 }
 
+body {
+  overflow: hidden;
+}
+
 canvas {
   position: absolute;
 }
@@ -162,7 +166,7 @@ input {
 }
 
 .searchSuggestion:hover {
-  color: rgba(0,0,0, 1);
+  text-decoration: underline;
 }
 
 input:focus::-webkit-input-placeholder { color:transparent; }
@@ -230,11 +234,16 @@ input:focus:-ms-input-placeholder { color:transparent; }
 
 .relatedMenu::after,
 .relatedMenu li {
+  transition: text-decoration .5s;
   display: flex;
   align-items: center;
   letter-spacing: .4px;
   font-size: 1.5em;
   cursor: pointer;
+}
+
+.relatedMenu li:hover {
+  text-decoration: underline;
 }
 
 /*//////// hide elements ////////*/

@@ -20,7 +20,7 @@ class InfoDom {
     while (relatedMenu.firstChild) {
       relatedMenu.removeChild(relatedMenu.firstChild);
     }
-    for (let i = 0 ; i < 15; i++) {
+    for (let i = 0 ; i < 10; i++) {
       if (tags[i] === undefined) return;
       let tagItem = document.createElement('li');
       tagItem.textContent = tags[i][0];
@@ -49,7 +49,6 @@ class InfoDom {
       iconHolder.append(iconData);
       let iconGraphic = document.createElement('div');
       iconGraphic.classList.add('iconGraphic');
-      // iconGraphic.innerHTML = `<img src="${icon.previewURL}">`
       iconData.append(iconGraphic);
       let userName = document.createElement('div');
       userName.classList.add('userName');
@@ -63,7 +62,9 @@ class InfoDom {
         if (i > 2) return
         let iconTag = document.createElement('li');
         iconTag.textContent = tag;
-        iconTag.addEventListener('click',() => controlFlow(tag))
+        iconTag.addEventListener('click',() => {
+          controlFlow(tag)
+        })
         iconTagList.append(iconTag);
       })
     })

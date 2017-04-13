@@ -8,8 +8,8 @@ class Icon {
     // this.collection = collections[0] ? collections[0].name : undefined;
     // this.collectionID = collections[0] ? collections[0].id : undefined;
     // this.tags = tags;
-    this.tags = Icon.fetchIcons(tags, term);
-    this.term = term;
+    this.term = term.toLowerCase();
+    this.tags = Icon.fetchIcons(tags, this.term);
   }
   static fetchIcons(tags, term) {
     let cleanTags = []

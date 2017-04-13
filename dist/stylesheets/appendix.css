@@ -80,6 +80,11 @@
 .iconTagList li {
   margin: 0 3px;
   display: inline-block;
+  cursor: pointer;
+}
+
+.iconTagList li:hover {
+  text-decoration: underline;
 }
 
 .gradient {

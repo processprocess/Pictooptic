@@ -9,20 +9,20 @@ import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import getRandomVal from './getRandomVal.js';
 import { allSets, bgCover } from './generateAnimDomElements.js'
 
-let width = window.innerWidth;
-let height = window.innerHeight;
-let centerX = width * .5;
-let centerY = height * .5;
+let winWidth = window.innerWidth;
+let winHeight = window.innerHeight;
+let centerX = winWidth * .5;
+let centerY = winHeight * .5;
 let maxRadius = -.5;
-let maxDistance = height * maxRadius;
+let maxDistance = winHeight * maxRadius;
 let tick = 0;
 
 window.addEventListener('resize', function(e) {
-  width = window.innerWidth;
-  height = window.innerHeight;
-  centerX = width * .5;
-  centerY = height * .5;
-  maxDistance = height * maxRadius;
+  winWidth = window.innerWidth;
+  winHeight = window.innerHeight;
+  centerX = winWidth * .5;
+  centerY = winHeight * .5;
+  maxDistance = winHeight * maxRadius;
 })
 
 class Animate {
@@ -33,8 +33,8 @@ class Animate {
         anchor: 0.5,
         scaleX: 0,
         scaleY: 0,
-        x: window.innerWidth/2 + animL.width/2,
-        y: window.innerHeight/2,
+        x: winWidth/2 + animL.width/2,
+        y: winWidth/2,
       },
       colorProps: {
         tint: 0x000000,
@@ -45,8 +45,8 @@ class Animate {
         anchor: 0.5,
         scaleX: 0,
         scaleY: 0,
-        x: window.innerWidth/2 - animR.width/2,
-        y: window.innerHeight/2,
+        x: winWidth/2 - animR.width/2,
+        y: winHeight/2,
       },
       colorProps: {
         tint: 0x000000,
@@ -60,12 +60,9 @@ class Animate {
       let animL = element[0]
       let animR = element[1]
 
-      // let staticRadius = height * maxRadius;
-      let radius = height * randomInt(0, maxRadius);
+      let radius = winHeight * randomInt(0, maxRadius);
       let angle = randomInt(0,3.14);
 
-      // let startX = centerX + Math.sin(angle) * staticRadius;
-      // let startY = centerY + Math.cos(angle) * staticRadius;
       let startX = centerX + Math.sin(angle) * radius;
       let startY = centerY + Math.cos(angle) * radius;
 
@@ -78,29 +75,29 @@ class Animate {
 
       options = options || {};
       let duration = options.duration || 0.2;
-      let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
 
-      let tl = new TimelineLite( {onComplete:resolve} );
+      // let tl = new TimelineLite( {onComplete:resolve} );
 
-      tl.add(
+      // tl.add(
         TweenLite.to(animL, duration, { pixi: {
             x: startX,
             y: startY,
             scale: scale,
           },
           ease: Power1.easeInOut,
-        }, stagger * i),
+        })
+
         TweenLite.to(animR, duration, { pixi: {
-            x: window.innerWidth - startX,
+            x: winWidth - startX,
             y: startY,
             scaleX: scale * -1,
             scaleY: scale,
           },
           ease: Power1.easeInOut,
-        }, 0)
-      )
+        })
+      // )
 
-      return tl;
+      // return tl;
     })
   }
 
@@ -108,26 +105,26 @@ class Animate {
 
     options = options || {};
     let duration = options.duration || 0.2;
-    let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
-    let tl = new TimelineLite( {} );
+    // let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+    // let tl = new TimelineLite( {} );
 
     elements.forEach((element, i) => {
       let animL = element[0]
       let animR = element[1]
       let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
-      tl.add(
+      // tl.add(
         TweenMax.to(animL, duration, {colorProps: {
             tint: tint, format:"number",
           },
-        }, stagger * i),
+        })
 
         TweenMax.to(animR, duration, {colorProps: {
             tint: tint, format:"number",
           }
-        }, 0)
-      )
+        })
+      // )
     })
-    return tl;
+    // return tl;
   }
 
   static animateOut(elements, options, resolve) {
@@ -144,14 +141,14 @@ class Animate {
       let animR = element[1]
       tl.add(
         TweenLite.to(animL, duration, { pixi: {
-          x: window.innerWidth/2 + animL.width,
-          y: window.innerHeight/2,
+          x: winWidth/2 + animL.width,
+          y: winHeight/2,
         },
           ease: Power1.easeInOut,
         }, stagger * i),
         TweenLite.to(animR, duration, { pixi: {
-          x: window.innerWidth/2 - animR.width,
-          y: window.innerHeight/2,
+          x: winWidth/2 - animR.width,
+          y: winHeight/2,
         },
           ease: Power1.easeInOut,
         }, 0)
@@ -213,7 +210,7 @@ class Animate {
 
     TweenMax.set(animR, { pixi: {
       y: animL.y,
-      x: window.innerWidth - (animL.x),
+      x: winWidth - (animL.x),
       scaleX:scale * -1,
       scaleY:scale,
     }});
@@ -234,7 +231,7 @@ class Animate {
 
     // Math.sin(tick)
 
-    let staticRadius = height * maxRadius;
+    let staticRadius = winHeight * maxRadius;
     let angle = Math.abs(Math.sin(tick/25)*randomInt(0,1)) * 3.14;
     // let angle = randomInt(0,3.14);
 
@@ -389,16 +386,16 @@ class Animate {
     let animLcanvas = element
     let rgb = Animate.hexToRgb(color)
 
-    let width = animLcanvas.width;
-    let height = animLcanvas.height;
+    let canWidth = animLcanvas.width;
+    let canHeight = animLcanvas.height;
 
     let ctx = animLcanvas.getContext('2d');
-    let imageData = ctx.getImageData(0, 0, width, height);
+    let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
 
-    for (let i = 0; i < height; i++) {
-      let inpos = i * (width) * 4;
-      let outpos = i * (width) * 4;
-      for (let x = 0; x < width; x++) {
+    for (let i = 0; i < canHeight; i++) {
+      let inpos = i * (canWidth) * 4;
+      let outpos = i * (canWidth) * 4;
+      for (let x = 0; x < canWidth; x++) {
         let r = imageData.data[inpos++] = rgb.r;
         let g = imageData.data[inpos++] = rgb.g;
         let b = imageData.data[inpos++] = rgb.b;
@@ -461,8 +458,8 @@ let mouseDistanceX = 0;
 let mouseDistanceY = 0;
 
 window.addEventListener('mousemove', function(e) {
-  mouseDistanceX = ((e.clientX - window.innerWidth/2) / window.innerWidth*2)*2;
-  mouseDistanceY = ((e.clientY - window.innerHeight/2) / window.innerHeight*2*2);
+  mouseDistanceX = ((e.clientX - winWidth/2) / winWidth*2)*2;
+  mouseDistanceY = ((e.clientY - winHeight/2) / winHeight*2*2);
 })
 
 let mouseIsDown = false
@@ -471,6 +468,7 @@ TweenLite.ticker.addEventListener("tick", mouseAnim);
 
 function mouseAnim() {
   if(mouseIsDown) return
+  if(!allSets) return
   allSets.forEach((animSet, i)=>{
     Animate.checkPos(animSet);
     Animate.updatePos(animSet, i, mouseDistanceY, mouseDistanceX);
