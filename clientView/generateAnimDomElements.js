@@ -218,7 +218,7 @@ export function controlFlow(param) {
   //   })
   // })
   .then((resolveData) => {
-    // console.log('done with gen dom')
+    console.log('done with gen dom')
     Animate.randomLocaiton(allSets, {duration:1, stagger:.5})
   })
 }
