@@ -38,17 +38,23 @@ function setUp() {
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
   bgCover = new PIXI.Graphics();
-  bgCover.beginFill(0xffffff, 1);
+  bgCover.beginFill(0x000000, 1);
+  // bgCover.beginFill(0xffffff, 1);
+  // bgCover.tint = 0x000000;
   bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
   stage.addChild(bgCover);
 
   leftBox = new PIXI.Graphics();
-  leftBox.beginFill(0xffffff, 1);
+  leftBox.beginFill(0x000000, 1);
+  // leftBox.beginFill(0xffffff, 1);
+  // leftBox.tint = 0x000000;
   leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
-  rightBox.beginFill(0xffffff, 1);
+  rightBox.beginFill(0x000000, 1);
+  // rightBox.beginFill(0xffffff, 1);
+  // rightBox.tint = 0x000000;
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
 }

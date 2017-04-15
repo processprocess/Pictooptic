@@ -11,13 +11,16 @@ import { allSets, bgCover } from './generateAnimDomElements.js'
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
-
 let centerX = winWidth / 2;
 let centerY = winHeight / 2;
-
 let Xradius = centerX;
-let Yradius = centerY;
-
+let Yradius = centerY * .85;
+let winScale = winWidth * winHeight;
+let baseWinScale = 1920 * 1080;
+let calcWinScale = winScale / baseWinScale;
+let walkVal = .5;
+let calcWalk = (1 - calcWinScale) * walkVal;
+let responsiveScale = calcWinScale + calcWalk;
 let tick = 0;
 
 window.addEventListener('resize', function(e) {
@@ -26,7 +29,11 @@ window.addEventListener('resize', function(e) {
   centerX = winWidth / 2;
   centerY = winHeight / 2;
   Xradius = centerX;
-  Yradius = centerY;
+  Yradius = centerY * .85;
+  winScale = winWidth * winHeight;
+  calcWinScale = winScale / baseWinScale;
+  calcWalk = (1 - calcWinScale) * walkVal;
+  responsiveScale = calcWinScale + calcWalk;
 })
 
 class Animate {
@@ -41,7 +48,8 @@ class Animate {
         y: winHeight/2,
       },
       colorProps: {
-        tint: 0x000000,
+        tint: 0xFFFFFF,
+        // tint: 0x000000,
       },
     });
     TweenMax.set(animR, {
@@ -53,7 +61,8 @@ class Animate {
         y: winHeight/2,
       },
       colorProps: {
-        tint: 0x000000,
+        tint: 0xFFFFFF,
+        // tint: 0x000000,
       },
     });
   }
@@ -125,21 +134,29 @@ class Animate {
 
     options = options || {};
     let duration = options.duration || 0.2;
-    let tl = new TimelineLite( {onComplete:resolve} );
-
+    let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
+    let tl = new TimelineLite( {onComplete:()=>{ resolve() }} );
+    // stagger = .01
     elements.forEach((element, i) => {
-      let animL = element[0]
-      let animR = element[1]
+      let animL = element[0];
+      let animR = element[1];
+
+      let randAngle = randomInt(0, 3.14);
+      let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
+      let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
       tl.add(
+        // tl.to(animL, duration, { pixi: {
         TweenLite.to(animL, duration, { pixi: {
-          x: winWidth/2 + animL.width,
-          y: winHeight/2,
+          x: randStartX,
+          y: randStartY,
+          scale: 0,
         },
           ease: Power1.easeInOut,
-        }),
+        }, stagger * i),
         TweenLite.to(animR, duration, { pixi: {
-          x: winWidth/2 - animR.width,
-          y: winHeight/2,
+          x: randStartX - winWidth,
+          y: randStartY,
+          scale: 0,
         },
           ease: Power1.easeInOut,
         })
@@ -156,7 +173,8 @@ class Animate {
 
   static whiteBGColor(bgCover) {
     TweenMax.to(bgCover, 0.5, {colorProps: {
-      tint: 0xffffff, format:"number"
+      tint: 0x000000, format:"number"
+      // tint: 0xffffff, format:"number"
     }});
   }
 
@@ -213,14 +231,16 @@ class Animate {
       elements.forEach(element => {
         let elementSpans = Array.from(element.querySelectorAll('span'));
         TweenMax.to(elementSpans, .5, {
-          color: 0x000000,
+          color: 0xffffff,
+          // color: 0x000000,
           ease:Sine.easeInOut,
         })
       })
     } else {
       let elementSpans = Array.from(elements.querySelectorAll('span'));
       TweenMax.to(elementSpans, .5, {
-        color: 0x000000,
+        color: 0xffffff,
+        // color: 0x000000,
         ease:Sine.easeInOut,
       })
     }
@@ -249,7 +269,8 @@ class Animate {
     })
 
     TweenMax.to(appendix, .5, {
-      backgroundColor: colorPallete[0],
+      backgroundColor: 0x000000,
+      // backgroundColor: colorPallete[0],
       ease: Sine.easeInOut,
     })
 
@@ -279,16 +300,19 @@ class Animate {
     let bigRule = appendix.querySelector('.bigRule');
 
     TweenMax.set(bigRule, {
-      backgroundColor: 0x000000,
+      backgroundColor: 0xFFFFFF,
+      // backgroundColor: 0x000000,
     })
 
     TweenMax.set(appendix, {
-      backgroundColor: 0xFFFFFF,
+      backgroundColor: 0x000000,
+      // backgroundColor: 0xFFFFFF,
     })
 
     let logoSVG = document.querySelectorAll('.logoSVG');
     TweenMax.to(logoSVG, .5, {
-      fill:  0x000000,
+      fill:  0xFFFFFF,
+      // fill:  0x000000,
       ease:Sine.easeInOut,
     })
 
@@ -341,7 +365,6 @@ class Animate {
   }
 
   static update() {
-
     tick++
     let newx = Math.floor(testDivcords.x);
     let newy = Math.floor(testDivcords.y);
@@ -356,8 +379,8 @@ class Animate {
 
   static updateElement(animSet, i, diffy, diffx) {
 
-    if(i%2 === 0) {diffy = diffy/2; diffx = diffx/2;}
-    else if(i%3 === 0) {diffy = diffy/3; diffx = diffx/3;}
+    if(i % 2 === 0) {diffy = diffy / 2; diffx = diffx / 2}
+    else if(i % 3 === 0) {diffy = diffy / 3; diffx = diffx / 3}
 
     let animL = animSet[0];
     let animR = animSet[1];
@@ -378,7 +401,8 @@ class Animate {
     let maxDistance = Math.sqrt(dxMax * dxMax + dyMax * dyMax);
 
     let distancePercent = 1 - distance / maxDistance;
-    let scale = distancePercent * 1.25;;
+    let scale = distancePercent * responsiveScale;
+    // let scale = distancePercent * 1.25;
 
     TweenMax.set(animL, { pixi: {
       y: animL.y + diffy,
@@ -389,14 +413,15 @@ class Animate {
 
     TweenMax.set(animR, { pixi: {
       y: animL.y,
-      x: winWidth - (animL.x),
+      x: winWidth - animL.x,
       scaleX:scale * -1,
       scaleY:scale,
     }});
 
-    let randAngle = randomInt(0, 3.14);
+
 
     if (animL.x > centerX + 100) {
+      let randAngle = randomInt(0, 3.14);
       let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
       let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
       TweenLite.set(animL, { pixi: {
@@ -414,7 +439,6 @@ class Animate {
         scale: 0
       }})
     }
-
 
   }
 
@@ -461,9 +485,11 @@ let mouseIsDown = false
 TweenLite.ticker.addEventListener("tick", mouseAnim);
 
 function mouseAnim() {
+  // alert(winScale)
   if(mouseIsDown) return
   if(!allSets) return
   allSets.forEach((animSet, i)=>{
+    if (winScale <= 300000) {Animate.updateElement(animSet, i, 0, 0); return}
     Animate.updateElement(animSet, i, mouseDistanceY, mouseDistanceX);
   })
 
