@@ -34,7 +34,47 @@ window.addEventListener('resize', function(e) {
   calcWinScale = winScale / baseWinScale;
   calcWalk = (1 - calcWinScale) * walkVal;
   responsiveScale = calcWinScale + calcWalk;
+
+  setDomScale()
 })
+
+
+
+
+function setDomScale() {
+
+  let searchWord = document.querySelector('.searchWord');
+  TweenMax.set(searchWord, {
+    scale:() => { return 1 * responsiveScale;},
+  })
+
+  let logo = document.querySelector('.logo');
+  let logoWalkVal = .8;
+  let logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
+  let logoResponsiveScale = calcWinScale + logoCalcWalk;
+  TweenMax.set(logo, {
+    scale:() => { return 1 * logoResponsiveScale},
+  })
+
+  // let infoIconWrapper = document.querySelectorAll('.infoIconWrapper');
+  // TweenMax.set(infoIconWrapper, {
+  //   scale:() => { return 1 * responsiveScale;},
+  // })
+
+
+
+
+  // let relatedMenu = document.querySelectorAll('.relatedMenu');
+  // TweenMax.set(relatedMenu, {
+  //   scale:() => { return 1 * responsiveScale;},
+  // })
+
+}
+
+setDomScale()
+
+
+
 
 class Animate {
 
@@ -204,6 +244,20 @@ class Animate {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
       ease:Sine.easeInOut,
     })
+
+    let searchSVG = document.querySelectorAll('.searchSVG');
+    TweenMax.to(searchSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
+
+    let infoSVG = document.querySelectorAll('.infoSVG');
+    TweenMax.to(infoSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
+
+
   }
 
   static letterColors(elements) {
@@ -269,8 +323,8 @@ class Animate {
     })
 
     TweenMax.to(appendix, .5, {
-      backgroundColor: 0x000000,
-      // backgroundColor: colorPallete[0],
+      // backgroundColor: 0x000000,
+      backgroundColor: colorPallete[0],
       ease: Sine.easeInOut,
     })
 
@@ -316,6 +370,20 @@ class Animate {
       ease:Sine.easeInOut,
     })
 
+    let searchSVG = document.querySelectorAll('.searchSVG');
+    TweenMax.to(searchSVG, .5, {
+      fill:  0xFFFFFF,
+      // fill:  0x000000,
+      ease:Sine.easeInOut,
+    })
+
+    let infoSVG = document.querySelectorAll('.infoSVG');
+    TweenMax.to(infoSVG, .5, {
+      fill:  0xFFFFFF,
+      // fill:  0x000000,
+      ease:Sine.easeInOut,
+    })
+
     Animate.letterColorsBW(subHeadAppendix)
     Animate.letterColorsBW(instructions)
 
@@ -339,6 +407,35 @@ class Animate {
         let r = imageData.data[inpos++] = rgb.r;
         let g = imageData.data[inpos++] = rgb.g;
         let b = imageData.data[inpos++] = rgb.b;
+        let a = imageData.data[inpos++];
+        imageData.data[outpos++] = r;
+        imageData.data[outpos++] = g;
+        imageData.data[outpos++] = b;
+        imageData.data[outpos++] = a;
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  static changeCanvasColorWhite(element) {
+    // console.log(element);
+    let animLcanvas = element
+    // let rgb = Animate.hexToRgb(color)
+
+    let canWidth = animLcanvas.width;
+    let canHeight = animLcanvas.height;
+
+    let ctx = animLcanvas.getContext('2d');
+    let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
+
+    for (let i = 0; i < canHeight; i++) {
+      let inpos = i * (canWidth) * 4;
+      let outpos = i * (canWidth) * 4;
+      for (let x = 0; x < canWidth; x++) {
+        let r = imageData.data[inpos++] = 250;
+        let g = imageData.data[inpos++] = 250;
+        let b = imageData.data[inpos++] = 250;
         let a = imageData.data[inpos++];
         imageData.data[outpos++] = r;
         imageData.data[outpos++] = g;
@@ -418,7 +515,7 @@ class Animate {
       scaleY:scale,
     }});
 
-
+    //////// check bounds ////////
 
     if (animL.x > centerX + 100) {
       let randAngle = randomInt(0, 3.14);
@@ -466,6 +563,7 @@ Draggable.create(testDiv, {
   onDragStart: ()=> mouseIsDown = true,
   onDragEnd: ()=> mouseIsDown = false,
   trigger: dragWrap,
+  onClick: ()=> { Animate.shuffle() }
 });
 
 let testDivcords = Draggable.get(testDiv);

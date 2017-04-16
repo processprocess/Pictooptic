@@ -49,52 +49,59 @@ canvas {
   /*margin-right:-50px;*/
 }
 
-/* --------- search word --------- */
+/* --------- logo --------- */
 
-.searchWordHolder {
-  display: flex;
-  justify-content: center;
+.logo {
   position: absolute;
-  width:100%;
-  z-index: 40;
-  padding: 10px 0;
+  /*height:20px;*/
+  /*border: thin black solid;*/
+  width: 120px;
+  transform-origin: top left;
+  padding-top: 1.5em;
+  /*margin-top: 1vh;*/
+  padding-left: 1em;
+  /*margin-left: 1*/
+  z-index: 200;
+  cursor: pointer;
 }
 
-.searchWord {
-  font-size: 3em;
+.logoSVG {
+  transform-origin: top left;
+  /*transform: scale(.5);*/
+  fill: white;
 }
 
 /* --------- navigation --------- */
 
 .nav {
+  padding-top: 1em;
   position: absolute;
   width: 100%;
   /*height:50px;*/
   /*border-bottom: 1px solid black;*/
   /*text-align: center;*/
   /*line-height: 50px;*/
-  z-index: 1000;
+  z-index: 10;
+  /*border: thin black solid;*/
 }
 
-/*//////// search bar ////////*/
+/* --------- search word --------- */
 
-.logo {
+.searchWordHolder {
+  display: flex;
+  justify-content: center;
   position: absolute;
-  float: left;
-  height:35px;
-  z-index: 200;
-  /*width: 200px;*/
+  width: 100%;
+  transform-origin: top;
 }
 
-.logo img {
-  margin:15px 15px;
-  height:23px;
-}
-
-.logoSVG {
-  margin:15px 15px;
-  height:25px;
-  fill: black;
+.searchWord {
+  font-size: 2.5em;
+  color: white;
+  line-height: 1em;
+  /*border: thin black solid;*/
+  transform-origin: top;
+  cursor: pointer;
 }
 
 /*//////// instructions ////////*/
@@ -134,7 +141,7 @@ canvas {
 
 .searchHint,
 .searchInput {
-  width:100%;
+  width:90%;
   position: absolute;
   display: inline-block;
   text-align: left;
@@ -176,39 +183,71 @@ input:focus:-ms-input-placeholder { color:transparent; }
 
 /*//////// icons ////////*/
 
-.icons {
+/*.icons {
   position: absolute;
-  /*border: thin black solid;*/
   display: flex;
   left:150px;
   top:14px;
   z-index: 10000;
+}*/
+
+.searchIconWrapper {
+  position: absolute;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  /*justify-content: center;*/
+  align-items: center;
+  /*background: white;*/
+  margin-left: 15px;
+  /*margin-top: 15px;*/
+  top:calc(1vh + 40px);
+  /*left:calc(3vh + 30px);*/
+  /*border: 1px white solid;*/
+  /*opacity: .1;*/
+  /*margin-left: -1px;*/
+  /*border-radius: 50%;*/
+  /*opacity:0;*/
+  transform-origin: top left;
+  cursor: pointer;
+  /*z-index: -10;*/
+}
+
+.searchSVG {
+  transform-origin: top left;
+  /*transform: scale(.5);*/
+  width: 20px;
+  height: 20px;
+  fill: white;
 }
 
 .infoIconWrapper {
+  position: absolute;
   display: flex;
-  justify-content: center;
+  width: 40px;
+  height: 40px;
+  /*justify-content: center;*/
   align-items: center;
-  width: 25px;
-  height:25px;
-  border: 2px black solid;
-  opacity: .1;
+  /*background: white;*/
+  margin-left: 15px;
+  /*margin-top: 15px;*/
+  top:calc(1vh + 75px);
+  /*left:calc(3vh + 30px);*/
+  /*border: 1px white solid;*/
+  /*opacity: .1;*/
   /*margin-left: -1px;*/
-  border-radius: 50%;
+  /*border-radius: 50%;*/
+  /*opacity:0;*/
+  transform-origin: top left;
+  cursor: pointer;
 }
 
-.searchIconWrapper {
-  margin-left: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 25px;
-  height:25px;
-  border: 2px black solid;
-  /*margin-left: -1px;*/
-  z-index: 100;
-  opacity: .1;
-  border-radius: 50%;
+.infoSVG {
+  transform-origin: top left;
+  /*transform: scale(.5);*/
+  width: 20px;
+  height: 20px;
+  fill: white;
 }
 
 /*//////// related item ////////*/
@@ -219,7 +258,7 @@ input:focus:-ms-input-placeholder { color:transparent; }
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 50px;
+  /*height: 50px;*/
   z-index: 20;
 }
 
@@ -228,18 +267,23 @@ input:focus:-ms-input-placeholder { color:transparent; }
   width:100%;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
+  flex-shrink: 0;
+  min-width: 0%;
   height: 40px;
+  color:white;
 }
 
 .relatedMenu::after,
 .relatedMenu li {
   transition: text-decoration .5s;
+  /*border: thin black solid;*/
   display: flex;
   align-items: center;
   letter-spacing: .4px;
   font-size: 1.5em;
   cursor: pointer;
+  margin-bottom: 1vh;
 }
 
 .relatedMenu li:hover {

@@ -22,6 +22,7 @@ class IndexEvents {
     searchInput.value = '';
     searchWord.classList.remove('notVisible')
     relatedMenu.classList.remove('notVisible')
+    searchInput.blur();
   }
 
   static openSearch() {

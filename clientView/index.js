@@ -8,11 +8,26 @@ import IndexEvents from './IndexEvents.js';
 
 let searchInput = document.querySelector('.searchInput');
 
+let searchWord = document.querySelector('.searchWord');
+searchWord.addEventListener('click', function(e) {
+  Animate.shuffle()
+})
+
+let appendixCloser = document.querySelector('.appendixCloser');
+appendixCloser.addEventListener('click', function(e) {
+  IndexEvents.closeWindows();
+})
+
+searchInput.addEventListener('blur', function(e) {
+  IndexEvents.closeWindows();
+})
+
 function handleKeydown(e) {
   let submitValue = searchInput.value;
   if (e.keyCode === 27) { // escape key
     IndexEvents.closeWindows();
   } else if (e.keyCode === 13) { // enter
+    // alert(e.keyCode === 13)
     if (searchInput.value.length < 3) return;
     IndexEvents.closeWindows();
     controlFlow(submitValue);
@@ -28,4 +43,34 @@ function handleKeydown(e) {
   }
 }
 
+// $('someElem').bind("keypress", function(e){
+//    // enter key code is 13
+//    if(e.which === 13){
+//      console.log("user pressed done");
+//     }
+// })
+
 window.addEventListener('keydown', handleKeydown);
+
+/////////// prevent defaults ///////////
+
+let nav = document.querySelector('.nav')
+// let logo = document.querySelector('.logo')
+
+nav.addEventListener('touchmove', function(event) {
+  event.preventDefault();
+});
+
+let searchOverlay = document.querySelector('.searchOverlay')
+searchOverlay.addEventListener('touchmove', function(event) {
+  event.preventDefault();
+});
+
+let logo = document.querySelector('.logo')
+logo.addEventListener('touchmove', function(event) {
+  event.preventDefault();
+});
+
+appendixCloser.addEventListener('touchmove', function(e) {
+  event.preventDefault();
+})

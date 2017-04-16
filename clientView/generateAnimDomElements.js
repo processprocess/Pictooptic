@@ -38,23 +38,23 @@ function setUp() {
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
   bgCover = new PIXI.Graphics();
-  bgCover.beginFill(0x000000, 1);
-  // bgCover.beginFill(0xffffff, 1);
-  // bgCover.tint = 0x000000;
+  // bgCover.beginFill(0x000000, 1);
+  bgCover.beginFill(0xffffff, 1);
+  bgCover.tint = 0x000000;
   bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
   stage.addChild(bgCover);
 
   leftBox = new PIXI.Graphics();
-  leftBox.beginFill(0x000000, 1);
-  // leftBox.beginFill(0xffffff, 1);
-  // leftBox.tint = 0x000000;
+  // leftBox.beginFill(0x000000, 1);
+  leftBox.beginFill(0xffffff, 1);
+  leftBox.tint = 0x000000;
   leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
-  rightBox.beginFill(0x000000, 1);
-  // rightBox.beginFill(0xffffff, 1);
-  // rightBox.tint = 0x000000;
+  // rightBox.beginFill(0x000000, 1);
+  rightBox.beginFill(0xffffff, 1);
+  rightBox.tint = 0x000000;
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
 }
@@ -82,16 +82,6 @@ export default function generateAnimDomElements (iconData, resolve) {
       var width  = ogTexture.width;
       var height = ogTexture.height;
 
-      /////////// create canvas icons ////////////
-
-      let animIcon = document.createElement('canvas');
-      animIcon.width = 100;
-      animIcon.height = 100;
-      animIcon.classList.add('animIconCanvas');
-      let ctx = animIcon.getContext('2d');
-      ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
-      iconHolder[i].append(animIcon)
-
       /////////// create animating icons ////////////
 
       var renderTarget = new PIXI.CanvasRenderTarget(width, height);
@@ -110,6 +100,17 @@ export default function generateAnimDomElements (iconData, resolve) {
 
       animR.mask = rightBox;
       animR.name = 'animR';
+
+      /////////// create canvas icons ////////////
+
+      let animIcon = document.createElement('canvas');
+      animIcon.width = 100;
+      animIcon.height = 100;
+      animIcon.classList.add('animIconCanvas');
+      let ctx = animIcon.getContext('2d');
+      ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
+      iconHolder[i].append(animIcon)
+      Animate.changeCanvasColorWhite(animIcon)
 
       /////////// set starting values ////////////
 

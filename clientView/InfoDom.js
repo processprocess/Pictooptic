@@ -29,12 +29,12 @@ class InfoDom {
       })
       relatedMenu.append(tagItem);
     }
-    let lastItem = document.createElement('li');
-    lastItem.textContent = 'random';
-    lastItem.addEventListener('click', function(e) {
-      controlFlow('randomSample');
-    })
-    relatedMenu.append(lastItem);
+    // let lastItem = document.createElement('li');
+    // lastItem.textContent = 'random';
+    // lastItem.addEventListener('click', function(e) {
+    //   controlFlow('randomSample');
+    // })
+    // relatedMenu.append(lastItem);
   }
 
   static generateAppendix(cleanIconData) {
