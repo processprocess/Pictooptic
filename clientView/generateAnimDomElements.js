@@ -207,6 +207,7 @@ export function controlFlow(param) {
     related.classList.add('notVisible');
     nav.classList.add('notVisible');
     logo.classList.add('notVisible');
+    setTimeout(function(){ IntroAnim.play() }, 100 );
     Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
     Animate.whiteBGColor(bgCover);
   })
@@ -215,11 +216,11 @@ export function controlFlow(param) {
     controlCycle = true;
     })
   })
-  .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
-    IntroAnim.play(resolve)
-    // loadingWrapper.classList.remove('notVisible');
-    })
-  })
+  // .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
+  //   IntroAnim.play(resolve)
+  //   // loadingWrapper.classList.remove('notVisible');
+  //   })
+  // })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
