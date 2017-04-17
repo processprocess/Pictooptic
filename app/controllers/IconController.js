@@ -1,6 +1,7 @@
 const Icon = require('../models/Icon');
 const NounProjectApi = require('../services/NounProjectApi');
 const sampleNouns = require('../json/sampleNouns.json');
+const words = require('../json/words.json');
 
 const sampleLength = sampleNouns.length;
 
@@ -9,12 +10,25 @@ class IconController {
   static show(req, res) {
     const icon = req.params.param;
     if (icon === 'randomSample') {
-      console.log('randomSample');
-      const randomVal = Math.floor(Math.random() * ((sampleLength + 1) - 0)) + 0;
-      const data = sampleNouns[randomVal];
-      IconController.generateData(data, res)
+      function getWord(){
+        let randomVal = Math.floor(Math.random() * ((6452 + 1) - 0)) + 0; // for debugging
+        let word = words[randomVal]
+        return word
+      }
+      // console.log(word)
+
+      NounProjectApi.fetchIcons(getWord())
+      .then(data => {
+        IconController.generateData(data, res)
+      })
+      .catch(err => { res.status(404).send({ err }); })
+
+      // console.log('randomSample'); // for debugging
+      // const randomVal = Math.floor(Math.random() * ((sampleLength + 1) - 0)) + 0; // for debugging
+      // const data = sampleNouns[randomVal]; // for debugging
+      // IconController.generateData(data, res); // for debugging
     } else {
-      console.log('server hit');
+      // console.log('server hit');
       NounProjectApi.fetchIcons(req.params.param)
       .then(data => {
         IconController.generateData(data, res)
