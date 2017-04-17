@@ -31,11 +31,6 @@ function setUp() {
   loader = new PIXI.loaders.Loader()
   stage = new PIXI.Container();
 
-  // stage.interactive = true;
-  // stage.on('click', function(e) {
-  //   shuffle()
-  // });
-
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
   bgCover = new PIXI.Graphics();
@@ -195,11 +190,20 @@ function close() {
 
 ///////////// control flow ////////////
 
-let loadingWrapper = document.querySelector('.loadingWrapper')
+let loadingWrapper = document.querySelector('.loadingWrapper');
+let searchWordHolder = document.querySelector('.searchWordHolder');
+let related = document.querySelector('.related');
+let nav = document.querySelector('.nav');
+let logo = document.querySelector('.logo');
 
 export function controlFlow(param) {
   new Promise((resolve, reject) => {
     close()
+    // let searchWord = document.querySelector('.searchWord');
+    searchWordHolder.classList.add('notVisible');
+    related.classList.add('notVisible');
+    nav.classList.add('notVisible');
+    logo.classList.add('notVisible');
     Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
     Animate.whiteBGColor(bgCover);
   })
@@ -214,19 +218,25 @@ export function controlFlow(param) {
   // })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
+  // .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
+  //   IntroAnim.reverse(resolve)
+  //   // loadingWrapper.classList.remove('notVisible');
+  //   })
+  // })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
+    // IntroAnim.reverse(resolve)
     InfoDom.relatedTagsDom(cleanIconData.topTags);
     InfoDom.searchTermDom(cleanIconData.icons[0].term);
     InfoDom.generateAppendix(cleanIconData);
     generateAnimDomElements(cleanIconData.icons, resolve);
     })
   })
-  // .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
-  //   IntroAnim.reverse(resolve)
-  //   loadingWrapper.classList.remove('notVisible');
-  //   })
-  // })
   .then((resolveData) => {
+    searchWordHolder.classList.remove('notVisible');
+    related.classList.remove('notVisible');
+    nav.classList.remove('notVisible');
+    logo.classList.remove('notVisible');
+    IntroAnim.reverse()
     console.log('done with gen dom')
     Animate.randomLocaiton(allSets, {duration:1, stagger:.5})
   })
@@ -250,4 +260,4 @@ function destroyElements(setsToDestroy, resolve) {
   })
 }
 
-controlFlow('randomSample') // debug
+// controlFlow('randomSample') // debug

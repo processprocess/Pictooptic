@@ -75,6 +75,7 @@ canvas {
 /* --------- navigation --------- */
 
 .nav {
+  transition: opacity 1s;
   padding-top: 1em;
   position: absolute;
   width: 100%;
@@ -89,6 +90,7 @@ canvas {
 /* --------- search word --------- */
 
 .searchWordHolder {
+  transition: opacity 1s;
   display: flex;
   justify-content: center;
   position: absolute;
@@ -117,6 +119,7 @@ canvas {
 }
 
 .instructionsRelated {
+  transition: opacity .5s;
   position: absolute;
   font-size: .75em;
   bottom: 55px;
@@ -258,6 +261,7 @@ input:focus:-ms-input-placeholder { color:transparent; }
 /*//////// related item ////////*/
 
 .related {
+  transition: opacity 1s;
   bottom: 0;
   position: absolute;
   width: 100%;
@@ -284,7 +288,6 @@ input:focus:-ms-input-placeholder { color:transparent; }
 
 .relatedMenu::after,
 .relatedMenu li {
-  transition: text-decoration .5s;
   /*border: thin black solid;*/
   /*min-width: 75px;*/
   display: flex;

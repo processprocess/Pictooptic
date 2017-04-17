@@ -3,6 +3,7 @@ import { controlFlow } from './generateAnimDomElements.js';
 import { substringMatcher } from './typeahead.js';
 import Animate from './Animate.js';
 import IndexEvents from './IndexEvents.js';
+import handleIntro from './handleIntro.js';
 
 /////////// handle key presses ///////////
 
