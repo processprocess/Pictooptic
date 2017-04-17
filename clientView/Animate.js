@@ -7,7 +7,9 @@ import { colorPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import getRandomVal from './getRandomVal.js';
-import { allSets, bgCover } from './generateAnimDomElements.js'
+import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js'
+
+let mouseIsDown = false;
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -632,12 +634,11 @@ window.addEventListener('mousemove', function(e) {
   mouseDistanceY = ((e.clientY - winHeight/2) / winHeight*2*2);
 })
 
-let mouseIsDown = false
-
 TweenLite.ticker.addEventListener("tick", mouseAnim);
 
 function mouseAnim() {
   // alert(winScale)
+  if(controlCycle) return
   if(mouseIsDown) return
   if(!allSets) return
   allSets.forEach((animSet, i)=>{
