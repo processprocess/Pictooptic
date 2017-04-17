@@ -20,6 +20,7 @@ let renderer;
 /////////// set up pixi ///////////
 
 function setUp() {
+
   renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
     view: document.querySelector("canvas"),
     antialias: true,
@@ -30,7 +31,7 @@ function setUp() {
   loader = new PIXI.loaders.Loader()
   stage = new PIXI.Container();
 
-  stage.interactive = true;
+  // stage.interactive = true;
   // stage.on('click', function(e) {
   //   shuffle()
   // });
@@ -57,6 +58,7 @@ function setUp() {
   rightBox.tint = 0x000000;
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
+
 }
 setUp()
 

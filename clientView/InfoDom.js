@@ -17,6 +17,8 @@ class InfoDom {
 
   static relatedTagsDom(tags) {
     let relatedMenu = document.querySelector('.relatedMenu');
+    let relatedMenuLi = document.querySelectorAll('.relatedMenu li');
+    relatedMenuLi.forEach(li => li.blur())
     while (relatedMenu.firstChild) {
       relatedMenu.removeChild(relatedMenu.firstChild);
     }

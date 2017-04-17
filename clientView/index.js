@@ -22,6 +22,11 @@ searchInput.addEventListener('blur', function(e) {
   IndexEvents.closeWindows();
 })
 
+let closeSVG = document.querySelector('.closeSVG');
+closeSVG.addEventListener('click', function(e) {
+  IndexEvents.closeWindows();
+})
+
 function handleKeydown(e) {
   let submitValue = searchInput.value;
   if (e.keyCode === 27) { // escape key
@@ -42,13 +47,6 @@ function handleKeydown(e) {
     IndexEvents.openSearch();
   }
 }
-
-// $('someElem').bind("keypress", function(e){
-//    // enter key code is 13
-//    if(e.which === 13){
-//      console.log("user pressed done");
-//     }
-// })
 
 window.addEventListener('keydown', handleKeydown);
 

@@ -7,32 +7,50 @@
   background:white;
 }
 
+@media only screen and (max-width: 550px) {
+  .appendix {
+    width: 100%;
+  }
+}
+
 .appendixCloser {
   position: absolute;
   width:200%;
   height:100%;
 }
 
+.closeIconWrapper {
+  position: absolute;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  align-items: center;
+  margin-left: 15px;
+  top:calc(1vh + 40px);
+  transform-origin: top left;
+  cursor: pointer;
+}
+
+.closeSVG {
+  transform-origin: top left;
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
 .appendixWord {
   position: absolute;
-  font-size: 8vw;
+  font-size: 7vw;
   margin-left: 20px;
-  bottom: 4.5vw;
+  bottom: .35em;
   color: white;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 1000px) {
   .appendixWord {
-    font-size: 3em;
+    font-size: 4em;
+    bottom: .37em;
   }
-}
-
-.subHeadAppendix {
-  position: absolute;
-  font-size: 2vw;
-  margin-left: 20px;
-  bottom: 2vw;
-  color: white;
 }
 
 .bigRule {
@@ -48,11 +66,36 @@
 
 .headerAppendix {
   position: relative;
-  height: 20vw;
-  min-height: 150px;
+  height: 16.5vw;
+  min-height: 175px;
   width: 100%;
   display: block;
   color: white;
+}
+
+.iconHolderWrapper {
+  width: 100%;
+  height: calc(100% - 16.5vw);
+  max-height: calc(100% - 175px);
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+.iconHolderHeader {
+  position: relative;
+}
+
+.description {
+  width: calc(100% - 40px);
+  /*position: absolute;*/
+  font-size: 1.5em;
+  margin-left: 20px;
+  margin-top: 35px;
+  bottom: 2vw;
+  color: white;
+}
+.description .bodyCopy {
+font-size: .70em;
 }
 
 .iconHolder {
@@ -60,14 +103,7 @@
   display: flex;
   flex-wrap: wrap;
   position: relative;
-  /*bottom: 0;*/
   width: 100%;
-  /*height:100%;*/
-  height: calc(100% - 20vw);
-  max-height: calc(100% - 150px);
-  /*border-top: thin black solid;*/
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
 }
 
 .iconData {
@@ -107,331 +143,85 @@
 }
 
 .gradient {
-  /*transition: opacity 1s;*/
   position: absolute;
   z-index: 10000;
   left: 100%;
   width: 10px;
   height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, .1), rgba(0, 0, 0, 0));
+  background: linear-gradient(to right, rgba(0, 0, 0, .15), rgba(0, 0, 0, 0));
   opacity: 1;
   z-index: 10000;
 }
 
-/*.infoOverlay {
-  transition: opacity .2s ease-in-out;
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  z-index: 2000;
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
-  pointer-events: none;
-  opacity: 0;
+.footer {
+  margin-left: 20px;
+  margin-right: 20px;
+  color: white;
 }
 
-.infoevents {
-  pointer-events: all;
-  opacity: 1;
+.smallRule {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: white;
 }
 
-.infoOverlay .closeButton {
-  position: fixed;
+.smallType {
+  margin-top: 10px;
 }
 
-.infoWrapper {
-  margin: 0 40px;
-}*/
-
-/* --------- gradient --------- */
-
-/*.gradient {
-  transition: opacity 1s;
-  position: absolute;
-  z-index: 10000;
-  left: 50%;
-  width: 2%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0));
-  opacity: 0;
-}*/
-
-/* --------- Noun Data --------- */
-
-/*.currentSearchHeaderWrapper {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  height: 50%;
-}
-
-.currentSearchWord {
-  margin: 75px 0 10px 0;
-  font-size: 150px;
-  font-weight: 500;
-  letter-spacing: -4px;
-  cursor: pointer;
-}
-
-.topRelatedTags {
-  font-size: 30px;
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-
-.searchByUser {
-  font-size: 15px;
-  margin-top: 14px;
-}
-
-.mainRule {
-  border-top: 3px solid black;
-  width: 100%
-}
-
-.nounDataWrapper {
+.nounProjectWrapper {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.iconDataHolder {
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 1;
-  display:flex;
-  flex-direction: column;
+  width: 175px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   align-items: center;
-  text-align: center;
-  justify-content: center;
-  min-width: 160px;
-  width:200px;
-  height:200px;
-  top: -100px;
-  left: -100px;
-  margin:0 auto;
-  transform: scale(1);
-  opacity: 1;
-}
-
-.iconDataImageMask {
-  align-self: center;
-  background-color: black;
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
-  opacity: 0;
-}
-
-.show {
-  opacity: 1;
-}
-
-.author {
-  position: absolute;
-  height: 0;
-  display: block;
-  top: 160px;
-  font-size: 1em;
+  transform-origin: top left;
   cursor: pointer;
-  font-weight: 500;
 }
 
-ul {
-  position: absolute;
-  height: 0;
-  top: 175px;
-  display: block;
+.nounProjectSVG {
+  transform-origin: top left;
+  width: 175px;
+  fill: white;
 }
 
-li.iconTag {
-  display: inline-block;
-  margin: 0 3px;
-  font-size: 0.707em;
+.creativeCommonsWrapper {
+  float:right;
+  position: relative;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  align-items: center;
+  transform-origin: top left;
   cursor: pointer;
-}*/
-
-
-/*.iconTags li {
-  transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  display: inline-block;
-  margin: 4px 3px;
-  opacity: .5;
 }
 
-.iconTags li:hover {
+.creativeCommonsSVG {
+  transform-origin: top left;
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.pbWrapper {
+  /*float:right;*/
+  /*position: absolute;*/
+  display: flex;
+  align-items: center;
+  /*margin-left: 15px;*/
+  top:calc(1vh + 40px);
+  transform-origin: top left;
   cursor: pointer;
-  border-bottom: 1px solid rgba(0, 0, 0, 1);
-  opacity: .5;
-}*/
-
-
-/*.location {
-  font-size: 0.707em;
-}*/
-
-/*.iconAndDataWrapper {
-  display:flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin: 5px 15px 0 15px;
-}*/
-
-/*.author {
-  font-size: 24px;
-  font-weight: bold;
-}*/
-
-/*.subInfo {
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 5px;
-  opacity: .7;
-}*/
-
-/*a.id   {
-  color: #a7a7a7;
-  transition: all .3s ease-in-out;
-  border-bottom: 1px solid rgba(167, 167, 167, .2);
-  text-decoration: none;
-  display:inline-block;
-}*/
-
-/*a.id:hover {
-  border-bottom: 1px solid rgba(167, 167, 167, 1);
-  cursor: pointer;
-}*/
-
-/*.searchByTag {
-  margin: 0 0 25px 115px;
-  opacity: .7;
-}*/
-
-/*.searchByTag p {
-  font-size: 17px;
-  font-weight: bold;
-}*/
-
-/*.iconTags li {
-  transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  display: inline-block;
-  margin: 4px 3px;
-  opacity: .5;
+  margin-bottom: 10px;
 }
 
-.iconTags li:hover {
-  cursor: pointer;
-  border-bottom: 1px solid rgba(0, 0, 0, 1);
-  opacity: 1;
-}*/
-
-/*@media only screen
-  and (max-width: 800px)
-  {
-  .infoOverlay {
-    width: 100%;
-  }
-  .currentSearchWord {
-    font-size: 75px;
-  }
-
-  .topRelatedTags {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-}*/
-
-
-
-/*@media only screen and (max-width: 800px){
-  .searchOverlay {
-    width:100%;
-  }
-  .searchLetters {
-    font-size: 10vh;
-    letter-spacing: -.5vh;
-    line-height: 0px;
-    font-weight: 500;
-    left: 20px;
-  }
-}*/
-
-/*@media only screen
-  and (max-width: 1100px)
-  {
-  .iconDataHolder {
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-  .iconDataImageMask {
-    margin: 10px 0;
-  }
-  .iconAndDataWrapper {
-    margin-bottom: 5px;
-    margin-left: 0px;
-    max-width: 100%;
-  }
-  .searchByTag {
-    margin-left: 0;
-  }
+.pbSVG {
+  transform-origin: top left;
+  width: 45px;
+  height: 45px;
+  fill: white;
 }
-
-@media only screen
-  and (max-width: 900px)
-  {
-  .infoOverlay {
-    width: 100%;
-  }
-}
-
-@media only screen
-  and (max-width: 500px)
-  {
-  .dictWrapper h1 {
-    font-size: 80px;
-    font-weight: bold;
-  }
-}*/
-
-
-
-
-
-
-
-/* --------- Dictionary Data --------- */
-
-/*.dictWrapper {*/
-  /*margin: 40px;
-  color: #a7a7a7;
-  border: 1px solid grey;*/
-/*}*/
-
-/*.dictWrapper h1 {
-  font-size: 100px;
-  font-weight: bold;
-}
-
-.dictWrapper h2 {
-  font-weight: bold;
-}
-
-.example {
-  font-style: italic;
-  font-weight: bold;
-}
-
-.pronunciationWord {
-  font-weight: bold;
-}
-
-.origin,
-.pronunciation,
-.mainRule  {
-  margin-top: 20px;
-}
-*/
-

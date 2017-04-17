@@ -61,9 +61,6 @@ function setDomScale() {
   //   scale:() => { return 1 * responsiveScale;},
   // })
 
-
-
-
   // let relatedMenu = document.querySelectorAll('.relatedMenu');
   // TweenMax.set(relatedMenu, {
   //   scale:() => { return 1 * responsiveScale;},
@@ -219,10 +216,12 @@ class Animate {
   }
 
   static shuffle() {
-    let searchWord = document.querySelector('.searchWord')
-    let appendixWord = document.querySelector('.appendixWord')
-    let subHeadAppendix = document.querySelector('.subHeadAppendix')
-    let instructions = document.querySelector('.instructions')
+    let searchWord = document.querySelector('.searchWord');
+    let appendixWord = document.querySelector('.appendixWord');
+    let subHeadAppendix = document.querySelector('.subHeadAppendix');
+    let description = document.querySelector('.description');
+    let instructions = document.querySelector('.instructions');
+    let smallType = document.querySelector('.smallType');
     randomColorRequest();
     Animate.randomLocaiton(allSets, {duration:1, stagger:0});
     setTimeout(function(){
@@ -232,31 +231,50 @@ class Animate {
       Animate.letterColors(searchWord);
       Animate.letterColors(appendixWord);
       Animate.letterColors(subHeadAppendix);
+      Animate.letterColors(description);
+      Animate.letterColors(smallType);
       Animate.relatedWordColors();
       Animate.appendixColors();
-      Animate.svgFillRandom()
+      Animate.svgFillRandom();
     }, 10 );
   }
 
   static svgFillRandom() {
-    let logoSVG = document.querySelectorAll('.logoSVG');
+    let logoSVG = document.querySelector('.logoSVG');
     TweenMax.to(logoSVG, .5, {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
       ease:Sine.easeInOut,
     })
 
-    let searchSVG = document.querySelectorAll('.searchSVG');
+    let searchSVG = document.querySelector('.searchSVG');
     TweenMax.to(searchSVG, .5, {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
       ease:Sine.easeInOut,
     })
 
-    let infoSVG = document.querySelectorAll('.infoSVG');
+    let infoSVG = document.querySelector('.infoSVG');
     TweenMax.to(infoSVG, .5, {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
       ease:Sine.easeInOut,
     })
 
+    let closeSVG = document.querySelector('.closeSVG');
+    TweenMax.to(closeSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
+
+    let nounProjectSVG = document.querySelector('.nounProjectSVG');
+    TweenMax.to(nounProjectSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
+
+    let creativeCommonsSVG = document.querySelector('.creativeCommonsSVG');
+    TweenMax.to(creativeCommonsSVG, .5, {
+      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+      ease:Sine.easeInOut,
+    })
 
   }
 
@@ -314,10 +332,16 @@ class Animate {
     let appendix = document.querySelector('.appendix');
     let appendixBG = appendix.querySelector('.appendix');
     let bigRule = document.querySelector('.bigRule');
+    let smallRule = document.querySelector('.smallRule');
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
 
     TweenMax.to(bigRule, .5, {
+      backgroundColor: colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
+    })
+
+    TweenMax.to(smallRule, .5, {
       backgroundColor: colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
       ease: Sine.easeInOut,
     })
@@ -349,11 +373,19 @@ class Animate {
   static resetBW() {
     let appendix = document.querySelector('.appendix');
     let instructions = document.querySelector('.instructions');
+    let description = document.querySelector('.description');
     let appendixBG = appendix.querySelector('.appendix');
     let subHeadAppendix = appendix.querySelector('.subHeadAppendix')
     let bigRule = appendix.querySelector('.bigRule');
+    let smallRule = appendix.querySelector('.smallRule');
+    let smallType = appendix.querySelector('.smallType');
 
     TweenMax.set(bigRule, {
+      backgroundColor: 0xFFFFFF,
+      // backgroundColor: 0x000000,
+    })
+
+    TweenMax.set(smallRule, {
       backgroundColor: 0xFFFFFF,
       // backgroundColor: 0x000000,
     })
@@ -365,27 +397,49 @@ class Animate {
 
     let logoSVG = document.querySelectorAll('.logoSVG');
     TweenMax.to(logoSVG, .5, {
-      fill:  0xFFFFFF,
+      fill: 0xFFFFFF,
       // fill:  0x000000,
       ease:Sine.easeInOut,
     })
 
     let searchSVG = document.querySelectorAll('.searchSVG');
     TweenMax.to(searchSVG, .5, {
-      fill:  0xFFFFFF,
+      fill: 0xFFFFFF,
       // fill:  0x000000,
       ease:Sine.easeInOut,
     })
 
     let infoSVG = document.querySelectorAll('.infoSVG');
     TweenMax.to(infoSVG, .5, {
-      fill:  0xFFFFFF,
+      fill: 0xFFFFFF,
       // fill:  0x000000,
       ease:Sine.easeInOut,
     })
 
-    Animate.letterColorsBW(subHeadAppendix)
-    Animate.letterColorsBW(instructions)
+    let closeSVG = document.querySelector('.closeSVG');
+    TweenMax.to(closeSVG, .5, {
+      fill: 0xFFFFFF,
+      // fill:  0x000000,
+      ease:Sine.easeInOut,
+    })
+
+    let nounProjectSVG = document.querySelector('.nounProjectSVG');
+    TweenMax.to(nounProjectSVG, .5, {
+      fill: 0xFFFFFF,
+      // fill:  0x000000,
+      ease:Sine.easeInOut,
+    })
+
+    let creativeCommonsSVG = document.querySelector('.creativeCommonsSVG');
+    TweenMax.to(creativeCommonsSVG, .5, {
+      fill: 0xFFFFFF,
+      // fill:  0x000000,
+    })
+
+    Animate.letterColorsBW(subHeadAppendix);
+    Animate.letterColorsBW(instructions);
+    Animate.letterColorsBW(description);
+    Animate.letterColorsBW(smallType);
 
   }
 
