@@ -3,7 +3,7 @@ import "gsap";
 import Draggable from '../node_modules/gsap/Draggable.js';
 import './libs/PixiPlugin.js';
 import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
-import { colorPallete } from './handleRequestChange/newRequest.js';
+import { colorPallete, rgbPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import getRandomVal from './getRandomVal.js';
@@ -95,6 +95,12 @@ class Animate {
       let duration = options.duration || 0.2;
       let tl = new TimelineLite( {onComplete:resolve} );
       tl.add(
+        // TweenLite.to([animL, animR], duration, { pixi: {
+        //     x: (element) => { return element === animR ? winWidth - randomX : randomX },
+        //     y: randomY,
+        //   },
+        //   ease: Power1.easeInOut,
+        // }),
         TweenLite.to(animL, duration, { pixi: {
             x: randomX,
             y: randomY,
@@ -263,8 +269,9 @@ class Animate {
 
     allSets.forEach(elementSet => {
       let animLcanvas = elementSet[2];
-      let color = colorPallete[Math.floor(getRandomVal(2, colorPallete.length))];
-      Animate.changeCanvasColor(animLcanvas, color);
+      let randomColorVal = Math.floor(getRandomVal(2, colorPallete.length))
+      let color = colorPallete[randomColorVal];
+      Animate.changeCanvasColor(animLcanvas, randomColorVal);
     })
 
   }
@@ -313,9 +320,9 @@ class Animate {
     }
   }
 
-  static changeCanvasColor(element, color) {
+  static changeCanvasColor(element, colorVal) {
     let animLcanvas = element
-    let rgb = Animate.hexToRgb(color)
+    let rgb = rgbPallete[colorVal]
     let canWidth = animLcanvas.width;
     let canHeight = animLcanvas.height;
     let ctx = animLcanvas.getContext('2d');
@@ -360,20 +367,6 @@ class Animate {
     ctx.putImageData(imageData, 0, 0);
   }
 
-  static hexToRgb(hex){
-    let c;
-    let rgb = {}
-    c = hex.substring(1).split('');
-    if(c.length === 3){
-      c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-    }
-    c = '0x' + c.join('');
-    rgb.r = (c>>16)&255;
-    rgb.g = (c>>8)&255;
-    rgb.b = c&255;
-    return rgb
-  }
-
   static update() {
     tick++
     let newx = Math.floor(dragTrackercords.x);
@@ -412,7 +405,6 @@ class Animate {
 
     let distancePercent = 1 - distance / maxDistance;
     let scale = distancePercent * responsiveScale;
-    // let scale = distancePercent * 1.25;
 
     TweenMax.set(animL, { pixi: {
       y: animL.y + diffy,
@@ -467,16 +459,15 @@ let dragTracker = document.querySelector('.dragTracker');
 
 Draggable.create(dragTracker, {
   throwProps: true,
-  dragResistance: 0.25,
-  edgeResistance: 1,
-  throwResistance: 1000,
+  dragResistance: .35,
+  throwResistance: 7500,
   onThrowComplete: Animate.update,
   onThrowUpdate: Animate.update,
   onDrag: Animate.update,
-  onDragStart: ()=> mouseIsDown = true,
-  onDragEnd: ()=> mouseIsDown = false,
+  onDragStart: () => mouseIsDown = true,
+  onDragEnd: () => mouseIsDown = false,
   trigger: dragWrap,
-  onClick: ()=> { Animate.shuffle() }
+  onClick: () => { Animate.shuffle() }
 });
 
 let dragTrackercords = Draggable.get(dragTracker);
@@ -485,11 +476,12 @@ let dragTrackercords = Draggable.get(dragTracker);
 
 let mouseDistanceX = 0;
 let mouseDistanceY = 0;
+let idleAnimSpeed = 3.5;
 
 window.addEventListener('mousemove', function(e) {
-  mouseDistanceX = ((e.clientX - winWidth/2) / winWidth*2)*2;
-  mouseDistanceY = ((e.clientY - winHeight/2) / winHeight*2*2);
-})
+  mouseDistanceX = ((e.clientX - centerX) / winWidth) * idleAnimSpeed;
+  mouseDistanceY = ((e.clientY - centerY) / winHeight) * idleAnimSpeed;
+});
 
 TweenLite.ticker.addEventListener("tick", mouseAnim);
 
@@ -497,7 +489,7 @@ function mouseAnim() {
   if(controlCycle) return
   if(mouseIsDown) return
   if(!allSets) return
-  allSets.forEach((animSet, i)=>{
+  allSets.forEach((animSet, i) => {
     if (winScale <= 300000) {Animate.updateElement(animSet, i, 0, 0); return}
     Animate.updateElement(animSet, i, mouseDistanceY, mouseDistanceX);
   })
