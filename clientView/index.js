@@ -11,7 +11,7 @@ let searchInput = document.querySelector('.searchInput');
 
 let searchWord = document.querySelector('.searchWord');
 searchWord.addEventListener('click', function(e) {
-  Animate.shuffle()
+  Animate.shuffle();
 })
 
 let appendixCloser = document.querySelector('.appendixCloser');

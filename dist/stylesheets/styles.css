@@ -37,34 +37,26 @@ canvas {
   width:50px;
   height:50px;
   position:absolute;
-  /*background: red;*/
   border:1px solid grey;
   z-index: 1000;
   right:0;
-  /*bottom:0;*/
-  /*transform: translate(-100%, -100%);*/
-  /*margin-right:-50px;*/
 }
 
 /* --------- logo --------- */
 
 .logo {
+  transition: opacity 1s;
   position: absolute;
-  /*height:20px;*/
-  /*border: thin black solid;*/
   width: 120px;
   transform-origin: top left;
   padding-top: 1.5em;
-  /*margin-top: 1vh;*/
   padding-left: 1em;
-  /*margin-left: 1*/
   z-index: 200;
   cursor: pointer;
 }
 
 .logoSVG {
   transform-origin: top left;
-  /*transform: scale(.5);*/
   fill: white;
 }
 
@@ -306,39 +298,3 @@ input:focus:-ms-input-placeholder { color:transparent; }
   opacity: 0;
   pointer-events: none;
 }
-
-/*//////// progress ////////*/
-
-.progress {
-  bottom:0;
-  position: absolute;
-  float:left;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*//////// media query ////////*/
-
-/*@media only screen and (max-width: 800px){
-  .searchOverlay {
-    width:100%;
-  }
-  .searchLetters {
-    font-size: 10vh;
-    letter-spacing: -.5vh;
-    line-height: 0px;
-    font-weight: 500;
-    left: 20px;
-  }
-}*/

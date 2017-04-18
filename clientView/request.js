@@ -1,5 +1,7 @@
 import request from 'superagent';
-import generateAnimDomElements, { updateElements } from '../generateAnimDomElements.js';
+
+export let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
+export let rgbPallete = [];
 
 /////////// new icon request ///////////
 
@@ -7,7 +9,6 @@ export default function newRequest(param, resolve) {
   request.get(`/api/icons/${param}`)
          .then(data => {
             let cleanIconObjects = data.body;
-            // console.log(data.body.searchParam)
             resolve(cleanIconObjects);
          })
          .catch(err => { console.log(err)})
@@ -16,16 +17,12 @@ export default function newRequest(param, resolve) {
 
 /////////// new color Request ///////////
 
-export let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
-export let rgbPallete = []
-
 export function randomColorRequest(resolve) {
   request.get(`/color`)
          .then((data) => {
             console.log(data.body);
             let sortedColors = sortColors(data.body);
             rgbPallete = hexToRgb(data.body);
-            console.log(rgbPallete)
             colorPallete = sortedColors;
             resolve();
           })
@@ -42,7 +39,6 @@ function sortColors(colors){
 
 function hexToRgb(hexColors){
   let newRGBpallette = []
-
   hexColors.forEach(hex => {
     let c;
     let rgb = {}
@@ -56,6 +52,5 @@ function hexToRgb(hexColors){
     rgb.b = c&255;
     newRGBpallette.push(rgb)
   })
-
   return newRGBpallette
 }

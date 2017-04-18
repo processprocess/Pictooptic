@@ -13,6 +13,8 @@ let animData = {
     path: './images/animation/loadAnim.json'
 };
 
+anim = bodymovin.loadAnimation(animData);
+
 class IntroAnim {
   static play(resolve) {
     anim.setDirection(1)
@@ -35,12 +37,6 @@ class IntroAnim {
     })
   }
 }
-
-anim = bodymovin.loadAnimation(animData);
-
-
-// document.querySelector('#play').addEventListener('click',function(e) { IntroAnim.play() });
-// document.querySelector('#reverse').addEventListener('click',function(e) { IntroAnim.reverse() });
 
 module.exports = IntroAnim;
 

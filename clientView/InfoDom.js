@@ -12,7 +12,6 @@ class InfoDom {
     }
     searchWord.innerHTML = newString
     appendixWord.innerHTML = newString
-    // searchWord.addEventListener('click', function(e) { Animate.shuffle() });
   }
 
   static relatedTagsDom(tags) {
@@ -31,12 +30,6 @@ class InfoDom {
       })
       relatedMenu.append(tagItem);
     }
-    // let lastItem = document.createElement('li');
-    // lastItem.textContent = 'random';
-    // lastItem.addEventListener('click', function(e) {
-    //   controlFlow('randomSample');
-    // })
-    // relatedMenu.append(lastItem);
   }
 
   static generateAppendix(cleanIconData) {

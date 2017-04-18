@@ -1,13 +1,12 @@
-import "pixi.js";
 import "gsap";
 import Draggable from '../node_modules/gsap/Draggable.js';
-import './libs/PixiPlugin.js';
 import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
-import { colorPallete, rgbPallete } from './handleRequestChange/newRequest.js';
-import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
-import getRandomVal from './getRandomVal.js';
+import "pixi.js";
+import './libs/PixiPlugin.js';
+import newRequest, { randomColorRequest, colorPallete, rgbPallete } from './request.js';
 import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js';
+import getRandomVal from './getRandomVal.js';
 
 let svgElements = document.querySelectorAll('svg');
 let searchWord = document.querySelector('.searchWord');
@@ -20,6 +19,7 @@ let logo = document.querySelector('.logo');
 let appendix = document.querySelector('.appendix');
 let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
+let relatedMenu = document.querySelector('.relatedMenu');
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -86,9 +86,9 @@ class Animate {
     elements.forEach((element, i) => {
       let animL = element[0]
       let animR = element[1]
-      let radiusX = randomInt(0, -Xradius);
-      let radiusY = randomInt(0, Yradius);
-      let angle = randomInt(0, 3.14);
+      let radiusX = getRandomVal(0, -Xradius);
+      let radiusY = getRandomVal(0, Yradius);
+      let angle = getRandomVal(0, 3.14);
       let randomX = centerX + Math.sin(angle) * radiusX;
       let randomY = centerY + Math.cos(angle) * radiusY;
       options = options || {};
@@ -118,30 +118,6 @@ class Animate {
     })
   }
 
-  static changeElementColor(elements, options) {
-
-    options = options || {};
-    let duration = options.duration || 0.2;
-    let tl = new TimelineLite( {} );
-
-    elements.forEach((element, i) => {
-      let animL = element[0]
-      let animR = element[1]
-      let tint = colorPallete[Math.floor(getRandomVal(1, colorPallete.length))];
-      tl.add(
-        TweenMax.to(animL, duration, {colorProps: {
-            tint: tint, format:"number",
-          },
-        }),
-        TweenMax.to(animR, duration, {colorProps: {
-            tint: tint, format:"number",
-          }
-        })
-      )
-    })
-    return tl;
-  }
-
   static animateOut(elements, options, resolve) {
     if(elements.length === 0) resolve()
     options = options || {};
@@ -152,7 +128,7 @@ class Animate {
     elements.forEach((element, i) => {
       let animL = element[0];
       let animR = element[1];
-      let randAngle = randomInt(0, 3.14);
+      let randAngle = getRandomVal(0, 3.14);
       let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
       let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
       tl.add(
@@ -176,104 +152,99 @@ class Animate {
     return tl;
   }
 
-  static randomBGColor(bgCover) {
-    TweenMax.to(bgCover, 0.5, {colorProps: {
+  static shuffle() {
+
+    let tags = appendix.querySelectorAll('li');
+    let usernames = appendix.querySelectorAll('.userName');
+    let elementNodes = relatedMenu.querySelectorAll('li');
+
+    new Promise(function(resolve, reject) { randomColorRequest(resolve) })
+    .then((resolved) => {
+      Animate.randomLocaiton(allSets, {duration:1, stagger:0});
+      Animate.randomPixiBGColor(bgCover);
+      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType]);
+      Animate.randomColorDom([tags, usernames, elementNodes]);
+      Animate.svgFillRandomAll();
+      Animate.randomBackgroundDom([bigRule, smallRule]);
+      Animate.colorBackgroundDom(appendix);
+      allSets.forEach(elementSet => {
+        let animL = elementSet[0];
+        let animR = elementSet[1];
+        let animCanvas = elementSet[2];
+        let randomVal = Math.floor(getRandomVal(1, colorPallete.length))
+        let rgbColor = rgbPallete[randomVal];
+        let hexColor = colorPallete[randomVal];
+        Animate.changeCanvasColor(animCanvas, rgbColor);
+        Animate.randomPixiElColor(animL, animR, hexColor);
+      })
+    })
+  }
+
+  static randomPixiBGColor(pixiEl) {
+    TweenMax.to(pixiEl, 0.5, {colorProps: {
       tint: colorPallete[0], format:"number"
     }});
   }
 
-  static whiteBGColor(bgCover) {
-    TweenMax.to(bgCover, 0.5, {colorProps: {
+  static blackBGColor(pixiEl) {
+    TweenMax.to(pixiEl, 0.5, {colorProps: {
       tint: 0x000000, format:"number"
     }});
   }
 
-  static shuffle() {
-    new Promise(function(resolve, reject) {
-      randomColorRequest(resolve);
+  static randomPixiElColor(animL, animR, hexColor) {
+    TweenMax.to(animL, 1, {colorProps: {
+      tint: hexColor, format:"number",
+    }}),
+    TweenMax.to(animR, 1, {colorProps: {
+      tint: hexColor, format:"number",
+    }})
+  }
+
+  static colorBackgroundDom(elements) {
+    TweenMax.to(elements, .5, {
+      backgroundColor: colorPallete[0],
+      ease: Sine.easeInOut,
     })
-    .then((data) => {
-      Animate.randomLocaiton(allSets, {duration:1, stagger:0});
-      Animate.randomBGColor(bgCover);
-      Animate.changeElementColor(allSets, {duration:1, stagger:0});
-      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType]);
-      Animate.relatedWordColors();
-      Animate.appendixColors();
-      Animate.svgFillRandomAll();
+  }
+
+  static randomBackgroundDom(elements) {
+    TweenMax.to(elements, .5, {
+      backgroundColor: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
+    })
+  }
+
+  static randomColorDom(elements) {
+    TweenMax.to(elements, .5, {
+      color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
+      ease: Sine.easeInOut,
     })
   }
 
   static svgFillRandomAll() {
     TweenMax.to(svgElements, .5, {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
+      ease: Sine.easeInOut,
     })
   }
 
   static letterColors(elements) {
     if(elements.length > 0) {
       elements.forEach(element => {
-        let elementSpans = Array.from(element.querySelectorAll('span'));
+        let elementSpans = element.querySelectorAll('span');
         TweenMax.to(elementSpans, .5, {
           color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-          ease:Sine.easeInOut,
+          ease: Sine.easeInOut,
         })
       })
     } else {
-      let elementSpans = Array.from(elements.querySelectorAll('span'));
+      let elementSpans = elements.querySelectorAll('span');
       TweenMax.to(elementSpans, .5, {
         color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-        ease:Sine.easeInOut,
+        ease: Sine.easeInOut,
       })
     }
-  }
-
-  static relatedWordColors() {
-    let relatedMenu = document.querySelector('.relatedMenu')
-    let elements = relatedMenu
-    let elementNodes = Array.from(elements.querySelectorAll('li'));
-    TweenMax.to(elementNodes, .5, {
-      color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
-      ease:Sine.easeInOut,
-    })
-  }
-
-  static appendixColors() {
-    let tags = appendix.querySelectorAll('li');
-    let usernames = appendix.querySelectorAll('.userName');
-
-    TweenMax.to(bigRule, .5, {
-      backgroundColor: colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
-      ease: Sine.easeInOut,
-    })
-
-    TweenMax.to(smallRule, .5, {
-      backgroundColor: colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
-      ease: Sine.easeInOut,
-    })
-
-    TweenMax.to(appendix, .5, {
-      backgroundColor: colorPallete[0],
-      ease: Sine.easeInOut,
-    })
-
-    TweenMax.to(tags, .5, {
-      color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
-      ease: Sine.easeInOut,
-    })
-
-    TweenMax.to(usernames, .5, {
-      color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
-      ease: Sine.easeInOut,
-    })
-
-    allSets.forEach(elementSet => {
-      let animLcanvas = elementSet[2];
-      let randomColorVal = Math.floor(getRandomVal(2, colorPallete.length))
-      let color = colorPallete[randomColorVal];
-      Animate.changeCanvasColor(animLcanvas, randomColorVal);
-    })
-
   }
 
   static resetBW() {
@@ -286,7 +257,7 @@ class Animate {
   static svgFillWhiteAll() {
     TweenMax.to(svgElements, .5, {
       fill: 0xFFFFFF,
-      ease:Sine.easeInOut,
+      ease: Sine.easeInOut,
     })
   }
 
@@ -320,12 +291,10 @@ class Animate {
     }
   }
 
-  static changeCanvasColor(element, colorVal) {
-    let animLcanvas = element
-    let rgb = rgbPallete[colorVal]
-    let canWidth = animLcanvas.width;
-    let canHeight = animLcanvas.height;
-    let ctx = animLcanvas.getContext('2d');
+  static changeCanvasColor(canvasElement, rgb) {
+    let canWidth = canvasElement.width;
+    let canHeight = canvasElement.height;
+    let ctx = canvasElement.getContext('2d');
     let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
     for (let i = 0; i < canHeight; i++) {
       let inpos = i * (canWidth) * 4;
@@ -334,29 +303,6 @@ class Animate {
         let r = imageData.data[inpos++] = rgb.r;
         let g = imageData.data[inpos++] = rgb.g;
         let b = imageData.data[inpos++] = rgb.b;
-        let a = imageData.data[inpos++];
-        imageData.data[outpos++] = r;
-        imageData.data[outpos++] = g;
-        imageData.data[outpos++] = b;
-        imageData.data[outpos++] = a;
-      }
-    }
-    ctx.putImageData(imageData, 0, 0);
-  }
-
-  static changeCanvasColorWhite(element) {
-    let animLcanvas = element
-    let canWidth = animLcanvas.width;
-    let canHeight = animLcanvas.height;
-    let ctx = animLcanvas.getContext('2d');
-    let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
-    for (let i = 0; i < canHeight; i++) {
-      let inpos = i * (canWidth) * 4;
-      let outpos = i * (canWidth) * 4;
-      for (let x = 0; x < canWidth; x++) {
-        let r = imageData.data[inpos++] = 250;
-        let g = imageData.data[inpos++] = 250;
-        let b = imageData.data[inpos++] = 250;
         let a = imageData.data[inpos++];
         imageData.data[outpos++] = r;
         imageData.data[outpos++] = g;
@@ -423,7 +369,7 @@ class Animate {
     //////// check bounds ////////
 
     if (animL.x > centerX + 100) {
-      let randAngle = randomInt(0, 3.14);
+      let randAngle = getRandomVal(0, 3.14);
       let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
       let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
       TweenLite.set(animL, { pixi: {
@@ -434,7 +380,7 @@ class Animate {
     }
 
     if (distance > maxDistance) {
-      let randomY = centerY + randomInt(-Yradius, Yradius);
+      let randomY = centerY + getRandomVal(-Yradius, Yradius);
       TweenLite.set(animL, { pixi: {
         x: centerX + 100,
         y: randomY,
@@ -493,10 +439,4 @@ function mouseAnim() {
     if (winScale <= 300000) {Animate.updateElement(animSet, i, 0, 0); return}
     Animate.updateElement(animSet, i, mouseDistanceY, mouseDistanceX);
   })
-}
-
-///////////// random int ////////////
-
-function randomInt(min, max) {
-  return Math.random() * (max - min) + min;
 }

@@ -3,7 +3,7 @@ import "gsap";
 import './libs/PixiPlugin.js';
 import Animate from './Animate.js';
 import { mouseIsDown } from './Animate.js';
-import newRequest from './handleRequestChange/newRequest.js';
+import newRequest from './request.js';
 import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
 
@@ -13,10 +13,11 @@ export let controlCycle = false;
 
 let leftBox;
 let rightBox;
-let filter;
 let loader;
 let stage;
 let renderer;
+
+let whiteRGB = {r:255, g:255, b:255};
 
 /////////// set up pixi ///////////
 
@@ -90,14 +91,10 @@ export default function generateAnimDomElements (iconData, resolve) {
 
       let animL = new PIXI.Sprite(whiteTexture);
       stage.addChild(animL);
+      animL.mask = leftBox;
       let animR = new PIXI.Sprite(whiteTexture);
       stage.addChild(animR);
-
-      animL.mask = leftBox;
-      animL.name = 'animL';
-
       animR.mask = rightBox;
-      animR.name = 'animR';
 
       /////////// create canvas icons ////////////
 
@@ -107,59 +104,31 @@ export default function generateAnimDomElements (iconData, resolve) {
       animIcon.classList.add('animIconCanvas');
       let ctx = animIcon.getContext('2d');
       ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
-      iconHolder[i].append(animIcon)
-      Animate.changeCanvasColorWhite(animIcon)
+      iconHolder[i].append(animIcon);
+      Animate.changeCanvasColor(animIcon, whiteRGB);
+
+      /////////// push into array for reference ////////////
+
+      allSets.push([animL, animR, animIcon]);
 
       /////////// set starting values ////////////
 
       Animate.setValues(animL, animR)
-
-      /////////// set events ////////////
-
-      // animL.interactive = true;
-      // animL.on('mouseover', function(e) {
-      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      // });
-      //
-      // animR.interactive = true;
-      // animR.on('mouseover', function(e) {
-      //   randomLocaiton([[animL, animR]], {duration:1, stagger:0})
-      // });
-
-      allSets.push([animL, animR, animIcon]);
 
     }
     resolve()
   }
 }
 
-/////////// custom loader ///////////
-
-loader.on("progress", loadProgressHandler)
-let progress = document.querySelector('.progress')
-function loadProgressHandler(loader, resource) {
-  progress.textContent = loader.progress + "%"
-}
-
-///////////// size variables  ////////////
+///////////// renderer size variables  ////////////
 
 let vw = window.innerWidth;
 let vh = window.innerHeight;
-
-let xMin = vw/4;
-let xMax = vw/2 + 50;
-let yMin = vh/5.5 + 50;
-let yMax = vh/1.50 + 50;
 
 window.addEventListener('resize', function(e) {
 
   vw = window.innerWidth;
   vh = window.innerHeight;
-
-  xMin = vw/4;
-  xMax = vw/2 + 50;
-  yMin = vh/5.5 + 50;
-  yMax = vh/1.50 + 50;
 
   renderer.resize(vw, vh);
   leftBox.width = vw/2;
@@ -173,74 +142,60 @@ window.addEventListener('resize', function(e) {
 
 })
 
-///////////// close windows ////////////
+///////////// control flow ////////////
 
 let searchOverlay = document.querySelector('.searchOverlay');
 let appendix = document.querySelector('.appendix');
-let searchInput = document.querySelector('.searchInput');
 let searchWord = document.querySelector('.searchWord');
-let relatedMenu = document.querySelector('.relatedMenu');
-
-function close() {
-  searchOverlay.classList.add('notVisible');
-  appendix.classList.add('notVisible');
-  // searchInput.value = '';
-  searchWord.classList.remove('notVisible')
-  relatedMenu.classList.remove('notVisible')
-}
-
-///////////// control flow ////////////
-
-let loadingWrapper = document.querySelector('.loadingWrapper');
 let searchWordHolder = document.querySelector('.searchWordHolder');
 let related = document.querySelector('.related');
 let nav = document.querySelector('.nav');
 let logo = document.querySelector('.logo');
 
+function close() {
+  searchOverlay.classList.add('notVisible');
+  appendix.classList.add('notVisible');
+  searchWord.classList.remove('notVisible');
+  searchWordHolder.classList.add('notVisible');
+  related.classList.add('notVisible');
+  nav.classList.add('notVisible');
+  logo.classList.add('notVisible');
+}
+
+function open() {
+  searchWordHolder.classList.remove('notVisible');
+  related.classList.remove('notVisible');
+  nav.classList.remove('notVisible');
+  logo.classList.remove('notVisible');
+}
+
 export function controlFlow(param) {
   new Promise((resolve, reject) => {
     close()
-    searchWordHolder.classList.add('notVisible');
-    related.classList.add('notVisible');
-    nav.classList.add('notVisible');
-    logo.classList.add('notVisible');
     setTimeout(function(){ IntroAnim.play() }, 100 );
     Animate.animateOut(allSets, {duration:1, stagger:0}, resolve);
-    Animate.whiteBGColor(bgCover);
+    Animate.blackBGColor(bgCover);
   })
   .then((newDataFour) => { return new Promise((resolve, reject) => {
     destroyElements(allSets, resolve);
     controlCycle = true;
     })
   })
-  // .then((iconDataOnetest) => { return new Promise((resolve, reject) => {
-  //   IntroAnim.play(resolve)
-  //   // loadingWrapper.classList.remove('notVisible');
-  //   })
-  // })
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
-    // IntroAnim.reverse(resolve)
     InfoDom.relatedTagsDom(cleanIconData.topTags);
     InfoDom.searchTermDom(cleanIconData.searchParam);
     InfoDom.generateAppendix(cleanIconData);
     generateAnimDomElements(cleanIconData.icons, resolve);
     })
   })
-  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
-    IntroAnim.reverse(resolve)
-    // loadingWrapper.classList.remove('notVisible');
-    })
+  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => { IntroAnim.reverse(resolve) })
   })
   .then((resolveData) => {
-    searchWordHolder.classList.remove('notVisible');
-    related.classList.remove('notVisible');
-    nav.classList.remove('notVisible');
-    logo.classList.remove('notVisible');
-    // IntroAnim.reverse()
-    console.log('done with gen dom')
+    open()
     Animate.randomLocaiton(allSets, {duration:1, stagger:.5})
+    console.log('done with gen dom')
     controlCycle = false;
   })
 }
@@ -262,5 +217,3 @@ function destroyElements(setsToDestroy, resolve) {
     }
   })
 }
-
-// controlFlow('randomSample') // debug
