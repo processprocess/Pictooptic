@@ -1,7 +1,6 @@
 import "pixi.js";
 import "gsap";
 import './libs/PixiPlugin.js';
-import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import Animate from './Animate.js';
 import { mouseIsDown } from './Animate.js';
 import newRequest from './handleRequestChange/newRequest.js';
@@ -200,9 +199,7 @@ let logo = document.querySelector('.logo');
 
 export function controlFlow(param) {
   new Promise((resolve, reject) => {
-    console.log(mouseIsDown)
     close()
-    // let searchWord = document.querySelector('.searchWord');
     searchWordHolder.classList.add('notVisible');
     related.classList.add('notVisible');
     nav.classList.add('notVisible');
@@ -226,7 +223,7 @@ export function controlFlow(param) {
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
     // IntroAnim.reverse(resolve)
     InfoDom.relatedTagsDom(cleanIconData.topTags);
-    InfoDom.searchTermDom(cleanIconData.icons[0].term);
+    InfoDom.searchTermDom(cleanIconData.searchParam);
     InfoDom.generateAppendix(cleanIconData);
     generateAnimDomElements(cleanIconData.icons, resolve);
     })

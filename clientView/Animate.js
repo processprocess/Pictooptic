@@ -7,9 +7,19 @@ import { colorPallete } from './handleRequestChange/newRequest.js';
 import { randomColorRequest } from './handleRequestChange/newRequest.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import getRandomVal from './getRandomVal.js';
-import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js'
+import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js';
 
-let mouseIsDown = false;
+let svgElements = document.querySelectorAll('svg');
+let searchWord = document.querySelector('.searchWord');
+let appendixWord = document.querySelector('.appendixWord');
+let subHeadAppendix = document.querySelector('.subHeadAppendix');
+let description = document.querySelector('.description');
+let instructions = document.querySelector('.instructions');
+let smallType = document.querySelector('.smallType');
+let logo = document.querySelector('.logo');
+let appendix = document.querySelector('.appendix');
+let bigRule = document.querySelector('.bigRule');
+let smallRule = document.querySelector('.smallRule');
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -23,9 +33,14 @@ let calcWinScale = winScale / baseWinScale;
 let walkVal = .5;
 let calcWalk = (1 - calcWinScale) * walkVal;
 let responsiveScale = calcWinScale + calcWalk;
+let logoWalkVal = .8;
+let logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
+let logoResponsiveScale = calcWinScale + logoCalcWalk;
+
+let mouseIsDown = false;
 let tick = 0;
 
-window.addEventListener('resize', function(e) {
+function setDomScale() {
   winWidth = window.innerWidth;
   winHeight = window.innerHeight;
   centerX = winWidth / 2;
@@ -36,74 +51,34 @@ window.addEventListener('resize', function(e) {
   calcWinScale = winScale / baseWinScale;
   calcWalk = (1 - calcWinScale) * walkVal;
   responsiveScale = calcWinScale + calcWalk;
-
-  setDomScale()
-})
-
-
-
-
-function setDomScale() {
-
-  let searchWord = document.querySelector('.searchWord');
+  logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
+  logoResponsiveScale = calcWinScale + logoCalcWalk;
   TweenMax.set(searchWord, {
     scale:() => { return 1 * responsiveScale;},
   })
-
-  let logo = document.querySelector('.logo');
-  let logoWalkVal = .8;
-  let logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
-  let logoResponsiveScale = calcWinScale + logoCalcWalk;
   TweenMax.set(logo, {
     scale:() => { return 1 * logoResponsiveScale},
   })
-
-  // let infoIconWrapper = document.querySelectorAll('.infoIconWrapper');
-  // TweenMax.set(infoIconWrapper, {
-  //   scale:() => { return 1 * responsiveScale;},
-  // })
-
-  // let relatedMenu = document.querySelectorAll('.relatedMenu');
-  // TweenMax.set(relatedMenu, {
-  //   scale:() => { return 1 * responsiveScale;},
-  // })
-
 }
 
+window.addEventListener('resize', setDomScale )
 setDomScale()
-
-
-
 
 class Animate {
 
   static setValues(animL, animR) {
-    TweenMax.set(animL, {
-      pixi: {
-        anchor: 0.5,
-        scaleX: 0,
-        scaleY: 0,
-        x: winWidth/2 + animL.width/2,
-        y: winHeight/2,
-      },
-      colorProps: {
-        tint: 0xFFFFFF,
-        // tint: 0x000000,
-      },
-    });
-    TweenMax.set(animR, {
-      pixi: {
-        anchor: 0.5,
-        scaleX: 0,
-        scaleY: 0,
-        x: winWidth/2 - animR.width/2,
-        y: winHeight/2,
-      },
-      colorProps: {
-        tint: 0xFFFFFF,
-        // tint: 0x000000,
-      },
-    });
+    TweenMax.set(animL, { pixi: {
+      anchor: 0.5,
+      scale: 0,
+      x: winWidth/2 + animL.width/2,
+      y: winHeight/2,
+    }});
+    TweenMax.set(animR, { pixi: {
+      anchor: 0.5,
+      scale: 0,
+      x: winWidth/2 - animR.width/2,
+      y: winHeight/2,
+    }});
   }
 
   static randomLocaiton(elements, options, resolve) {
@@ -111,34 +86,28 @@ class Animate {
     elements.forEach((element, i) => {
       let animL = element[0]
       let animR = element[1]
-
       let radiusX = randomInt(0, -Xradius);
       let radiusY = randomInt(0, Yradius);
       let angle = randomInt(0, 3.14);
-
-      let startX = centerX + Math.sin(angle) * radiusX;
-      let startY = centerY + Math.cos(angle) * radiusY;
-
+      let randomX = centerX + Math.sin(angle) * radiusX;
+      let randomY = centerY + Math.cos(angle) * radiusY;
       options = options || {};
       let duration = options.duration || 0.2;
-
       let tl = new TimelineLite( {onComplete:resolve} );
-
       tl.add(
         TweenLite.to(animL, duration, { pixi: {
-            x: startX,
-            y: startY,
+            x: randomX,
+            y: randomY,
           },
           ease: Power1.easeInOut,
         }),
         TweenLite.to(animR, duration, { pixi: {
-            x: winWidth - startX,
-            y: startY,
+            x: winWidth - randomX,
+            y: randomY,
           },
           ease: Power1.easeInOut,
         })
       )
-
       return tl;
     })
   }
@@ -168,9 +137,7 @@ class Animate {
   }
 
   static animateOut(elements, options, resolve) {
-
     if(elements.length === 0) resolve()
-
     options = options || {};
     let duration = options.duration || 0.2;
     let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
@@ -179,7 +146,6 @@ class Animate {
     elements.forEach((element, i) => {
       let animL = element[0];
       let animR = element[1];
-
       let randAngle = randomInt(0, 3.14);
       let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
       let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
@@ -213,75 +179,32 @@ class Animate {
   static whiteBGColor(bgCover) {
     TweenMax.to(bgCover, 0.5, {colorProps: {
       tint: 0x000000, format:"number"
-      // tint: 0xffffff, format:"number"
     }});
   }
 
   static shuffle() {
-    let searchWord = document.querySelector('.searchWord');
-    let appendixWord = document.querySelector('.appendixWord');
-    let subHeadAppendix = document.querySelector('.subHeadAppendix');
-    let description = document.querySelector('.description');
-    let instructions = document.querySelector('.instructions');
-    let smallType = document.querySelector('.smallType');
-    randomColorRequest();
-    Animate.randomLocaiton(allSets, {duration:1, stagger:0});
-    setTimeout(function(){
+    new Promise(function(resolve, reject) {
+      randomColorRequest(resolve);
+    })
+    .then((data) => {
+      Animate.randomLocaiton(allSets, {duration:1, stagger:0});
       Animate.randomBGColor(bgCover);
       Animate.changeElementColor(allSets, {duration:1, stagger:0});
-      Animate.letterColors(instructions);
-      Animate.letterColors(searchWord);
-      Animate.letterColors(appendixWord);
-      Animate.letterColors(subHeadAppendix);
-      Animate.letterColors(description);
-      Animate.letterColors(smallType);
+      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType]);
       Animate.relatedWordColors();
       Animate.appendixColors();
-      Animate.svgFillRandom();
-    }, 10 );
+      Animate.svgFillRandomAll();
+    })
   }
 
-  static svgFillRandom() {
-    let logoSVG = document.querySelector('.logoSVG');
-    TweenMax.to(logoSVG, .5, {
+  static svgFillRandomAll() {
+    TweenMax.to(svgElements, .5, {
       fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
       ease:Sine.easeInOut,
     })
-
-    let searchSVG = document.querySelector('.searchSVG');
-    TweenMax.to(searchSVG, .5, {
-      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
-    })
-
-    let infoSVG = document.querySelector('.infoSVG');
-    TweenMax.to(infoSVG, .5, {
-      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
-    })
-
-    let closeSVG = document.querySelector('.closeSVG');
-    TweenMax.to(closeSVG, .5, {
-      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
-    })
-
-    let nounProjectSVG = document.querySelector('.nounProjectSVG');
-    TweenMax.to(nounProjectSVG, .5, {
-      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
-    })
-
-    let creativeCommonsSVG = document.querySelector('.creativeCommonsSVG');
-    TweenMax.to(creativeCommonsSVG, .5, {
-      fill: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
-      ease:Sine.easeInOut,
-    })
-
   }
 
   static letterColors(elements) {
-
     if(elements.length > 0) {
       elements.forEach(element => {
         let elementSpans = Array.from(element.querySelectorAll('span'));
@@ -299,27 +222,6 @@ class Animate {
     }
   }
 
-  static letterColorsBW(elements) {
-
-    if(elements.length > 0) {
-      elements.forEach(element => {
-        let elementSpans = Array.from(element.querySelectorAll('span'));
-        TweenMax.to(elementSpans, .5, {
-          color: 0xffffff,
-          // color: 0x000000,
-          ease:Sine.easeInOut,
-        })
-      })
-    } else {
-      let elementSpans = Array.from(elements.querySelectorAll('span'));
-      TweenMax.to(elementSpans, .5, {
-        color: 0xffffff,
-        // color: 0x000000,
-        ease:Sine.easeInOut,
-      })
-    }
-  }
-
   static relatedWordColors() {
     let relatedMenu = document.querySelector('.relatedMenu')
     let elements = relatedMenu
@@ -331,10 +233,6 @@ class Animate {
   }
 
   static appendixColors() {
-    let appendix = document.querySelector('.appendix');
-    let appendixBG = appendix.querySelector('.appendix');
-    let bigRule = document.querySelector('.bigRule');
-    let smallRule = document.querySelector('.smallRule');
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
 
@@ -349,7 +247,6 @@ class Animate {
     })
 
     TweenMax.to(appendix, .5, {
-      // backgroundColor: 0x000000,
       backgroundColor: colorPallete[0],
       ease: Sine.easeInOut,
     })
@@ -373,89 +270,56 @@ class Animate {
   }
 
   static resetBW() {
-    let appendix = document.querySelector('.appendix');
-    let instructions = document.querySelector('.instructions');
-    let description = document.querySelector('.description');
-    let appendixBG = appendix.querySelector('.appendix');
-    let subHeadAppendix = appendix.querySelector('.subHeadAppendix')
-    let bigRule = appendix.querySelector('.bigRule');
-    let smallRule = appendix.querySelector('.smallRule');
-    let smallType = appendix.querySelector('.smallType');
+    Animate.svgFillWhiteAll();
+    Animate.backgroundsWhite([smallRule, bigRule]);
+    Animate.backgroundsBlack(appendix);
+    Animate.letterColorsBW([subHeadAppendix, instructions, description, smallType]);
+  }
 
-    TweenMax.set(bigRule, {
-      backgroundColor: 0xFFFFFF,
-      // backgroundColor: 0x000000,
+  static svgFillWhiteAll() {
+    TweenMax.to(svgElements, .5, {
+      fill: 0xFFFFFF,
+      ease:Sine.easeInOut,
     })
+  }
 
-    TweenMax.set(smallRule, {
+  static backgroundsWhite(elements) {
+    TweenMax.set(elements, {
       backgroundColor: 0xFFFFFF,
-      // backgroundColor: 0x000000,
     })
+  }
 
-    TweenMax.set(appendix, {
+  static backgroundsBlack(elements) {
+    TweenMax.set(elements, {
       backgroundColor: 0x000000,
-      // backgroundColor: 0xFFFFFF,
     })
+  }
 
-    let logoSVG = document.querySelectorAll('.logoSVG');
-    TweenMax.to(logoSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-      ease:Sine.easeInOut,
-    })
-
-    let searchSVG = document.querySelectorAll('.searchSVG');
-    TweenMax.to(searchSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-      ease:Sine.easeInOut,
-    })
-
-    let infoSVG = document.querySelectorAll('.infoSVG');
-    TweenMax.to(infoSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-      ease:Sine.easeInOut,
-    })
-
-    let closeSVG = document.querySelector('.closeSVG');
-    TweenMax.to(closeSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-      ease:Sine.easeInOut,
-    })
-
-    let nounProjectSVG = document.querySelector('.nounProjectSVG');
-    TweenMax.to(nounProjectSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-      ease:Sine.easeInOut,
-    })
-
-    let creativeCommonsSVG = document.querySelector('.creativeCommonsSVG');
-    TweenMax.to(creativeCommonsSVG, .5, {
-      fill: 0xFFFFFF,
-      // fill:  0x000000,
-    })
-
-    Animate.letterColorsBW(subHeadAppendix);
-    Animate.letterColorsBW(instructions);
-    Animate.letterColorsBW(description);
-    Animate.letterColorsBW(smallType);
-
+  static letterColorsBW(elements) {
+    if(elements.length > 0) {
+      elements.forEach(element => {
+        let elementSpans = Array.from(element.querySelectorAll('span'));
+        TweenMax.to(elementSpans, .5, {
+          color: 0xffffff,
+          ease: Sine.easeInOut,
+        })
+      })
+    } else {
+      let elementSpans = Array.from(elements.querySelectorAll('span'));
+      TweenMax.to(elementSpans, .5, {
+        color: 0xffffff,
+        ease: Sine.easeInOut,
+      })
+    }
   }
 
   static changeCanvasColor(element, color) {
-
     let animLcanvas = element
     let rgb = Animate.hexToRgb(color)
-
     let canWidth = animLcanvas.width;
     let canHeight = animLcanvas.height;
-
     let ctx = animLcanvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
-
     for (let i = 0; i < canHeight; i++) {
       let inpos = i * (canWidth) * 4;
       let outpos = i * (canWidth) * 4;
@@ -470,21 +334,15 @@ class Animate {
         imageData.data[outpos++] = a;
       }
     }
-
     ctx.putImageData(imageData, 0, 0);
   }
 
   static changeCanvasColorWhite(element) {
-    // console.log(element);
     let animLcanvas = element
-    // let rgb = Animate.hexToRgb(color)
-
     let canWidth = animLcanvas.width;
     let canHeight = animLcanvas.height;
-
     let ctx = animLcanvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, canWidth, canHeight);
-
     for (let i = 0; i < canHeight; i++) {
       let inpos = i * (canWidth) * 4;
       let outpos = i * (canWidth) * 4;
@@ -499,7 +357,6 @@ class Animate {
         imageData.data[outpos++] = a;
       }
     }
-
     ctx.putImageData(imageData, 0, 0);
   }
 
@@ -519,8 +376,8 @@ class Animate {
 
   static update() {
     tick++
-    let newx = Math.floor(testDivcords.x);
-    let newy = Math.floor(testDivcords.y);
+    let newx = Math.floor(dragTrackercords.x);
+    let newy = Math.floor(dragTrackercords.y);
     let diffx = newx - oldx;
     let diffy = newy - oldy;
     oldx = newx;
@@ -606,9 +463,9 @@ let oldy = 0;
 
 let body = document.body;
 let dragWrap = document.querySelector('.dragWrap');
-let testDiv = document.querySelector('.testDiv');
+let dragTracker = document.querySelector('.dragTracker');
 
-Draggable.create(testDiv, {
+Draggable.create(dragTracker, {
   throwProps: true,
   dragResistance: 0.25,
   edgeResistance: 1,
@@ -622,7 +479,7 @@ Draggable.create(testDiv, {
   onClick: ()=> { Animate.shuffle() }
 });
 
-let testDivcords = Draggable.get(testDiv);
+let dragTrackercords = Draggable.get(dragTracker);
 
 ///////////// idle animation ////////////
 
@@ -637,7 +494,6 @@ window.addEventListener('mousemove', function(e) {
 TweenLite.ticker.addEventListener("tick", mouseAnim);
 
 function mouseAnim() {
-  // alert(winScale)
   if(controlCycle) return
   if(mouseIsDown) return
   if(!allSets) return
@@ -645,7 +501,6 @@ function mouseAnim() {
     if (winScale <= 300000) {Animate.updateElement(animSet, i, 0, 0); return}
     Animate.updateElement(animSet, i, mouseDistanceY, mouseDistanceX);
   })
-
 }
 
 ///////////// random int ////////////

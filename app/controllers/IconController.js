@@ -3,32 +3,36 @@ const NounProjectApi = require('../services/NounProjectApi');
 const sampleNouns = require('../json/sampleNouns.json');
 const words = require('../json/words.json');
 
-const sampleLength = sampleNouns.length;
+let wordListLength = words.length;
+
+// const sampleLength = sampleNouns.length; // for debugging
+
+let searchParam = '';
 
 class IconController {
 
   static show(req, res) {
+
     const icon = req.params.param;
     if (icon === 'randomSample') {
       function getWord(){
-        let randomVal = Math.floor(Math.random() * ((6452 + 1) - 0)) + 0; // for debugging
+        let randomVal = Math.floor(Math.random() * ((wordListLength + 1) - 0)) + 0; // for debugging
         let word = words[randomVal]
+        searchParam = word
         return word
       }
-      // console.log(word)
-
       NounProjectApi.fetchIcons(getWord())
       .then(data => {
         IconController.generateData(data, res)
       })
       .catch(err => { res.status(404).send({ err }); })
-
       // console.log('randomSample'); // for debugging
       // const randomVal = Math.floor(Math.random() * ((sampleLength + 1) - 0)) + 0; // for debugging
       // const data = sampleNouns[randomVal]; // for debugging
       // IconController.generateData(data, res); // for debugging
     } else {
       // console.log('server hit');
+      searchParam = req.params.param;
       NounProjectApi.fetchIcons(req.params.param)
       .then(data => {
         IconController.generateData(data, res)
@@ -40,7 +44,7 @@ class IconController {
   static generateData(data, res) {
     const icons = data.map(iconData => new Icon(iconData));
     const topTags = IconController.topTags(icons);
-    res.status(200).json({ icons: icons, topTags: topTags });
+    res.status(200).json({ icons: icons, topTags: topTags, searchParam: searchParam });
   }
 
   static topTags(icons) {
@@ -64,16 +68,14 @@ class IconController {
     var arrayTopTags = [];
 
     for (var icon in getInstances) {
-        arrayTopTags.push([icon, getInstances[icon]])
+      arrayTopTags.push([icon, getInstances[icon]])
     }
 
     arrayTopTags.sort((a, b) => {
-        return b[1] - a[1];
+      return b[1] - a[1];
     });
 
     return arrayTopTags;
-    // return { topTags: topTags, getInstances: getInstances, arrayTopTags: arrayTopTags };
-    // return {topTags:topTags};
   }
 }
 

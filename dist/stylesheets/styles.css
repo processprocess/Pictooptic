@@ -17,7 +17,6 @@ body {
 
 canvas {
   position: absolute;
-  /*image-rendering: pixelated;*/
 }
 
 /* --------- draggable --------- */
@@ -29,12 +28,9 @@ canvas {
   z-index: 5;
 }
 
-.testDiv {
+.dragTracker {
   position:absolute;
-  background: lightblue;
-  border: 1px solid black;
-  display:block;
-  z-index: 100;
+  opacity:0
 }
 
 .shuffleButton {

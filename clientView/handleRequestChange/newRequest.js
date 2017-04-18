@@ -1,29 +1,30 @@
 import request from 'superagent';
 import generateAnimDomElements, { updateElements } from '../generateAnimDomElements.js';
 
-/////////// handle request ///////////
+/////////// new icon request ///////////
 
 export default function newRequest(param, resolve) {
   request.get(`/api/icons/${param}`)
-  // request.get(`/api/words/${param}`)
          .then(data => {
             let cleanIconObjects = data.body;
+            // console.log(data.body.searchParam)
             resolve(cleanIconObjects);
          })
          .catch(err => { console.log(err)})
          if (!resolve) return;
 }
 
-/////////// new Color Request ///////////
+/////////// new color Request ///////////
 
 export let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
 
-export function randomColorRequest() {
+export function randomColorRequest(resolve) {
   request.get(`/color`)
          .then((data) => {
-          let sortedColors = sortColors(data.body)
-          colorPallete = sortedColors;
-          // colorPallete = data.body;
+            console.log(data.body);
+            let sortedColors = sortColors(data.body)
+            colorPallete = sortedColors;
+            resolve();
           })
 }
 
