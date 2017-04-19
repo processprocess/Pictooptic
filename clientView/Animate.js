@@ -14,11 +14,12 @@ let appendixWord = document.querySelector('.appendixWord');
 let subHeadAppendix = document.querySelector('.subHeadAppendix');
 let description = document.querySelector('.description');
 let instructions = document.querySelector('.instructions');
-let smallType = document.querySelector('.smallType');
+let smallType = document.querySelectorAll('.smallType');
 let logo = document.querySelector('.logo');
 let appendix = document.querySelector('.appendix');
 let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
+let thinRule = document.querySelector('.thinRule');
 let relatedMenu = document.querySelector('.relatedMenu');
 
 let winWidth = window.innerWidth;
@@ -165,7 +166,7 @@ class Animate {
       Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType]);
       Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
-      Animate.randomBackgroundDom([bigRule, smallRule]);
+      Animate.randomBackgroundDom([bigRule, smallRule, thinRule]);
       Animate.colorBackgroundDom(appendix);
       allSets.forEach(elementSet => {
         let animL = elementSet[0];
@@ -232,16 +233,25 @@ class Animate {
   static letterColors(elements) {
     if(elements.length > 0) {
       elements.forEach(element => {
+        if(element.length > 0) {
+          element.forEach(singleElement => {
+            let elementSpans = singleElement.querySelectorAll('span');
+            TweenMax.to(elementSpans, .5, {
+              color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
+              ease: Sine.easeInOut,
+            })
+          })
+        } else {
         let elementSpans = element.querySelectorAll('span');
         TweenMax.to(elementSpans, .5, {
-          color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+          color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
           ease: Sine.easeInOut,
         })
-      })
+      }})
     } else {
       let elementSpans = elements.querySelectorAll('span');
       TweenMax.to(elementSpans, .5, {
-        color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))] ,
+        color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
         ease: Sine.easeInOut,
       })
     }
@@ -276,14 +286,23 @@ class Animate {
   static letterColorsBW(elements) {
     if(elements.length > 0) {
       elements.forEach(element => {
-        let elementSpans = Array.from(element.querySelectorAll('span'));
+        if(element.length > 0) {
+          element.forEach(singleElement => {
+            let elementSpans = singleElement.querySelectorAll('span');
+            TweenMax.to(elementSpans, .5, {
+              color: 0xffffff,
+              ease: Sine.easeInOut,
+            })
+          })
+        } else {
+        let elementSpans = element.querySelectorAll('span');
         TweenMax.to(elementSpans, .5, {
           color: 0xffffff,
           ease: Sine.easeInOut,
         })
-      })
+      }})
     } else {
-      let elementSpans = Array.from(elements.querySelectorAll('span'));
+      let elementSpans = elements.querySelectorAll('span');
       TweenMax.to(elementSpans, .5, {
         color: 0xffffff,
         ease: Sine.easeInOut,
@@ -350,7 +369,7 @@ class Animate {
     let maxDistance = Math.sqrt(dxMax * dxMax + dyMax * dyMax);
 
     let distancePercent = 1 - distance / maxDistance;
-    let scale = distancePercent * responsiveScale;
+    let scale = distancePercent * (responsiveScale * 1.17);
 
     TweenMax.set(animL, { pixi: {
       y: animL.y + diffy,

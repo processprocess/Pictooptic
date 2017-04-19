@@ -46,7 +46,7 @@
   color: white;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1300px) {
   .appendixWord {
     font-size: 4em;
     bottom: .37em;
@@ -157,6 +157,7 @@ font-size: .70em;
   margin-left: 20px;
   margin-right: 20px;
   color: white;
+  padding-bottom: 10px;
 }
 
 .smallRule {
@@ -167,14 +168,23 @@ font-size: .70em;
   background: white;
 }
 
+.thinRule {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: white;
+}
+
 .smallType {
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: .5em;
 }
 
 .nounProjectWrapper {
   display: flex;
   width: 175px;
-  margin-top: 10px;
   margin-bottom: 10px;
   align-items: center;
   transform-origin: top left;
@@ -191,10 +201,11 @@ font-size: .70em;
   float:right;
   position: relative;
   display: flex;
+  margin-top: 10px;
   width: 20px;
   height: 20px;
-  margin-top: 12px;
-  margin-bottom: 10px;
+  /*border: thin black solid;*/
+  /*margin-bottom: 10px;*/
   align-items: center;
   transform-origin: top left;
   cursor: pointer;
@@ -202,9 +213,9 @@ font-size: .70em;
 
 .creativeCommonsSVG {
   transform-origin: top left;
+  fill: white;
   width: 20px;
   height: 20px;
-  fill: white;
 }
 
 .pbWrapper {

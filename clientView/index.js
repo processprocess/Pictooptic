@@ -5,6 +5,14 @@ import Animate from './Animate.js';
 import IndexEvents from './IndexEvents.js';
 import handleIntro from './handleIntro.js';
 
+/////////// help icon wrapper ///////////
+
+let helpIconWrapper = document.querySelector('.helpIconWrapper');
+
+helpIconWrapper.addEventListener('click', function(e) {
+  console.log('test');
+})
+
 /////////// handle key presses ///////////
 
 let searchInput = document.querySelector('.searchInput');
