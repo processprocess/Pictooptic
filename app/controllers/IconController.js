@@ -44,7 +44,13 @@ class IconController {
   static generateData(data, res) {
     const icons = data.map(iconData => new Icon(iconData));
     const topTags = IconController.topTags(icons);
-    res.status(200).json({ icons: icons, topTags: topTags, searchParam: searchParam });
+    const paramCapped = IconController.capitalizeFirstLetter(searchParam)
+
+    res.status(200).json({ icons: icons, topTags: topTags, searchParam: paramCapped });
+  }
+
+  static capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   static topTags(icons) {

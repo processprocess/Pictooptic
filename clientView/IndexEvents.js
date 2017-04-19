@@ -42,7 +42,7 @@ class IndexEvents {
 
   static showAppendix() {
     appendix.classList.toggle('notVisible')
-    searchWord.classList.toggle('notVisible')
+    // searchWord.classList.toggle('notVisible')
     relatedMenu.classList.toggle('notVisible')
   }
 

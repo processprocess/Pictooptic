@@ -54,9 +54,9 @@ function setDomScale() {
   responsiveScale = calcWinScale + calcWalk;
   logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
   logoResponsiveScale = calcWinScale + logoCalcWalk;
-  TweenMax.set(searchWord, {
-    scale:() => { return 1 * responsiveScale;},
-  })
+  // TweenMax.set(searchWord, {
+  //   scale:() => { return 1 * responsiveScale;},
+  // })
   TweenMax.set(logo, {
     scale:() => { return 1 * logoResponsiveScale},
   })
@@ -158,16 +158,18 @@ class Animate {
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
     let elementNodes = relatedMenu.querySelectorAll('li');
+    let centerItems = document.querySelectorAll('.centerItem');
 
     new Promise(function(resolve, reject) { randomColorRequest(resolve) })
     .then((resolved) => {
       Animate.randomLocaiton(allSets, {duration:1, stagger:0});
       Animate.randomPixiBGColor(bgCover);
-      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType]);
+      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType, centerItems]);
       Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
       Animate.randomBackgroundDom([bigRule, smallRule, thinRule]);
-      Animate.colorBackgroundDom(appendix);
+      // Animate.randomBackgroundDom(centerItems);
+      Animate.colorBackgroundDom([appendix, centerItems]);
       allSets.forEach(elementSet => {
         let animL = elementSet[0];
         let animR = elementSet[1];
@@ -205,7 +207,7 @@ class Animate {
   static colorBackgroundDom(elements) {
     TweenMax.to(elements, .5, {
       backgroundColor: colorPallete[0],
-      ease: Sine.easeInOut,
+      // ease: Sine.easeInOut,
     })
   }
 
@@ -237,21 +239,21 @@ class Animate {
           element.forEach(singleElement => {
             let elementSpans = singleElement.querySelectorAll('span');
             TweenMax.to(elementSpans, .5, {
-              color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
+              color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
               ease: Sine.easeInOut,
             })
           })
         } else {
         let elementSpans = element.querySelectorAll('span');
         TweenMax.to(elementSpans, .5, {
-          color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
+          color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
           ease: Sine.easeInOut,
         })
       }})
     } else {
       let elementSpans = elements.querySelectorAll('span');
       TweenMax.to(elementSpans, .5, {
-        color: () => colorPallete[Math.floor(getRandomVal(1, colorPallete.length))],
+        color: () => colorPallete[Math.floor(getRandomVal(2, colorPallete.length))],
         ease: Sine.easeInOut,
       })
     }

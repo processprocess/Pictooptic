@@ -19,6 +19,81 @@ canvas {
   position: absolute;
 }
 
+/* --------- navigation --------- */
+
+.nav {
+  transition: opacity 1s;
+  /*padding-top: 1em;*/
+  position: absolute;
+  width: 100%;
+  /*height: 50%;*/
+  z-index: 10;
+  /*border: thin white solid;*/
+}
+
+/* --------- search word --------- */
+
+.searchWordHolder {
+  transition: opacity 1s;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  /*transform-origin: top;*/
+}
+
+.searchWord {
+  font-size: 3em;
+  padding: .4em 0 .1em 0;
+  color: white;
+  font-weight: 500;
+  /*line-height: 1em;*/
+  /*border: thin black solid;*/
+  /*transform-origin: top;*/
+  cursor: pointer;
+}
+
+/* --------- centered UI --------- */
+
+.centeredUIWrapper {
+  /*margin-top: 4.4vh;*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.centeredUI {
+}
+
+.centerItem {
+  display: inline-block;
+  width: 65px;
+  color: white;
+  /*border: thin white solid;*/
+  background: black;
+  padding: 2px 12px 2px 12px;
+  /*margin: 6px;*/
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-size: .5em;
+  letter-spacing: .8px;
+
+  /*border: none*/
+
+}
+
+.centerItem span {
+  /*text-decoration: underline;*/
+}
+
+/*.centerItem:hover {
+  outline: 1px solid white;
+}*/
+
 /* --------- draggable --------- */
 
 .dragWrap {
@@ -58,36 +133,6 @@ canvas {
 .logoSVG {
   transform-origin: top left;
   fill: white;
-}
-
-/* --------- navigation --------- */
-
-.nav {
-  transition: opacity 1s;
-  padding-top: 1em;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-}
-
-/* --------- search word --------- */
-
-.searchWordHolder {
-  transition: opacity 1s;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  width: 100%;
-  transform-origin: top;
-}
-
-.searchWord {
-  font-size: 2.5em;
-  color: white;
-  line-height: 1em;
-  /*border: thin black solid;*/
-  transform-origin: top;
-  cursor: pointer;
 }
 
 /*//////// instructions ////////*/
