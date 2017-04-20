@@ -1,4 +1,5 @@
 import { controlFlow } from './generateAnimDomElements.js';
+import Animate from './Animate.js';
 
 let appendix = document.querySelector('.appendix');
 let searchOverlay = document.querySelector('.searchOverlay');
@@ -12,7 +13,10 @@ let searchIconWrapper = document.querySelector('.searchIconWrapper')
 let infoIconWrapper = document.querySelector('.infoIconWrapper');
 let logo = document.querySelector('.logo');
 let searchWord = document.querySelector('.searchWord');
-let relatedMenu = document.querySelector('.relatedMenu');
+// let relatedMenu = document.querySelector('.relatedMenu');
+let searchButton = document.querySelector('.centerItem.search');
+let randomButton = document.querySelector('.centerItem.random');
+let shuffleButton = document.querySelector('.centerItem.shuffle');
 
 class IndexEvents {
 
@@ -21,7 +25,7 @@ class IndexEvents {
     appendix.classList.add('notVisible')
     searchInput.value = '';
     searchWord.classList.remove('notVisible')
-    relatedMenu.classList.remove('notVisible')
+    // relatedMenu.classList.remove('notVisible')
     searchInput.blur();
   }
 
@@ -30,7 +34,7 @@ class IndexEvents {
     searchOverlay.classList.remove('notVisible')
     searchInput.focus();
     searchWord.classList.remove('notVisible')
-    relatedMenu.classList.remove('notVisible')
+    // relatedMenu.classList.remove('notVisible')
   }
 
   static checkCloseSearch() {
@@ -43,7 +47,7 @@ class IndexEvents {
   static showAppendix() {
     appendix.classList.toggle('notVisible')
     // searchWord.classList.toggle('notVisible')
-    relatedMenu.classList.toggle('notVisible')
+    // relatedMenu.classList.toggle('notVisible')
   }
 
 }
@@ -60,7 +64,15 @@ searchOverlay.addEventListener('click', function(e) {
   IndexEvents.closeWindows();
 })
 
-searchIconWrapper.addEventListener('click', function(e) {
+// searchIconWrapper.addEventListener('click', function(e) {
+//   IndexEvents.openSearch();
+// })
+
+shuffleButton.addEventListener('click', function(e) {
+  Animate.shuffle();
+})
+
+searchButton.addEventListener('click', function(e) {
   IndexEvents.openSearch();
 })
 
@@ -69,6 +81,10 @@ infoIconWrapper.addEventListener('click', function(e) {
   searchOverlay.classList.add('notVisible')
 })
 
-logo.addEventListener('click', function(e) {
+// logo.addEventListener('click', function(e) {
+//   controlFlow('randomSample')
+// })
+
+randomButton.addEventListener('click', function(e) {
   controlFlow('randomSample')
 })

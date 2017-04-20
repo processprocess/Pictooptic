@@ -155,16 +155,16 @@ let logo = document.querySelector('.logo');
 function close() {
   searchOverlay.classList.add('notVisible');
   appendix.classList.add('notVisible');
-  searchWord.classList.remove('notVisible');
-  searchWordHolder.classList.add('notVisible');
-  related.classList.add('notVisible');
+  // searchWord.classList.remove('notVisible');
+  // searchWordHolder.classList.add('notVisible');
+  // related.classList.add('notVisible');
   nav.classList.add('notVisible');
   logo.classList.add('notVisible');
 }
 
 function open() {
-  searchWordHolder.classList.remove('notVisible');
-  related.classList.remove('notVisible');
+  // searchWordHolder.classList.remove('notVisible');
+  // related.classList.remove('notVisible');
   nav.classList.remove('notVisible');
   logo.classList.remove('notVisible');
 }
@@ -184,6 +184,7 @@ export function controlFlow(param) {
   .then((iconDataOne) => { return new Promise((resolve, reject) => { newRequest(param, resolve) })
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
+    Animate.resetBW();
     InfoDom.relatedTagsDom(cleanIconData.topTags);
     InfoDom.searchTermDom(cleanIconData.searchParam);
     InfoDom.generateAppendix(cleanIconData);

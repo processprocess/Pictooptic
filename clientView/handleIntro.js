@@ -8,9 +8,9 @@ window.onload = function() {
   new Promise((resolve, reject) => { IntroAnim.play(resolve)
   })
   .then((resOne) => { return new Promise((resolve, reject) => {
-    setTimeout(function(){
+    // setTimeout(function(){
       controlFlow('randomSample');
-    }, 1000 );
+    // }, 1000 );
     })
   })
 };

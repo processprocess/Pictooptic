@@ -27,14 +27,14 @@ canvas {
   position: absolute;
   width: 100%;
   /*height: 50%;*/
-  z-index: 10;
+  z-index: 1000;
   /*border: thin white solid;*/
 }
 
 /* --------- search word --------- */
 
 .searchWordHolder {
-  transition: opacity 1s;
+  /*transition: opacity 1s;*/
   display: flex;
   justify-content: center;
   position: relative;
@@ -72,27 +72,17 @@ canvas {
   display: inline-block;
   width: 65px;
   color: white;
-  /*border: thin white solid;*/
-  background: black;
+  /*background: black;*/
   padding: 2px 12px 2px 12px;
-  /*margin: 6px;*/
   cursor: pointer;
   text-transform: uppercase;
   font-family: sans-serif;
-  font-size: .5em;
+  font-size: .6em;
   letter-spacing: .8px;
-
-  /*border: none*/
-
 }
 
 .centerItem span {
-  /*text-decoration: underline;*/
 }
-
-/*.centerItem:hover {
-  outline: 1px solid white;
-}*/
 
 /* --------- draggable --------- */
 
@@ -117,74 +107,41 @@ canvas {
   right:0;
 }
 
-/* --------- logo --------- */
-
-.logo {
-  transition: opacity 1s;
-  position: absolute;
-  width: 120px;
-  transform-origin: top left;
-  padding-top: 1.5em;
-  padding-left: 1em;
-  z-index: 200;
-  cursor: pointer;
-}
-
-.logoSVG {
-  transform-origin: top left;
-  fill: white;
-}
-
-/*//////// instructions ////////*/
-
-.instructions {
-  position: absolute;
-  font-size: .75em;
-  top: 55px;
-  line-height: 1.5em;
-  left: 15px;
-  z-index: 0;
-}
-
-.instructionsRelated {
-  transition: opacity .5s;
-  position: absolute;
-  font-size: .75em;
-  bottom: 55px;
-  line-height: 1.5em;
-  left: 15px;
-}
-
 /*//////// search ////////*/
 
 .searchOverlay {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255, .8);
+  background: rgba(0, 0, 0, .8);
   z-index: 20000;
+  text-align: center;
 }
 
 .inputWrapper {
   position: absolute;
+  width: 90%;
   top:30%;
-  left:20px;
+  left:50%;
+  transform: translate(-50%, 0);
 }
 
 .searchHint,
 .searchInput {
-  width:90%;
+  width:100%;
   position: absolute;
   display: inline-block;
-  text-align: left;
   font-size: 20vh;
   cursor: text;
   outline: 0;
   border: none;
+  text-align: center;
+  /*border: thin black solid;*/
 }
 
 .searchHint {
-  color: rgba(0,0,0, .5);
+  color: rgba(0,0,0, 0);
+  opacity: 0;
 }
 
 input {
@@ -192,16 +149,17 @@ input {
 }
 
 .searchMenu {
+  width: 100%;
+  text-align: center;
 }
 
 .searchSuggestion {
-  transition: color .1s;
-  text-align: left;
+  text-align: center;
+  /*transition: color .1s;*/
   padding: 1vh 0;
   letter-spacing: .4px;
   font-size: 3vh;
   cursor: pointer;
-  color: rgba(0,0,0, .5);
 }
 
 .searchSuggestion:hover {
@@ -214,44 +172,25 @@ input:focus::-moz-placeholder { color:transparent; }
 input:focus:-ms-input-placeholder { color:transparent; }
 
 .searchInstructions {
-  color: rgba(0,0,0, .5);
+  color: white;
 }
 
 /*//////// icons ////////*/
-
-/*.icons {
-  position: absolute;
-  display: flex;
-  left:150px;
-  top:14px;
-  z-index: 10000;
-}*/
 
 .searchIconWrapper {
   position: absolute;
   display: flex;
   width: 35px;
   height: 35px;
-  /*justify-content: center;*/
   align-items: center;
-  /*background: white;*/
   margin-left: 15px;
-  /*margin-top: 15px;*/
   top:calc(1vh + 40px);
-  /*left:calc(3vh + 30px);*/
-  /*border: 1px white solid;*/
-  /*opacity: .1;*/
-  /*margin-left: -1px;*/
-  /*border-radius: 50%;*/
-  /*opacity:0;*/
   transform-origin: top left;
   cursor: pointer;
-  /*z-index: -10;*/
 }
 
 .searchSVG {
   transform-origin: top left;
-  /*transform: scale(.5);*/
   width: 20px;
   height: 20px;
   fill: white;
@@ -262,26 +201,17 @@ input:focus:-ms-input-placeholder { color:transparent; }
   display: flex;
   width: 40px;
   height: 40px;
-  /*justify-content: center;*/
+  top: 0;
+  left: 0;
+  justify-content: center;
   align-items: center;
-  /*background: white;*/
-  margin-left: 15px;
-  /*margin-top: 15px;*/
-  top:calc(1vh + 75px);
-  /*left:calc(3vh + 30px);*/
-  /*border: 1px white solid;*/
-  /*opacity: .1;*/
-  /*margin-left: -1px;*/
-  /*border-radius: 50%;*/
-  /*opacity:0;*/
   transform-origin: top left;
   cursor: pointer;
 }
 
 .infoSVG {
+  margin-right: 6px;
   transform-origin: top left;
-  /*transform: scale(.5);*/
-  width: 20px;
   height: 20px;
   fill: white;
 }
@@ -313,47 +243,6 @@ input:focus:-ms-input-placeholder { color:transparent; }
   height: 100%;
   background: white;
   opacity: .5;
-}
-
-/*//////// related item ////////*/
-
-.related {
-  transition: opacity 1s;
-  bottom: 0;
-  position: absolute;
-  width: 100%;
-  display: flex;
-  /*flex-wrap: wrap;*/
-  /*overflow: hidden;*/
-  flex-direction: row;
-  /*height: 50px;*/
-  z-index: 20;
-}
-
-.relatedMenu {
-  justify-content: space-around;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  overflow: hidden;
-  height: 35px;
-  color:white;
-}
-
-.relatedMenu::after,
-.relatedMenu li {
-  display: flex;
-  align-items: center;
-  letter-spacing: .4px;
-  font-size: 1.25em;
-  cursor: pointer;
-  margin-bottom: 1vh;
-  padding:0 13px 10px 13px;
-}
-
-.relatedMenu li:hover {
-  /*text-decoration: underline;*/
 }
 
 /*//////// hide elements ////////*/

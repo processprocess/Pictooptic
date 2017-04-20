@@ -5,9 +5,6 @@ class Icon {
     this.location = uploader.location;
     this.date = date_uploaded;
     this.id = id;
-    // this.collection = collections[0] ? collections[0].name : undefined;
-    // this.collectionID = collections[0] ? collections[0].id : undefined;
-    // this.tags = tags;
     this.term = term.toLowerCase();
     this.tags = Icon.fetchIcons(tags, this.term);
   }
@@ -19,9 +16,13 @@ class Icon {
       if (cleanTag.length > 5) return;
       if (cleanTag.length < 2) return;
       if (cleanTag === term) return;
-      cleanTags.push(cleanTag);
+      let cleanTagCap = Icon.capitalizeFirstLetter(cleanTag);
+      cleanTags.push(cleanTagCap);
     })
     return cleanTags
+  }
+  static capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
 

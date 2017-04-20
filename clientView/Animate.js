@@ -10,10 +10,6 @@ import getRandomVal from './getRandomVal.js';
 
 let svgElements = document.querySelectorAll('svg');
 let searchWord = document.querySelector('.searchWord');
-let appendixWord = document.querySelector('.appendixWord');
-let subHeadAppendix = document.querySelector('.subHeadAppendix');
-let description = document.querySelector('.description');
-let instructions = document.querySelector('.instructions');
 let smallType = document.querySelectorAll('.smallType');
 let logo = document.querySelector('.logo');
 let appendix = document.querySelector('.appendix');
@@ -21,6 +17,9 @@ let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
 let thinRule = document.querySelector('.thinRule');
 let relatedMenu = document.querySelector('.relatedMenu');
+let headerAppendix = document.querySelector('.headerAppendix');
+let centerItems = document.querySelectorAll('.centerItem');
+let searchOverlay = document.querySelector('.searchOverlay');
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -155,21 +154,25 @@ class Animate {
 
   static shuffle() {
 
+    appendix.classList.add('notVisible');
+
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
     let elementNodes = relatedMenu.querySelectorAll('li');
-    let centerItems = document.querySelectorAll('.centerItem');
 
     new Promise(function(resolve, reject) { randomColorRequest(resolve) })
     .then((resolved) => {
       Animate.randomLocaiton(allSets, {duration:1, stagger:0});
       Animate.randomPixiBGColor(bgCover);
-      Animate.letterColors([instructions, searchWord, appendixWord, subHeadAppendix, description, smallType, centerItems]);
+      Animate.letterColors([searchWord, smallType, centerItems]);
       Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
       Animate.randomBackgroundDom([bigRule, smallRule, thinRule]);
-      // Animate.randomBackgroundDom(centerItems);
-      Animate.colorBackgroundDom([appendix, centerItems]);
+      Animate.gradientColorChange(headerAppendix);
+      Animate.colorBackgroundDom([appendix]);
+      // Animate.colorBackgroundDom([appendix, centerItems]);
+      Animate.rgbaBackgroundDom(searchOverlay);
+      Animate.setLightestColor();
       allSets.forEach(elementSet => {
         let animL = elementSet[0];
         let animR = elementSet[1];
@@ -183,6 +186,31 @@ class Animate {
     })
   }
 
+  static setLightestColor() {
+    let searchOverlayText = searchOverlay.querySelectorAll('.searchOverlay div');
+    let searchOverlayinput = document.querySelectorAll('.searchOverlay input');
+    let color = colorPallete[4]
+    TweenMax.set([searchOverlayText, searchOverlayinput], {
+      color:color
+    })
+  }
+
+  static rgbaBackgroundDom(element) {
+    let color = rgbPallete[0];
+    let r = color.r;
+    let g = color.g;
+    let b = color.b;
+    element.style.background = `rgba(${r}, ${g}, ${b}, .8)`;
+  }
+
+  static gradientColorChange(element) {
+    let color = rgbPallete[0];
+    let r = color.r;
+    let g = color.g;
+    let b = color.b;
+    element.style.background = `linear-gradient(to bottom, rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`;
+  }
+
   static randomPixiBGColor(pixiEl) {
     TweenMax.to(pixiEl, 0.5, {colorProps: {
       tint: colorPallete[0], format:"number"
@@ -190,7 +218,7 @@ class Animate {
   }
 
   static blackBGColor(pixiEl) {
-    TweenMax.to(pixiEl, 0.5, {colorProps: {
+    TweenMax.to(pixiEl, 1, {colorProps: {
       tint: 0x000000, format:"number"
     }});
   }
@@ -260,10 +288,27 @@ class Animate {
   }
 
   static resetBW() {
+    let searchOverlayText = searchOverlay.querySelectorAll('.searchOverlay div');
+    let searchOverlayinput = document.querySelectorAll('.searchOverlay input');
+
     Animate.svgFillWhiteAll();
     Animate.backgroundsWhite([smallRule, bigRule]);
-    Animate.backgroundsBlack(appendix);
-    Animate.letterColorsBW([subHeadAppendix, instructions, description, smallType]);
+    Animate.backgroundsBlack([appendix]);
+    // Animate.backgroundsBlack([appendix, centerItems]);
+    Animate.backgroundsBlackOpacity(searchOverlay);
+    Animate.letterColorsBW([smallType, centerItems]);
+    Animate.setWhiteColor([searchOverlayText, searchOverlayinput]);
+    Animate.gradientColorChangeBW(headerAppendix);
+  }
+
+  static setWhiteColor(element) {
+    TweenMax.set(element, {
+      color: 0xFFFFFF
+    })
+  }
+
+  static gradientColorChangeBW(element) {
+    element.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))`;
   }
 
   static svgFillWhiteAll() {
@@ -282,6 +327,12 @@ class Animate {
   static backgroundsBlack(elements) {
     TweenMax.set(elements, {
       backgroundColor: 0x000000,
+    })
+  }
+
+  static backgroundsBlackOpacity(elements) {
+    TweenMax.set(elements, {
+      backgroundColor: 'rgba(0, 0, 0, .8)',
     })
   }
 

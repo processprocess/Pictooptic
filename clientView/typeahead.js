@@ -18,6 +18,7 @@ export var substringMatcher = function(strs) {
     // contains the substring `q`, add it to the `matches` array
     $.each(strs, function(i, str) {
       if (substrRegex.test(str)) {
+        if(matches.length > 2) return;
         matches.push(str);
       }
     });
@@ -27,11 +28,9 @@ export var substringMatcher = function(strs) {
 };
 
 $('.typeahead').typeahead({
-  hint: true,
+  hint: false,
   highlight: false,
-  // suggestion: true,
   minLength: 1,
-  // menu: true,
   classNames: {
     input: 'searchInput',
     menu: 'searchMenu',
