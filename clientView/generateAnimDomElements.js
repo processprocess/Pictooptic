@@ -151,20 +151,17 @@ let searchWordHolder = document.querySelector('.searchWordHolder');
 let related = document.querySelector('.related');
 let nav = document.querySelector('.nav');
 let logo = document.querySelector('.logo');
+let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
 
 function close() {
   searchOverlay.classList.add('notVisible');
   appendix.classList.add('notVisible');
-  // searchWord.classList.remove('notVisible');
-  // searchWordHolder.classList.add('notVisible');
-  // related.classList.add('notVisible');
+  iconHolderWrapper.scrollTop = 0;
   nav.classList.add('notVisible');
   logo.classList.add('notVisible');
 }
 
 function open() {
-  // searchWordHolder.classList.remove('notVisible');
-  // related.classList.remove('notVisible');
   nav.classList.remove('notVisible');
   logo.classList.remove('notVisible');
 }
@@ -191,7 +188,9 @@ export function controlFlow(param) {
     generateAnimDomElements(cleanIconData.icons, resolve);
     })
   })
-  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => { IntroAnim.reverse(resolve) })
+  .then((iconDataOnetesttest) => { return new Promise((resolve, reject) => {
+    IntroAnim.reverse(resolve);
+    })
   })
   .then((resolveData) => {
     open()

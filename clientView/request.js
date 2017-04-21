@@ -1,4 +1,9 @@
 import request from 'superagent';
+import IntroAnim from './IntroAnim.js';
+
+let errorBox = document.querySelector('.errorBox');
+let errorSpan = errorBox.querySelector('.errorTerm');
+let introAnimation = document.querySelector('.introAnimation');
 
 export let colorPallete = ["#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951"];
 export let rgbPallete = [];
@@ -8,11 +13,23 @@ export let rgbPallete = [];
 export default function newRequest(param, resolve) {
   request.get(`/api/icons/${param}`)
          .then(data => {
+            errorBox.classList.add('notVisible');
             let cleanIconObjects = data.body;
             resolve(cleanIconObjects);
          })
-         .catch(err => { console.log(err)})
+         .catch(err => {
+           handleError(param);
+           console.log(err);
+         })
          if (!resolve) return;
+}
+
+/////////// handle error ///////////
+
+function handleError(param) {
+  IntroAnim.errorLoader()
+  errorSpan.textContent = param;
+  errorBox.classList.remove('notVisible');
 }
 
 /////////// new color Request ///////////

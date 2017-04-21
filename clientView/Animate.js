@@ -20,6 +20,7 @@ let relatedMenu = document.querySelector('.relatedMenu');
 let headerAppendix = document.querySelector('.headerAppendix');
 let centerItems = document.querySelectorAll('.centerItem');
 let searchOverlay = document.querySelector('.searchOverlay');
+let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -155,6 +156,7 @@ class Animate {
   static shuffle() {
 
     appendix.classList.add('notVisible');
+    iconHolderWrapper.scrollTop = 0;
 
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');

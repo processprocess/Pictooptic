@@ -17,6 +17,7 @@ let searchWord = document.querySelector('.searchWord');
 let searchButton = document.querySelector('.centerItem.search');
 let randomButton = document.querySelector('.centerItem.random');
 let shuffleButton = document.querySelector('.centerItem.shuffle');
+let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
 
 class IndexEvents {
 
@@ -25,6 +26,7 @@ class IndexEvents {
     appendix.classList.add('notVisible')
     searchInput.value = '';
     searchWord.classList.remove('notVisible')
+    iconHolderWrapper.scrollTop = 0;
     // relatedMenu.classList.remove('notVisible')
     searchInput.blur();
   }
