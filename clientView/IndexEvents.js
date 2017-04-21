@@ -3,21 +3,16 @@ import Animate from './Animate.js';
 
 let appendix = document.querySelector('.appendix');
 let searchOverlay = document.querySelector('.searchOverlay');
-let inputWrapper = document.querySelector('.inputWrapper');
 let searchInput = document.querySelector('.searchInput');
-let introWrapper = document.querySelector('.introWrapper');
-let nav = document.querySelector('.nav');
-let gradient = document.querySelector('.gradient');
 let searchMenu = document.querySelector('.searchMenu');
-let searchIconWrapper = document.querySelector('.searchIconWrapper')
 let infoIconWrapper = document.querySelector('.infoIconWrapper');
-let logo = document.querySelector('.logo');
+let closeIconWrapper = document.querySelector('.closeIconWrapper');
 let searchWord = document.querySelector('.searchWord');
-// let relatedMenu = document.querySelector('.relatedMenu');
 let searchButton = document.querySelector('.centerItem.search');
 let randomButton = document.querySelector('.centerItem.random');
 let shuffleButton = document.querySelector('.centerItem.shuffle');
-let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
+let iconHolderWrapper = document.querySelector('.iconHolderWrapper');
+let hint = document.querySelector('.hint');
 
 class IndexEvents {
 
@@ -27,6 +22,8 @@ class IndexEvents {
     searchInput.value = '';
     searchWord.classList.remove('notVisible')
     iconHolderWrapper.scrollTop = 0;
+    closeIconWrapper.classList.add('notVisible');
+    infoIconWrapper.classList.remove('notVisible');
     // relatedMenu.classList.remove('notVisible')
     searchInput.blur();
   }
@@ -36,6 +33,8 @@ class IndexEvents {
     searchOverlay.classList.remove('notVisible')
     searchInput.focus();
     searchWord.classList.remove('notVisible')
+    closeIconWrapper.classList.add('notVisible');
+    infoIconWrapper.classList.remove('notVisible');
     // relatedMenu.classList.remove('notVisible')
   }
 
@@ -44,12 +43,14 @@ class IndexEvents {
     if (inputLength > 0) return;
     searchOverlay.classList.add('notVisible');
     searchInput.blur();
+    closeIconWrapper.classList.add('notVisible');
+    infoIconWrapper.classList.remove('notVisible');
   }
 
   static showAppendix() {
-    appendix.classList.toggle('notVisible')
-    // searchWord.classList.toggle('notVisible')
-    // relatedMenu.classList.toggle('notVisible')
+    appendix.classList.toggle('notVisible');
+    closeIconWrapper.classList.remove('notVisible');
+    infoIconWrapper.classList.add('notVisible');
   }
 
 }
@@ -66,10 +67,6 @@ searchOverlay.addEventListener('click', function(e) {
   IndexEvents.closeWindows();
 })
 
-// searchIconWrapper.addEventListener('click', function(e) {
-//   IndexEvents.openSearch();
-// })
-
 shuffleButton.addEventListener('click', function(e) {
   Animate.shuffle();
 })
@@ -78,14 +75,14 @@ searchButton.addEventListener('click', function(e) {
   IndexEvents.openSearch();
 })
 
+hint.addEventListener('click', function(e) {
+  IndexEvents.openSearch();
+})
+
 infoIconWrapper.addEventListener('click', function(e) {
   IndexEvents.showAppendix()
   searchOverlay.classList.add('notVisible')
 })
-
-// logo.addEventListener('click', function(e) {
-//   controlFlow('randomSample')
-// })
 
 randomButton.addEventListener('click', function(e) {
   controlFlow('randomSample')

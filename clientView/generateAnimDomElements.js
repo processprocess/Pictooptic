@@ -150,20 +150,27 @@ let searchWord = document.querySelector('.searchWord');
 let searchWordHolder = document.querySelector('.searchWordHolder');
 let related = document.querySelector('.related');
 let nav = document.querySelector('.nav');
+let centeredUIWrapper = document.querySelector('.centeredUIWrapper');
 let logo = document.querySelector('.logo');
 let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
+let closeIconWrapper = document.querySelector('.closeIconWrapper')
+let infoIconWrapper = document.querySelector('.infoIconWrapper')
 
 function close() {
   searchOverlay.classList.add('notVisible');
   appendix.classList.add('notVisible');
   iconHolderWrapper.scrollTop = 0;
   nav.classList.add('notVisible');
+  centeredUIWrapper.classList.add('notVisible');
   logo.classList.add('notVisible');
 }
 
 function open() {
   nav.classList.remove('notVisible');
+  centeredUIWrapper.classList.remove('notVisible');
   logo.classList.remove('notVisible');
+  closeIconWrapper.classList.add('notVisible');
+  infoIconWrapper.classList.remove('notVisible');
 }
 
 export function controlFlow(param) {

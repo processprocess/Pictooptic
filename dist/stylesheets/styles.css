@@ -23,27 +23,18 @@ canvas {
   position: absolute;
 }
 
-/* --------- navigation --------- */
-
 .nav {
   transition: opacity 1s;
-  /*padding-top: 1em;*/
   position: absolute;
   width: 100%;
-  /*height: 50%;*/
   z-index: 1000;
-  /*border: thin white solid;*/
 }
 
-/* --------- search word --------- */
-
 .searchWordHolder {
-  /*transition: opacity 1s;*/
   display: flex;
   justify-content: center;
   position: relative;
   width: 100%;
-  /*transform-origin: top;*/
 }
 
 .searchWord {
@@ -54,15 +45,24 @@ canvas {
   cursor: pointer;
 }
 
-/* --------- centered UI --------- */
-
 .centeredUIWrapper {
+  transition: opacity 1s;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   width: 100%;
   text-align: center;
+  top: 5.8em;
+  z-index: 1000;
+}
+
+@media only screen and (max-width: 700px) {
+  .centeredUIWrapper {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+  }
 }
 
 .centeredUI {
@@ -92,7 +92,7 @@ canvas {
   width: 100%;
   top: 60%;
   line-height: 2em;
-  z-index: 100000;
+  z-index: 10000;
 }
 
 .errorBox .errorTerm {
@@ -101,10 +101,10 @@ canvas {
 
 .errorBox .hint {
   color: white;
+  text-decoration: underline;
+  text-transform: capitalize;
+  cursor: pointer;
 }
-
-
-/* --------- draggable --------- */
 
 .dragWrap {
   position:fixed;
@@ -126,8 +126,6 @@ canvas {
   z-index: 1000;
   right:0;
 }
-
-/*//////// search ////////*/
 
 .searchOverlay {
   position: absolute;
@@ -156,12 +154,6 @@ canvas {
   outline: 0;
   border: none;
   text-align: center;
-  /*border: thin black solid;*/
-}
-
-.searchHint {
-  color: rgba(0,0,0, 0);
-  opacity: 0;
 }
 
 input {
@@ -175,7 +167,6 @@ input {
 
 .searchSuggestion {
   text-align: center;
-  /*transition: color .1s;*/
   padding: 1vh 0;
   letter-spacing: .4px;
   font-size: 3vh;
@@ -195,32 +186,12 @@ input:focus:-ms-input-placeholder { color:transparent; }
   color: white;
 }
 
-/*//////// icons ////////*/
-
-.searchIconWrapper {
+.infoIconWrapper,
+.closeIconWrapper {
   position: absolute;
   display: flex;
-  width: 35px;
-  height: 35px;
-  align-items: center;
-  margin-left: 15px;
-  top:calc(1vh + 40px);
-  transform-origin: top left;
-  cursor: pointer;
-}
-
-.searchSVG {
-  transform-origin: top left;
-  width: 20px;
-  height: 20px;
-  fill: white;
-}
-
-.infoIconWrapper {
-  position: absolute;
-  display: flex;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   top: 0;
   left: 0;
   justify-content: center;
@@ -229,45 +200,240 @@ input:focus:-ms-input-placeholder { color:transparent; }
   cursor: pointer;
 }
 
-.infoSVG {
-  margin-right: 6px;
+.infoSVG,
+.closeSVG {
   transform-origin: top left;
-  height: 20px;
-  fill: white;
-}
-
-.helpIconWrapper {
-  position: absolute;
-  display: flex;
-  width: 40px;
-  height: 40px;
-  padding-top: .3vh;
-  justify-content: center;
-  right: 0;
-  transform-origin: top right;
-  cursor: pointer;
-}
-
-.helpSVG {
-  transform-origin: top right;
   width: 20px;
   height: 20px;
   fill: white;
 }
 
-/*//////// help wrapper ////////*/
-
-.helpWrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: white;
-  opacity: .5;
-}
-
-/*//////// hide elements ////////*/
-
 .notVisible {
   opacity: 0;
   pointer-events: none;
+}
+
+/*//////// APPENDIX ////////*/
+
+.appendix {
+  position: absolute;
+  width: 50%;
+  bottom: 0;
+  height: 100%;
+  z-index: 100;
+  background:white;
+}
+
+@media only screen and (max-width: 700px) {
+  .appendix {
+    width: 100%;
+  }
+}
+
+.appendixCloser {
+  position: absolute;
+  width:200%;
+  height:100%;
+}
+
+.topGradient {
+  pointer-events: none;
+  position: absolute;
+  height: 10em;
+  width: 100%;
+  display: block;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  z-index: 1000;
+}
+
+.bottomGradient {
+  pointer-events: none;
+  position: absolute;
+  height: 3em;
+  width: 100%;
+  bottom: 0;
+  display: block;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  transform: rotate(180deg);
+  z-index: 1000;
+}
+
+.iconHolderWrapper {
+  padding: 6em 1em 0 1em;
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.logo {
+  width: 130px;
+  transform-origin: top left;
+  margin: 20px 0 0 0 ;
+}
+
+.logoSVG {
+  transform-origin: top left;
+  fill: white;
+}
+
+.relatedHeader {
+  font-size: 1.25em;
+  color: white;
+}
+
+.relatedMenu {
+  width: 100%;
+  color: white;
+}
+
+.relatedMenu li {
+  color: white;
+  display: inline-block;
+  margin: 0 10px 0 0;
+  color: white;
+  font-size: .75em;
+}
+
+.relatedMenu li:hover {
+}
+
+.iconHolder {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+}
+
+.iconData {
+  margin: 15px 5px 15px 5px;
+  flex-grow: 1;
+  text-align: center;
+  width: 130px;
+  height: 130px;
+  float: left;
+  color: white;
+}
+
+.iconGraphic canvas {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+}
+
+.userName {
+  margin-top: 15px;
+  font-family: sans-serif;
+  font-size: .75em;
+  letter-spacing: .8px;
+}
+
+.circleGradient {
+  position: absolute;
+  left: 100%;
+  top: -25%;
+  width: 20px;
+  height: 125%;
+  background: radial-gradient(ellipse at 0% 100%, rgba(0,0,0,.2) 0%, rgba(0,0,0,0) 50%);
+  z-index: 10000;
+}
+
+.appendixFooter {
+  color: white;
+  padding-bottom: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+  .appendixFooter {
+    padding-bottom: 3em;
+  }
+}
+
+.smallRule {
+  width: 100%;
+  height: 1px;
+  background: white;
+  margin: 15px 0;
+}
+
+.bigRule {
+  width: 100%;
+  height: 1px;
+  background: white;
+  margin: 15px 0 15px 0;
+}
+
+.smallType {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: .75em;
+  line-height: 1.75em;
+}
+
+.nounProjectWrapper {
+  display: flex;
+  align-items: center;
+  transform-origin: top left;
+  cursor: pointer;
+}
+
+.nounProjectSVG {
+  transform-origin: top left;
+  width: 220px;
+  fill: white;
+}
+
+.creativeCommonsWrapper {
+  position: relative;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  transform-origin: top left;
+  cursor: pointer;
+}
+
+.creativeCommonsSVG {
+  transform-origin: top left;
+  fill: white;
+  width: 20px;
+  height: 20px;
+}
+
+/*//////// INTRO ANIMATION ////////*/
+
+.introWrapper {
+  transition: opacity .5s;
+  position:absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.introAnimation {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width:50%;
+  top: 45%;
+  left: 50%;
+}
+
+.ccAnimation {
+  transition: opacity .3s;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 20%;
+  left: 98%;
+  width: 3vw;
+}
+
+.letter path {
+  fill: white;
+}
+
+.botas_loop_3,.botas_loop_2{
+  display:none
 }

@@ -15,12 +15,14 @@ let logo = document.querySelector('.logo');
 let appendix = document.querySelector('.appendix');
 let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
-let thinRule = document.querySelector('.thinRule');
 let relatedMenu = document.querySelector('.relatedMenu');
-let headerAppendix = document.querySelector('.headerAppendix');
+let topGradient = document.querySelector('.topGradient');
+let bottomGradient = document.querySelector('.bottomGradient');
 let centerItems = document.querySelectorAll('.centerItem');
 let searchOverlay = document.querySelector('.searchOverlay');
 let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
+let infoIconWrapper = document.querySelector('.infoIconWrapper');
+let closeIconWrapper = document.querySelector('.closeIconWrapper');
 
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
@@ -156,6 +158,8 @@ class Animate {
   static shuffle() {
 
     appendix.classList.add('notVisible');
+    closeIconWrapper.classList.add('notVisible');
+    infoIconWrapper.classList.remove('notVisible');
     iconHolderWrapper.scrollTop = 0;
 
     let tags = appendix.querySelectorAll('li');
@@ -169,8 +173,8 @@ class Animate {
       Animate.letterColors([searchWord, smallType, centerItems]);
       Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
-      Animate.randomBackgroundDom([bigRule, smallRule, thinRule]);
-      Animate.gradientColorChange(headerAppendix);
+      Animate.randomBackgroundDom([bigRule, smallRule]);
+      Animate.gradientColorChange([topGradient, bottomGradient]);
       Animate.colorBackgroundDom([appendix]);
       // Animate.colorBackgroundDom([appendix, centerItems]);
       Animate.rgbaBackgroundDom(searchOverlay);
@@ -205,12 +209,14 @@ class Animate {
     element.style.background = `rgba(${r}, ${g}, ${b}, .8)`;
   }
 
-  static gradientColorChange(element) {
+  static gradientColorChange(elements) {
     let color = rgbPallete[0];
     let r = color.r;
     let g = color.g;
     let b = color.b;
-    element.style.background = `linear-gradient(to bottom, rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`;
+    elements.forEach(element => {
+      element.style.background = `linear-gradient(to bottom, rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`;
+    })
   }
 
   static randomPixiBGColor(pixiEl) {
@@ -300,7 +306,7 @@ class Animate {
     Animate.backgroundsBlackOpacity(searchOverlay);
     Animate.letterColorsBW([smallType, centerItems]);
     Animate.setWhiteColor([searchOverlayText, searchOverlayinput]);
-    Animate.gradientColorChangeBW(headerAppendix);
+    Animate.gradientColorChangeBW([topGradient, bottomGradient]);
   }
 
   static setWhiteColor(element) {
@@ -309,8 +315,10 @@ class Animate {
     })
   }
 
-  static gradientColorChangeBW(element) {
-    element.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))`;
+  static gradientColorChangeBW(elements) {
+    elements.forEach(element => {
+      element.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))`;
+    })
   }
 
   static svgFillWhiteAll() {
