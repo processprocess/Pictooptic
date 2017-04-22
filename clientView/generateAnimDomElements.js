@@ -1,6 +1,6 @@
 import "pixi.js";
 import "gsap";
-import './libs/PixiPlugin.js';
+import './libs/PixiPlugin.min.js';
 import Animate from './Animate.js';
 import { mouseIsDown } from './Animate.js';
 import newRequest from './request.js';

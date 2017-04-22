@@ -3,7 +3,9 @@ import Draggable from '../node_modules/gsap/Draggable.js';
 import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import "pixi.js";
-import './libs/PixiPlugin.js';
+
+import './libs/PixiPlugin.min.js';
+
 import newRequest, { randomColorRequest, colorPallete, rgbPallete } from './request.js';
 import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js';
 import getRandomVal from './getRandomVal.js';
