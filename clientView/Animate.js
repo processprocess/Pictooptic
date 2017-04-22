@@ -17,7 +17,7 @@ let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
 let relatedMenu = document.querySelector('.relatedMenu');
 let topGradient = document.querySelector('.topGradient');
-let bottomGradient = document.querySelector('.bottomGradient');
+// let bottomGradient = document.querySelector('.bottomGradient');
 let centerItems = document.querySelectorAll('.centerItem');
 let searchOverlay = document.querySelector('.searchOverlay');
 let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
@@ -174,7 +174,8 @@ class Animate {
       Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
       Animate.randomBackgroundDom([bigRule, smallRule]);
-      Animate.gradientColorChange([topGradient, bottomGradient]);
+      Animate.gradientColorChange([topGradient]);
+      // Animate.gradientColorChange([topGradient, bottomGradient]);
       Animate.colorBackgroundDom([appendix]);
       // Animate.colorBackgroundDom([appendix, centerItems]);
       Animate.rgbaBackgroundDom(searchOverlay);
@@ -306,7 +307,8 @@ class Animate {
     Animate.backgroundsBlackOpacity(searchOverlay);
     Animate.letterColorsBW([smallType, centerItems]);
     Animate.setWhiteColor([searchOverlayText, searchOverlayinput]);
-    Animate.gradientColorChangeBW([topGradient, bottomGradient]);
+    Animate.gradientColorChangeBW([topGradient]);
+    // Animate.gradientColorChangeBW([topGradient, bottomGradient]);
   }
 
   static setWhiteColor(element) {

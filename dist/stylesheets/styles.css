@@ -45,25 +45,32 @@ canvas {
   cursor: pointer;
 }
 
+@media only screen and (max-width: 700px) {
+  .searchWord {
+    font-size: 1.5em;
+    padding: .5em 0 .1em 0;
+  }
+}
+
 .centeredUIWrapper {
   transition: opacity 1s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  /*position: relative;*/
   width: 100%;
   text-align: center;
   top: 5.8em;
   z-index: 1000;
 }
 
-@media only screen and (max-width: 700px) {
+/*@media only screen and (max-width: 700px) {
   .centeredUIWrapper {
     position: absolute;
     top: auto;
     bottom: 0;
   }
-}
+}*/
 
 .centeredUI {
 }
