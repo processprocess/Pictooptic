@@ -1,21 +1,26 @@
-# RorShock
-Psychedelic Semiotics
+![Pictooptic logo](graphicDev/graphic/demoImages/logo.jpg)
+<!-- Generative artwork using node/browser and The Noun Project API.   -->
+Blog post and more details:  
+[Generative Art with The Noun Project API](http://www.philipbell.org)  
 
-<br><br>
-When a designer distills an idea into an icon, it's subjectively rendered to it's purest form.
-How might this concept be presented to display the variety of ways that ideas are graphically distilled?
+## Live Demo  
+You can view the project in real-time here:  
+[www.pictooptic.com](https://www.pictooptic.com)  
 
-![alt tag](graphicDev/demoImages/1.png)
-![alt tag](graphicDev/demoImages/2.png)
-![alt tag](graphicDev/demoImages/3.png)
-![alt tag](graphicDev/demoImages/4.png)
-![alt tag](graphicDev/demoImages/5.png)
-![alt tag](graphicDev/demoImages/6.png)
+## Screen Shots
+Here are a few examples.  
 
-### Technology
-- JavaScript
-- GreenSock
-- Express
-- The Noun Project API
-- The Oxford Dictionary API
+![pattern](graphicDev/graphic/demoImages/pattern.jpg)
+
+![pattern](graphicDev/graphic/demoImages/flower.jpg)
+
+![pattern](graphicDev/graphic/demoImages/plant.jpg)
+
+## Technology:
+- [The Noun Project API](http://api.thenounproject.com/)  
+- [Pixi.js](https://www.pixijs.com/)  
+- [GreenSock](https://greensock.com/)  
+- [Bodymovin](https://github.com/bodymovin/bodymovin)  
+- [Typeahead.js](https://twitter.github.io/typeahead.js/)  
+- [Express](https://expressjs.com/)  
 

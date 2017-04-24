@@ -53,6 +53,7 @@ canvas {
 }
 
 .centeredUIWrapper {
+  margin-left: 3px;
   transition: opacity 1s;
   display: flex;
   flex-direction: column;

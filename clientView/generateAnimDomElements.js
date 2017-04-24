@@ -24,7 +24,7 @@ let whiteRGB = {r:255, g:255, b:255};
 function setUp() {
 
   renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
-    view: document.querySelector("canvas"),
+    view: document.querySelector('canvas'),
     antialias: true,
     transparent: true,
     resolution: 1

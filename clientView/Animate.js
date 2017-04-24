@@ -26,10 +26,14 @@ let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
 let infoIconWrapper = document.querySelector('.infoIconWrapper');
 let closeIconWrapper = document.querySelector('.closeIconWrapper');
 
+// let winWidth = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
+// let winHeight = window.innerHeight > window.innerWidth ?  window.innerWidth : window.innerHeight;
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
+
 let centerX = winWidth / 2;
 let centerY = winHeight / 2;
+
 let Xradius = centerX;
 let Yradius = centerY * .85;
 let winScale = winWidth * winHeight;
@@ -46,8 +50,12 @@ let mouseIsDown = false;
 let tick = 0;
 
 function setDomScale() {
+
+  // winWidth = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
+  // winHeight = window.innerHeight > window.innerWidth ?  window.innerWidth : window.innerHeight;
   winWidth = window.innerWidth;
   winHeight = window.innerHeight;
+
   centerX = winWidth / 2;
   centerY = winHeight / 2;
   Xradius = centerX;
@@ -426,6 +434,7 @@ class Animate {
     let distance = Math.sqrt(dx * dx + dy * dy);
 
     let angle = Math.atan2(dy, dx);
+    // let angleScaled = Math.atan2(dy, dx);;
     let angleScaled = Math.atan2(dy * (Xradius / Yradius), dx);
 
     let maxXCos = centerX + Math.cos(angleScaled) * Xradius;

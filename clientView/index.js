@@ -1,4 +1,4 @@
-console.clear();
+// console.clear();
 import { controlFlow } from './generateAnimDomElements.js';
 import { substringMatcher } from './typeahead.js';
 import Animate from './Animate.js';
