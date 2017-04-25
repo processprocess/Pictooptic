@@ -236,7 +236,7 @@ class Animate {
 
   static blackBGColor(pixiEl) {
     TweenMax.to(pixiEl, 1, {colorProps: {
-      tint: 0x111111, format:"number"
+      tint: 0x000000, format:"number"
     }});
   }
 
@@ -346,7 +346,7 @@ class Animate {
 
   static backgroundsBlack(elements) {
     TweenMax.set(elements, {
-      backgroundColor: 0x111111,
+      backgroundColor: 0x000000,
     })
   }
 
