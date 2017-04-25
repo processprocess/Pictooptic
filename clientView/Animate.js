@@ -3,9 +3,7 @@ import Draggable from '../node_modules/gsap/Draggable.js';
 import ThrowPropsPlugin from './libs/ThrowPropsPlugin.js';
 import ColorPropsPlugin from '../node_modules/gsap/ColorPropsPlugin.js';
 import "pixi.js";
-
 import './libs/PixiPlugin.min.js';
-
 import newRequest, { randomColorRequest, colorPallete, rgbPallete } from './request.js';
 import { allSets, bgCover, controlCycle } from './generateAnimDomElements.js';
 import getRandomVal from './getRandomVal.js';
@@ -238,7 +236,7 @@ class Animate {
 
   static blackBGColor(pixiEl) {
     TweenMax.to(pixiEl, 1, {colorProps: {
-      tint: 0x000000, format:"number"
+      tint: 0x111111, format:"number"
     }});
   }
 
@@ -348,7 +346,7 @@ class Animate {
 
   static backgroundsBlack(elements) {
     TweenMax.set(elements, {
-      backgroundColor: 0x000000,
+      backgroundColor: 0x111111,
     })
   }
 

@@ -6,6 +6,7 @@ import { mouseIsDown } from './Animate.js';
 import newRequest from './request.js';
 import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
+import getRandomVal from './getRandomVal.js';
 
 export let allSets = [];
 export let bgCover;
@@ -18,6 +19,7 @@ let stage;
 let renderer;
 
 let whiteRGB = {r:255, g:255, b:255};
+let greyTones = [0xffffff, 0xeeeeee, 0xdddddd, 0xcccccc];
 
 /////////// set up pixi ///////////
 
@@ -38,21 +40,21 @@ function setUp() {
   bgCover = new PIXI.Graphics();
   // bgCover.beginFill(0x000000, 1);
   bgCover.beginFill(0xffffff, 1);
-  bgCover.tint = 0x000000;
+  bgCover.tint = 0x111111;
   bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
   stage.addChild(bgCover);
 
   leftBox = new PIXI.Graphics();
   // leftBox.beginFill(0x000000, 1);
-  leftBox.beginFill(0xffffff, 1);
-  leftBox.tint = 0x000000;
+  leftBox.beginFill(0x111111, 1);
+  // leftBox.tint = 0x111111;
   leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
   // rightBox.beginFill(0x000000, 1);
-  rightBox.beginFill(0xffffff, 1);
-  rightBox.tint = 0x000000;
+  rightBox.beginFill(0x111111, 1);
+  // rightBox.tint = 0x111111;
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
 
@@ -83,37 +85,47 @@ export default function generateAnimDomElements (iconData, resolve) {
 
       /////////// create animating icons ////////////
 
-      var renderTarget = new PIXI.CanvasRenderTarget(width, height);
-      PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
-      var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
-      var lightSprite = new PIXI.Sprite(whiteTexture);
-      renderTarget.destroy();
+      // for( let i = 0 ; i < 1 ; i++){
+        var renderTarget = new PIXI.CanvasRenderTarget(width, height);
+        PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
+        var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
+        var lightSprite = new PIXI.Sprite(whiteTexture);
+        renderTarget.destroy();
 
-      let animL = new PIXI.Sprite(whiteTexture);
-      stage.addChild(animL);
-      animL.mask = leftBox;
-      let animR = new PIXI.Sprite(whiteTexture);
-      stage.addChild(animR);
-      animR.mask = rightBox;
+        let randomVal = Math.floor(getRandomVal(0, greyTones.length));
+        let colorVal = greyTones[randomVal];
 
-      /////////// create canvas icons ////////////
+        let animL = new PIXI.Sprite(whiteTexture);
+        animL.tint = colorVal;
+        // animL.tint = 0xeeeeee;
+        stage.addChild(animL);
+        animL.mask = leftBox;
+        let animR = new PIXI.Sprite(whiteTexture);
+        animR.tint = colorVal;
+        // animR.tint = 0xeeeeee;
+        stage.addChild(animR);
+        animR.mask = rightBox;
 
-      let animIcon = document.createElement('canvas');
-      animIcon.width = 100;
-      animIcon.height = 100;
-      animIcon.classList.add('animIconCanvas');
-      let ctx = animIcon.getContext('2d');
-      ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
-      iconHolder[i].append(animIcon);
-      Animate.changeCanvasColor(animIcon, whiteRGB);
+        /////////// create canvas icons ////////////
 
-      /////////// push into array for reference ////////////
+        let animIcon = document.createElement('canvas');
+        animIcon.width = 100;
+        animIcon.height = 100;
+        animIcon.classList.add('animIconCanvas');
+        let ctx = animIcon.getContext('2d');
+        ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
+        iconHolder[i].append(animIcon);
+        Animate.changeCanvasColor(animIcon, whiteRGB);
 
-      allSets.push([animL, animR, animIcon]);
+        /////////// push into array for reference ////////////
 
-      /////////// set starting values ////////////
+        allSets.push([animL, animR, animIcon]);
 
-      Animate.setValues(animL, animR)
+        /////////// set starting values ////////////
+
+        Animate.setValues(animL, animR)
+
+      // }
 
     }
     resolve()

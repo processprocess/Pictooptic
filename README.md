@@ -15,7 +15,6 @@ Here are a few examples.
 ![pattern](graphicDev/graphic/demoImages/flower.jpg)
 
 ![pattern](graphicDev/graphic/demoImages/plant.jpg)
-
 ## Technology:
 - [The Noun Project API](http://api.thenounproject.com/)  
 - [Pixi.js](https://www.pixijs.com/)  
