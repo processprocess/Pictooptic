@@ -445,3 +445,11 @@ input:focus:-ms-input-placeholder { color:transparent; }
 .botas_loop_3,.botas_loop_2{
   display:none
 }
+
+/*/////////// dissable hover on mobile ///////////*/
+
+@media (hover: none) {
+  .centerItem:hover > span {
+    text-decoration: none;
+  }
+}
