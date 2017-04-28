@@ -1,4 +1,4 @@
-![Pictooptic logo](graphicDev/graphic/demoImages/logo.jpg)
+![Pictooptic logo](graphicDev/graphic/siteImages/logo.jpg)
 <!-- Generative artwork using node/browser and The Noun Project API.   -->
 Blog post and more details:  
 [Generative Art with The Noun Project API](http://www.philipbell.org)  
@@ -10,11 +10,11 @@ You can view the project in real-time here:
 ## Screen Shots
 Here are a few examples.  
 
-![pattern](graphicDev/graphic/demoImages/pattern.jpg)
+![pattern](graphicDev/graphic/siteImages/pattern.jpg)
 
-![pattern](graphicDev/graphic/demoImages/flower.jpg)
+![pattern](graphicDev/graphic/siteImages/flower.jpg)
 
-![pattern](graphicDev/graphic/demoImages/plant.jpg)
+![pattern](graphicDev/graphic/siteImages/plant.jpg)
 ## Technology:
 - [The Noun Project API](http://api.thenounproject.com/)  
 - [Pixi.js](https://www.pixijs.com/)  
