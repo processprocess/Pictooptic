@@ -6,11 +6,12 @@ Blog post and more details:
 
 ## Technology:
 - [The Noun Project API](http://api.thenounproject.com/)  
-- [Pixi.js](https://www.pixijs.com/)  
-- [GreenSock](https://greensock.com/)  
-- [Bodymovin](https://github.com/bodymovin/bodymovin)  
-- [Typeahead.js](https://twitter.github.io/typeahead.js/)  
-- [Express](https://expressjs.com/)   
+- [Node.js](http://nodejs.org/en/)  
+- [Express](http://expressjs.com/)   
+- [Pixi.js](http://www.pixijs.com/)  
+- [GreenSock](http://greensock.com/)  
+- [Bodymovin](http://github.com/bodymovin/bodymovin)  
+- [Typeahead.js](http://twitter.github.io/typeahead.js/)  
 
 ## Live Demo  
 You can view the project in real-time here:  
