@@ -15,17 +15,13 @@ let logo = document.querySelector('.logo');
 let appendix = document.querySelector('.appendix');
 let bigRule = document.querySelector('.bigRule');
 let smallRule = document.querySelector('.smallRule');
-let relatedMenu = document.querySelector('.relatedMenu');
 let topGradient = document.querySelector('.topGradient');
-// let bottomGradient = document.querySelector('.bottomGradient');
 let centerItems = document.querySelectorAll('.centerItem');
 let searchOverlay = document.querySelector('.searchOverlay');
 let iconHolderWrapper = document.querySelector('.iconHolderWrapper')
 let infoIconWrapper = document.querySelector('.infoIconWrapper');
 let closeIconWrapper = document.querySelector('.closeIconWrapper');
 
-// let winWidth = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
-// let winHeight = window.innerHeight > window.innerWidth ?  window.innerWidth : window.innerHeight;
 let winWidth = window.innerWidth;
 let winHeight = window.innerHeight;
 
@@ -64,9 +60,6 @@ function setDomScale() {
   responsiveScale = calcWinScale + calcWalk;
   logoCalcWalk = (1 - calcWinScale) * logoWalkVal;
   logoResponsiveScale = calcWinScale + logoCalcWalk;
-  // TweenMax.set(searchWord, {
-  //   scale:() => { return 1 * responsiveScale;},
-  // })
   TweenMax.set(logo, {
     scale:() => { return 1 * logoResponsiveScale},
   })
@@ -106,12 +99,6 @@ class Animate {
       let duration = options.duration || 0.2;
       let tl = new TimelineLite( {onComplete:resolve} );
       tl.add(
-        // TweenLite.to([animL, animR], duration, { pixi: {
-        //     x: (element) => { return element === animR ? winWidth - randomX : randomX },
-        //     y: randomY,
-        //   },
-        //   ease: Power1.easeInOut,
-        // }),
         TweenLite.to(animL, duration, { pixi: {
             x: randomX,
             y: randomY,
@@ -135,7 +122,6 @@ class Animate {
     let duration = options.duration || 0.2;
     let stagger = (options.stagger == null) ? 0.3 : options.stagger || 0;
     let tl = new TimelineLite( {onComplete:()=>{ resolve() }} );
-    // stagger = .01
     elements.forEach((element, i) => {
       let animL = element[0];
       let animR = element[1];
@@ -143,7 +129,6 @@ class Animate {
       let randStartX = (centerX) - Math.sin(randAngle) * Xradius;
       let randStartY = (centerY) - Math.cos(randAngle) * Yradius;
       tl.add(
-        // tl.to(animL, duration, { pixi: {
         TweenLite.to(animL, duration, { pixi: {
           x: randStartX,
           y: randStartY,
@@ -172,20 +157,19 @@ class Animate {
 
     let tags = appendix.querySelectorAll('li');
     let usernames = appendix.querySelectorAll('.userName');
-    let elementNodes = relatedMenu.querySelectorAll('li');
+    // let elementNodes = relatedMenu.querySelectorAll('li');
 
     new Promise(function(resolve, reject) { randomColorRequest(resolve) })
     .then((resolved) => {
       Animate.randomLocaiton(allSets, {duration:1, stagger:0});
       Animate.randomPixiBGColor(bgCover);
       Animate.letterColors([searchWord, smallType, centerItems]);
-      Animate.randomColorDom([tags, usernames, elementNodes]);
+      Animate.randomColorDom([tags, usernames]);
+      // Animate.randomColorDom([tags, usernames, elementNodes]);
       Animate.svgFillRandomAll();
       Animate.randomBackgroundDom([bigRule, smallRule]);
       Animate.gradientColorChange([topGradient]);
-      // Animate.gradientColorChange([topGradient, bottomGradient]);
       Animate.colorBackgroundDom([appendix]);
-      // Animate.colorBackgroundDom([appendix, centerItems]);
       Animate.rgbaBackgroundDom(searchOverlay);
       Animate.setLightestColor();
       allSets.forEach(elementSet => {

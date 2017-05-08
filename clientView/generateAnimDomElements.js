@@ -2,7 +2,6 @@ import "pixi.js";
 import "gsap";
 import './libs/PixiPlugin.min.js';
 import Animate from './Animate.js';
-import { mouseIsDown } from './Animate.js';
 import newRequest from './request.js';
 import InfoDom from './InfoDom.js';
 import IntroAnim from './IntroAnim.js';
@@ -38,20 +37,17 @@ function setUp() {
   TweenLite.ticker.addEventListener("tick", () => { renderer.render(stage) });
 
   bgCover = new PIXI.Graphics();
-  // bgCover.beginFill(0x000000, 1);
   bgCover.beginFill(0xffffff, 1);
   bgCover.tint = 0x000000;
   bgCover.drawRect(0, 0, window.innerWidth, window.innerHeight);
   stage.addChild(bgCover);
 
   leftBox = new PIXI.Graphics();
-  // leftBox.beginFill(0x000000, 1);
   leftBox.beginFill(0x000000, 1);
   leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
-  // rightBox.beginFill(0x000000, 1);
   rightBox.beginFill(0x000000, 1);
   rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
   stage.addChild(rightBox);
@@ -83,47 +79,42 @@ export default function generateAnimDomElements (iconData, resolve) {
 
       /////////// create animating icons ////////////
 
-      // for( let i = 0 ; i < 1 ; i++){
-        var renderTarget = new PIXI.CanvasRenderTarget(width, height);
-        PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
-        var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
-        var lightSprite = new PIXI.Sprite(whiteTexture);
-        renderTarget.destroy();
+      var renderTarget = new PIXI.CanvasRenderTarget(width, height);
+      PIXI.CanvasTinter.tintWithOverlay(ogTexture, 0xffffff, renderTarget.canvas);
+      var whiteTexture = PIXI.Texture.fromCanvas(renderTarget.canvas);
+      var lightSprite = new PIXI.Sprite(whiteTexture);
+      renderTarget.destroy();
 
-        let randomVal = Math.floor(getRandomVal(0, greyTones.length));
-        let colorVal = greyTones[randomVal];
+      let randomVal = Math.floor(getRandomVal(0, greyTones.length));
+      let colorVal = greyTones[randomVal];
 
-        let animL = new PIXI.Sprite(whiteTexture);
-        animL.tint = colorVal;
-        // animL.tint = 0xeeeeee;
-        stage.addChild(animL);
-        animL.mask = leftBox;
-        let animR = new PIXI.Sprite(whiteTexture);
-        animR.tint = colorVal;
-        // animR.tint = 0xeeeeee;
-        stage.addChild(animR);
-        animR.mask = rightBox;
+      let animL = new PIXI.Sprite(whiteTexture);
+      animL.tint = colorVal;
+      stage.addChild(animL);
+      animL.mask = leftBox;
+      let animR = new PIXI.Sprite(whiteTexture);
+      animR.tint = colorVal;
+      stage.addChild(animR);
+      animR.mask = rightBox;
 
-        /////////// create canvas icons ////////////
+      /////////// create canvas icons ////////////
 
-        let animIcon = document.createElement('canvas');
-        animIcon.width = 100;
-        animIcon.height = 100;
-        animIcon.classList.add('animIconCanvas');
-        let ctx = animIcon.getContext('2d');
-        ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
-        iconHolder[i].append(animIcon);
-        Animate.changeCanvasColor(animIcon, whiteRGB);
+      let animIcon = document.createElement('canvas');
+      animIcon.width = 100;
+      animIcon.height = 100;
+      animIcon.classList.add('animIconCanvas');
+      let ctx = animIcon.getContext('2d');
+      ctx.drawImage(ogTexture.baseTexture.source, 0, 0, width, height, 0, 0, animIcon.width, animIcon.height);
+      iconHolder[i].append(animIcon);
+      Animate.changeCanvasColor(animIcon, whiteRGB);
 
-        /////////// push into array for reference ////////////
+      /////////// push into array for reference ////////////
 
-        allSets.push([animL, animR, animIcon]);
+      allSets.push([animL, animR, animIcon]);
 
-        /////////// set starting values ////////////
+      /////////// set starting values ////////////
 
-        Animate.setValues(animL, animR)
-
-      // }
+      Animate.setValues(animL, animR)
 
     }
     resolve()
@@ -199,7 +190,7 @@ export function controlFlow(param) {
   })
   .then((cleanIconData) => { return new Promise((resolve, reject) => {
     Animate.resetBW();
-    InfoDom.relatedTagsDom(cleanIconData.topTags);
+    // InfoDom.relatedTagsDom(cleanIconData.topTags);
     InfoDom.searchTermDom(cleanIconData.searchParam);
     InfoDom.generateAppendix(cleanIconData);
     generateAnimDomElements(cleanIconData.icons, resolve);

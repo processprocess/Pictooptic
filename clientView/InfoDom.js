@@ -12,23 +12,24 @@ class InfoDom {
     searchWord.innerHTML = newString
   }
 
-  static relatedTagsDom(tags) {
-    let relatedMenu = document.querySelector('.relatedMenu');
-    let relatedMenuLi = document.querySelectorAll('.relatedMenu li');
-    relatedMenuLi.forEach(li => li.blur())
-    while (relatedMenu.firstChild) {
-      relatedMenu.removeChild(relatedMenu.firstChild);
-    }
-    for (let i = 0 ; i < 7; i++) {
-      if (tags[i] === undefined) return;
-      let tagItem = document.createElement('li');
-      tagItem.textContent = tags[i][0];
-      tagItem.addEventListener('click', function(e) {
-        controlFlow(tagItem.textContent);
-      })
-      relatedMenu.append(tagItem);
-    }
-  }
+  //// might build this out in future
+  // static relatedTagsDom(tags) {
+  //   let relatedMenu = document.querySelector('.relatedMenu');
+  //   let relatedMenuLi = document.querySelectorAll('.relatedMenu li');
+  //   relatedMenuLi.forEach(li => li.blur())
+  //   while (relatedMenu.firstChild) {
+  //     relatedMenu.removeChild(relatedMenu.firstChild);
+  //   }
+  //   for (let i = 0 ; i < 7; i++) {
+  //     if (tags[i] === undefined) return;
+  //     let tagItem = document.createElement('li');
+  //     tagItem.textContent = tags[i][0];
+  //     tagItem.addEventListener('click', function(e) {
+  //       controlFlow(tagItem.textContent);
+  //     })
+  //     relatedMenu.append(tagItem);
+  //   }
+  // }
 
   static generateAppendix(cleanIconData) {
     let iconHolder = document.querySelector('.iconHolder')
@@ -47,6 +48,7 @@ class InfoDom {
       userName.classList.add('userName');
       userName.textContent = icon.user;
       iconData.append(userName);
+      //// might add back in
       // let iconTagList = document.createElement('ul');
       // iconTagList.classList.add('iconTagList');
       // iconData.append(iconTagList);

@@ -18,15 +18,18 @@
 
     <canvas></canvas>
 
+    <!-- helper divs to calculate position dragged  -->
     <div class="dragWrap"></div>
     <div class="dragTracker"></div>
 
+    <!-- displays logo when entering site or changing word -->
     <div class="introWrapper">
       <div class="introAnimation">
         <div class="ccAnimation notVisible"></div>
       </div>
     </div>
 
+    <!-- overlay module, visible when a key is hit -->
     <div class="searchOverlay notVisible">
       <div class="inputWrapper">
         <div class="searchInstructions">type any word for a new composition:</div>
@@ -34,6 +37,7 @@
       </div>
     </div>
 
+    <!-- navigation buttons -->
     <div class="nav notVisible">
 
       <div class="searchWordHolder">
@@ -59,19 +63,19 @@
 
     </div>
 
-
+    <!-- error div, visible upon 404 -->
     <div class="errorBox notVisible">
       Try typing another word, <br>
       <span class="errorTerm">param</span> broke Pictooptic. <br><br>
       <span class="hint">NEW SEARCH</span>
     </div>
 
+    <!-- appendix to hold icon and project info -->
     <div class="appendix notVisible">
 
       <div class="appendixCloser"></div>
       <div class="circleGradient"></div>
       <div class="topGradient"></div>
-      <!-- <div class="bottomGradient"></div> -->
 
       <div class="iconHolderWrapper">
 
@@ -112,8 +116,9 @@
       </div>
   </div>
 
-  <div class="relatedHeader" style='opacity:0'>Generate by related:</div>
-  <ul class ="relatedMenu" style='opacity:0'></ul>
+  <!-- keeping this in case I want to build this function back in -->
+  <!-- <div class="relatedHeader" style='opacity:0'>Generate by related:</div> -->
+  <!-- <ul class ="relatedMenu" style='opacity:0'></ul> -->
 
     <script src="/js/bundle.js"></script>
 
