@@ -1,4 +1,7 @@
 // console.clear();
+
+// document.onload = function() {
+
 import { controlFlow } from './generateAnimDomElements.js';
 import { substringMatcher } from './typeahead.js';
 import Animate from './Animate.js';
@@ -73,3 +76,5 @@ logo.addEventListener('touchmove', function(event) {
 appendixCloser.addEventListener('touchmove', function(e) {
   event.preventDefault();
 })
+
+// };

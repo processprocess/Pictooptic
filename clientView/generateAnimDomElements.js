@@ -44,12 +44,12 @@ function setUp() {
 
   leftBox = new PIXI.Graphics();
   leftBox.beginFill(0x000000, 1);
-  leftBox.drawRect(0, 0, window.innerWidth/2, window.innerHeight);
+  leftBox.drawRect(0, 0, window.innerWidth / 2, window.innerHeight);
   stage.addChild(leftBox);
 
   rightBox = new PIXI.Graphics();
   rightBox.beginFill(0x000000, 1);
-  rightBox.drawRect(window.innerWidth/2, 0, window.innerWidth/2, window.innerHeight);
+  rightBox.drawRect(window.innerWidth / 2, 0, window.innerWidth / 2, window.innerHeight);
   stage.addChild(rightBox);
 
 }
