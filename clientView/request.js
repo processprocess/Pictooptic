@@ -3,7 +3,6 @@ import IntroAnim from './IntroAnim.js';
 
 let errorBox = document.querySelector('.errorBox');
 let errorSpan = errorBox.querySelector('.errorTerm');
-let introAnimation = document.querySelector('.introAnimation');
 
 export let colorPallete = [
   '#00A0B0',
@@ -22,7 +21,6 @@ export default function newRequest(param, resolve) {
     .then(data => {
       errorBox.classList.add('notVisible');
       let cleanIconObjects = data.body;
-      console.log(cleanIconObjects);
       resolve(cleanIconObjects);
     })
     .catch(err => {

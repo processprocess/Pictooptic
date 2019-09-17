@@ -1,15 +1,24 @@
-import { controlFlow } from './generateAnimDomElements.js'
-import Animate from './Animate.js'
+import { controlFlow } from './generateAnimDomElements.js';
+import Animate from './Animate.js';
 
 class InfoDom {
   static searchTermDom(term) {
+    console.log(term);
+    var newurl =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      window.location.pathname +
+      '?' +
+      term;
+    window.history.pushState({ path: newurl }, '', newurl);
     let searchWord = document.querySelector('.searchWord');
     let newString = '';
     for (let i = 0; i < term.length; i++) {
       let newSpanString = `<span>${term.charAt(i)}</span>`;
       newString += newSpanString;
     }
-    searchWord.innerHTML = newString
+    searchWord.innerHTML = newString;
   }
 
   //// might build this out in future
@@ -32,7 +41,7 @@ class InfoDom {
   // }
 
   static generateAppendix(cleanIconData) {
-    let iconHolder = document.querySelector('.iconHolder')
+    let iconHolder = document.querySelector('.iconHolder');
     while (iconHolder.firstChild) {
       iconHolder.removeChild(iconHolder.firstChild);
     }
@@ -62,7 +71,7 @@ class InfoDom {
       //   })
       //   iconTagList.append(iconTag);
       // })
-    })
+    });
   }
 }
 
