@@ -11,6 +11,9 @@ class InfoDom {
       window.location.pathname +
       '?' +
       term;
+
+    console.log(newurl.split('&')[0]);
+
     window.history.pushState({ path: newurl }, '', newurl);
     let searchWord = document.querySelector('.searchWord');
     let newString = '';

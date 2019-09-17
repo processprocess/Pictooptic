@@ -10,7 +10,7 @@ window.onload = function() {
   }).then(resOne => {
     return new Promise((resolve, reject) => {
       if (window.location.search) {
-        controlFlow(window.location.search.replace('?', ''));
+        controlFlow(window.location.search.replace('?', '').split('&')[0]);
       } else {
         controlFlow('randomSample');
       }
