@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-core": "^6.16.0",
-    "babel-loader": "^6.2.5",
+    "babel-loader": "^9.1.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "bodymovin": "^4.6.3",
@@ -26,7 +26,7 @@
     "superagent": "^2.3.0",
     "the-noun-project": "^2.1.0",
     "typeahead.js": "^0.11.1",
-    "webpack": "^1.13.2",
+    "webpack": "^5.74.0",
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2"
   },
